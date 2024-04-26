@@ -5,29 +5,29 @@ import Footer from './footer';
 
 const CalculatorScreen = ( {navigation} ) => {
   const [categoryTotal, setCategoryTotal] = useState({
-    monthlyTransaction: 0,
-    monthlyInvoices: 0,
-    payroll: 0,
-    cashflow: 0,
-    budget: 0,
-    setup: 0
+    'No of Monthly Transaction': 0,
+    'No of Monthly Invoices': 0,
+    'No of Monthly Payroll': 0,
+    'Monthly Cashflow': 0,
+    'Monthly Budgeting': 0,
+    'QuickBook Xero/Setup': 0
   });
   const [checkboxes, setCheckboxes] = useState({
-    monthlyTransaction: false,
-    monthlyInvoices: false,
-    payroll: false,
-    cashflow: false,
-    budget: false,
-    setup: false
+    'No of Monthly Transaction': false,
+    'No of Monthly Invoices': false,
+    'No of Monthly Payroll': false,
+    'Monthly Cashflow': false,
+    'Monthly Budgeting': false,
+    'QuickBook Xero/Setup': false
   });
   const [totalPrice, setTotalPrice] = useState(0);
   const [individualPrices, setIndividualPrices] = useState({
-    monthlyTransaction: 0,
-    monthlyInvoices: 0,
-    payroll: 0,
-    cashflow: 0,
-    budget: 0,
-    setup: 0
+    'No of Monthly Transaction': 0,
+    'No of Monthly Invoices': 0,
+    'No of Monthly Payroll': 0,
+    'Monthly Cashflow': 0,
+    'Monthly Budgeting': 0,
+    'QuickBook Xero/Setup': 0
   });
 
   useEffect(() => {
@@ -40,6 +40,7 @@ const CalculatorScreen = ( {navigation} ) => {
       [category]: !checkboxes[category]
     });
   };
+
   const handleInputChange = (value, category) => {
     setCategoryTotal({
       ...categoryTotal,
@@ -48,38 +49,38 @@ const CalculatorScreen = ( {navigation} ) => {
   };
   const calculateCategoryTotal = (category) => {
     switch (category) {
-      case 'cashflow':
-      case 'budget':
+      case 'Monthly Cashflow':
+      case 'Monthly Budgeting':
         if (checkboxes[category]) {
-          const price = (categoryTotal.monthlyTransaction + categoryTotal.monthlyInvoices + categoryTotal.payroll) * 5 / 60 * 15;
+          const price = (categoryTotal['No of Monthly Transaction'] + categoryTotal['No of Monthly Invoices'] + categoryTotal['No of Monthly Payroll']) * 5 / 60 * 15;
           setIndividualPrices({...individualPrices, [category]: price});
           return price;
         }
         break;
-      case 'setup':
+      case 'QuickBook Xero/Setup':
         if (checkboxes[category]) {
           const price = 300;
           setIndividualPrices({...individualPrices, [category]: price});
           return price;
         }
         break;
-      case 'monthlyTransaction':
+      case 'No of Monthly Transaction':
         if (checkboxes[category]) {
-          const price = categoryTotal.monthlyTransaction * 5 / 60 * 15;
+          const price = categoryTotal['No of Monthly Transaction'] * 5 / 60 * 15;
           setIndividualPrices({...individualPrices, [category]: price});
           return price;
         }
         break;
-      case 'monthlyInvoices':
+      case 'No of Monthly Invoices':
         if (checkboxes[category]) {
-          const price = categoryTotal.monthlyInvoices * 15 / 60 * 15;
+          const price = categoryTotal['No of Monthly Invoices'] * 15 / 60 * 15;
           setIndividualPrices({...individualPrices, [category]: price});
           return price;
         }
         break;
-      case 'payroll':
+      case 'No of Monthly Payroll':
         if (checkboxes[category]) {
-          const price = categoryTotal.payroll * 15 / 60 * 15;
+          const price = categoryTotal['No of Monthly Payroll'] * 15 / 60 * 15;
           setIndividualPrices({...individualPrices, [category]: price});
           return price;
         }
@@ -89,6 +90,56 @@ const CalculatorScreen = ( {navigation} ) => {
     }
     return 0;
   };
+//const calculateCategoryTotal = (category) => {
+//  if (!checkboxes[category]) {
+//    // If the category is unchecked, return 0 immediately
+//    setIndividualPrices({...individualPrices, [category]: 0});
+//    return 0;
+//  }
+//
+// switch (category) {
+//      case 'Monthly Cashflow':
+//      case 'Monthly Budgeting':
+//        if (checkboxes[category]) {
+//          const price = (categoryTotal['No of Monthly Transaction'] + categoryTotal['No of Monthly Invoices'] + categoryTotal['No of Monthly Payroll']) * 5 / 60 * 15;
+//          setIndividualPrices({...individualPrices, [category]: price});
+//          return price;
+//        }
+//        break;
+//      case 'QuickBook Xero/Setup':
+//        if (checkboxes[category]) {
+//          const price = 300;
+//          setIndividualPrices({...individualPrices, [category]: price});
+//          return price;
+//        }
+//        break;
+//      case 'No of Monthly Transaction':
+//        if (checkboxes[category]) {
+//          const price = categoryTotal['No of Monthly Transaction'] * 5 / 60 * 15;
+//          setIndividualPrices({...individualPrices, [category]: price});
+//          return price;
+//        }
+//        break;
+//      case 'No of Monthly Invoices':
+//        if (checkboxes[category]) {
+//          const price = categoryTotal['No of Monthly Invoices'] * 15 / 60 * 15;
+//          setIndividualPrices({...individualPrices, [category]: price});
+//          return price;
+//        }
+//        break;
+//      case 'No of Monthly Payroll':
+//        if (checkboxes[category]) {
+//          const price = categoryTotal['No of Monthly Payroll'] * 15 / 60 * 15;
+//          setIndividualPrices({...individualPrices, [category]: price});
+//          return price;
+//        }
+//        break;
+//      default:
+//        return 0;
+//
+//  }
+//};
+
   const calculateTotalPrice = () => {
      let total = 0;
       Object.keys(categoryTotal).forEach((category) => {
@@ -98,10 +149,10 @@ const CalculatorScreen = ( {navigation} ) => {
    setTotalPrice(total);
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor:'white'}}>
       <ScrollView>
         <View className="items-center h-full justify-center flex-1">
-          <View className="bg-white justify-center flex-1 mt-10 flex-1 rounded-xl shadow-lg flex space-x-4 w-80 p-5">
+          <View className="bg-white justify-center flex-1 mt-10 flex-1 rounded-xl shadow-lg flex space-x-4 w-11/12 p-5" style={{backgroundColor:'#f5f8fa'}}>
             <Text style={{ fontSize: 20, marginBottom: 10 }}>Bookkeeping Calculator</Text>
              {Object.keys(categoryTotal).map((category) => (
               <View key={category}>
@@ -110,10 +161,11 @@ const CalculatorScreen = ( {navigation} ) => {
                     value={checkboxes[category]}
                     onValueChange={() => handleCheckboxChange(category)}
                     className="mt-2"
+                      style={{ tintColor: '#0b7ffe' }}
                   />
-                  <Text className="ml-2">{category}</Text>
+                  <Text className="ml-2 mt-1 text-base">{category}</Text>
                 </View>
-                {category !== 'cashflow' && category !== 'budget' && category !== 'setup' && checkboxes[category] && (
+                {category !== 'Monthly Cashflow' && category !== 'Monthly Budgeting' && category !== 'QuickBook Xero/Setup' && checkboxes[category] && (
                   <TextInput
                     onChangeText={(value) => handleInputChange(value, category)}
                     keyboardType="numeric"
@@ -125,13 +177,13 @@ const CalculatorScreen = ( {navigation} ) => {
             ))}
             <Text></Text>
           </View>
-          <View className="bg-white justify-center flex-1 mt-3 mb-10 flex-1 rounded-xl shadow-lg flex space-x-1 w-80 p-5">
+          <View className="bg-white justify-center flex-1 mt-3 mb-10 flex-1 rounded-xl shadow-lg flex space-x-1 w-11/12 p-5" style={{backgroundColor:'#f5f8fa'}}>
             {Object.keys(individualPrices).map((category) => (
              <>
             <Text className="text-base p-2" key={category}>{category}: ${individualPrices[category].toFixed(2)}</Text>
              </>
             ))}
-            <Text className="text-base p-2">Total Price: ${totalPrice.toFixed(2)}</Text>
+            <Text className="text-base p-2">Total Billing: ${totalPrice.toFixed(2)}</Text>
             <View className="flex-row mt-2">
              <TouchableOpacity style={{backgroundColor:'#0b7ffe'}} className="p-3 rounded-md"><Text className="text-white text-md">Lock the price Now</Text></TouchableOpacity>
              <TouchableOpacity style={{backgroundColor:'#0b7ffe'}} className="p-3 rounded-md ml-1"><Text className="text-white text-md">Get Discount Now</Text></TouchableOpacity>

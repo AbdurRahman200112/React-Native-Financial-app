@@ -98,11 +98,7 @@ const AdminDashboard = ({ navigation }) => {
             <FontAwesomeIcon icon={faArrowRight} size={14} color="#0b7ffe" />
           </TouchableOpacity>
         </View>
-
        </ScrollView>
-    <NavigationContainer independent={true}>
-      <CustomTabBar />
-    </NavigationContainer>
      </View>
   );
 };
