@@ -11,10 +11,13 @@ import CalculatorScreen from './Screens/calculator';
 import AvailableServices from './Screens/OurServices';
 import MultiStepForm from './Screens/form';
 import Calculator from './Screens/calculator';
+import CustomTabs from './Screens/customTabs';
+import Chat from './Screens/chat';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme , useRoute} from '@react-navigation/native';
 import { MaterialIcons, FontAwesome, Octicons, Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import style from './Screens/Style/style';
 import WelcomeScreen from './Screens/welcome';
@@ -26,7 +29,6 @@ const MyTheme = {
     primary: '#43a8fb',
   },
 };
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +49,6 @@ const handleLogout = async (navigation) => {
     Alert.alert('Error', 'An error occurred while logging out. Please try again.');
   }
 };
-
 const screenOptions = {
   tabBarShowLabel: false,
   headerShown: false,
@@ -61,16 +62,6 @@ const screenOptions = {
     background: "#fff"
   }
 };
-const MainScreen = ({ route }) => {
-  const isAdminRoute = route.name === 'ADMIN DASHBOARD';
-
-  if (isAdminRoute) {
-    return <AdminTabNavigator />;
-  } else {
-    return <UserTabNavigator />;
-  }
-};
-
 const UserTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
@@ -114,8 +105,8 @@ const UserTabNavigator = () => {
                borderRadius: Platform.OS == "ios" ? 25 : 30
               }}
             >
-              <MaterialIcons name="add" size={28} color="white" />
-            </View>
+            <MaterialIcons name="add" size={28} color="white" />
+           </View>
           ),
         }}
       />
@@ -146,20 +137,19 @@ const UserTabNavigator = () => {
     </Tab.Navigator>
   );
 };
-
 const AdminTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
-        name="ADMIN DASHBOARD"
-        component={AdminDashboard}
+        name="SERVICES"
+        component={AvailableServices}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <MaterialIcons name="dashboard" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>DASHBOARD</Text>
+              <MaterialIcons name="miscellaneous-services" size={24} color={focused ? "#0b7ffe" : "#111"} />
+              <Text style={{ fontSize: 12, color: "#000" }}>SERVICES</Text>
             </View>
-          ),
+          )
         }}
       />
      <Tab.Screen
@@ -177,6 +167,7 @@ const AdminTabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
 const App = () => {
   const [isSplashVisible, setSplashVisible] = useState(true);
 
@@ -191,7 +182,6 @@ const App = () => {
   if (isSplashVisible) {
     return <SplashScreen />;
   }
-
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
@@ -200,7 +190,7 @@ const App = () => {
         ) : (
         <Stack.Screen
          name="Main"
-         component={UserTabNavigator}
+         component={MainScreen}
          options={({ navigation }) => ({
           headerRight: () => (
             <LoginButton />
@@ -216,16 +206,16 @@ const App = () => {
          },
         })}
        />
-        )}
-       <Stack.Screen
-         name="LOGIN"
+      )}
+      <Stack.Screen
+        name="LOGIN"
          component={Login}
           options={({ navigation }) => ({
-//           headerLeft: () => (
-//            <TouchableOpacity className="ml-4" onPress={() => navigation.navigate('HOME')}>
-//             <FontAwesome name="angle-left" size={28} color="#0b7ffe" />
-//            </TouchableOpacity>
-//           ),
+           headerLeft: () => (
+            <TouchableOpacity className="ml-4" onPress={() => navigation.navigate('HOME')}>
+             <FontAwesome name="angle-left" size={28} color="#0b7ffe" />
+            </TouchableOpacity>
+           ),
            headerRight: () => (
             <LoginButton />
            ),
@@ -244,13 +234,11 @@ const App = () => {
           name="SIGNUP"
           component={SignUp}
           options={({ navigation }) => ({
-//          headerLeft: () => (
-//            route.name !== 'Home' && (
-//             <TouchableOpacity onPress={() => navigation.navigate('HOME')}>
-//               <FontAwesome name="angle-left" size={24} color="#0b7ffe" style={{ marginLeft: 10 }} />
-//             </TouchableOpacity>
-//           )
-//          ),
+          headerLeft: () => (
+             <TouchableOpacity onPress={() => navigation.navigate('HOME')}>
+               <FontAwesome name="angle-left" size={24} color="#0b7ffe" style={{ marginLeft: 10 }} />
+             </TouchableOpacity>
+          ),
           headerRight: () => (
               <LoginButton />
             ),
@@ -265,17 +253,29 @@ const App = () => {
             },
           })}
         />
+        <Stack.Screen name="CustomTabs" component={CustomTabs} />
         <Stack.Screen
           name="WELCOMEPAGE"
           component={WelcomeScreen}
           options={({ navigation }) => ({
-//          headerRight: () => (
-//           <TouchableOpacity
-//              onPress={() => handleLogout(navigation)}
-//              className="px-5" style={style.headerBtnStyle}>
-//              <Text className="text-white font-bold">Logout</Text>
-//           </TouchableOpacity>
-//            ),
+            headerTitle: () => null,
+            header: () => null,
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+          })}
+        />
+        <Stack.Screen
+          name="ADMIN DASHBOARD"
+          component={AdminDashboard}
+          options={({ navigation }) => ({
+            headerRight: () => (
+             <TouchableOpacity
+                onPress={() => handleLogout(navigation)}
+                className="px-5" style={style.headerBtnStyle}>
+                <Text className="text-white font-bold">Logout</Text>
+             </TouchableOpacity>
+            ),
             headerTitle: () => (
               <Image
                 source={require('./img/logo2.png')}
@@ -287,9 +287,9 @@ const App = () => {
             },
           })}
         />
-         <Stack.Screen
-          name="ADMIN DASHBOARD"
-          component={AdminDashboard}
+        <Stack.Screen
+          name="CHAT"
+          component={Chat}
           options={({ navigation }) => ({
             headerRight: () => (
              <TouchableOpacity
@@ -313,13 +313,13 @@ const App = () => {
           name="CALCULATOR"
           component={Calculator}
           options={({ navigation }) => ({
-//            headerRight: () => (
-//             <TouchableOpacity
-//                onPress={() => handleLogout(navigation)}
-//                className="px-5" style={style.headerBtnStyle}>
-//                <Text className="text-white font-bold">Logout</Text>
-//             </TouchableOpacity>
-//            ),
+//         headerRight: () => (
+//          <TouchableOpacity
+//            onPress={() => handleLogout(navigation)}
+//            className="px-5" style={style.headerBtnStyle}>
+//            <Text className="text-white font-bold">Logout</Text>
+//          </TouchableOpacity>
+//         ),
             headerTitle: () => (
               <Image
                 source={require('./img/logo2.png')}
@@ -336,4 +336,12 @@ const App = () => {
   );
 };
 
+const MainScreen = () => {
+  const route = useRoute();
+  console.log('Current route name:', route.name);
+  const routeName = route.name;
+  const isAdminRoute = routeName === 'ADMIN DASHBOARD';
+  console.log(route);
+  return isAdminRoute ? <AdminTabNavigator /> : <UserTabNavigator />;
+};
 export default App;

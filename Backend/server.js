@@ -99,6 +99,23 @@ app.post('/contactData', (req, res) => {
   });
 });
 
+app.get('/subscription_form/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'SELECT * FROM subscription_form WHERE id = ?';
+
+  db.query(sql, id, (error, results) => {
+    if (error) {
+      console.error('Error fetching subscription details:', error);
+      return res.status(500).send('Error fetching subscription details: ' + error.message);
+    }
+    if (results.length === 0) {
+      return res.status(404).send('No subscription found with the given ID.');
+    }
+    const subscriptionDetails = results[0]; // Assuming there's only one row for each subscription
+    res.json(subscriptionDetails);
+  });
+});
+
 app.post('/signup', (req, res) => {
   const { email_address, user_name, password, confirm_password } = req.body;
 
@@ -123,6 +140,23 @@ app.post('/signup', (req, res) => {
     });
   });
 });
+
+app.delete('/subscriptions/:id', (req, res) => {
+  const { id } = req.params;
+  const sql = 'DELETE FROM subscription_form WHERE id = ?';
+
+  db.query(sql, id, (error, results) => {
+    if (error) {
+      console.error('Error deleting subscription:', error);
+      return res.status(500).send('Error deleting the record: ' + error.message);
+    }
+    if (results.affectedRows === 0) {
+      return res.status(404).send('No subscription found with the given ID.');
+    }
+    res.send('Subscription deleted successfully.');
+  });
+});
+
 
 app.get('/subscriptions', (req, res) => {
   const sql = 'SELECT * FROM subscription_form';

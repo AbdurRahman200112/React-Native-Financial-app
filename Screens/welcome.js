@@ -4,7 +4,7 @@ import {SafeAreaView, View, Text, Image, StyleSheet,TouchableOpacity} from 'reac
 export default function Welcome({navigation}){
 return(
 <SafeAreaView className="bg-white h-full">
- <View className="mt-18">
+ <View className="flex-1 justify-center">
    <Image source={require('../img/Revenue-bro.png')} style={{height:450,width:'100%'}}/>
    <Text className="text-center text-4xl font-bold mt-5">Welcome to Mavens Advisor</Text>
    <View className="mt-10 justify-center items-center">
