@@ -5,9 +5,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import CustomTabBar from './adminNavigation';
 import { NavigationContainer } from '@react-navigation/native';
-
 
 const AdminDashboard = ({ navigation }) => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -20,7 +18,7 @@ const AdminDashboard = ({ navigation }) => {
 
   const fetchSubscriptionData = async () => {
     try {
-      const response = await axios.get('http://192.168.0.79:8080/subscriptions');
+      const response = await axios.get('http://192.168.0.204:8080/subscriptions');
       setSubscriptions(response.data);
     } catch (error) {
       console.error('There was a problem fetching subscription data:', error);

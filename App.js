@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Platform } from 'react-native';
+import { View, Text, Image, Platform,TouchableOpacity } from 'react-native';
 import SplashScreen from './Screens/SplashScreen';
 import HomeScreen from './Screens/homeScreen';
 import SignUp from './Screens/signUps';
@@ -30,6 +30,24 @@ const MyTheme = {
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const clearAsyncStorage = async () => {
+  try {
+    await AsyncStorage.clear();
+    console.log('AsyncStorage successfully cleared');
+  } catch (error) {
+    console.error('Error clearing AsyncStorage:', error);
+  }
+};
+const handleLogout = async (navigation) => {
+  try {
+    await clearAsyncStorage();
+    navigation.replace('LOGIN');
+  } catch (error) {
+    console.error('Error logging out:', error);
+    Alert.alert('Error', 'An error occurred while logging out. Please try again.');
+  }
+};
+
 const screenOptions = {
   tabBarShowLabel: false,
   headerShown: false,
@@ -43,7 +61,6 @@ const screenOptions = {
     background: "#fff"
   }
 };
-
 const MainScreen = ({ route }) => {
   const isAdminRoute = route.name === 'ADMIN DASHBOARD';
 
@@ -133,7 +150,6 @@ const UserTabNavigator = () => {
 const AdminTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      {/* Define tabs for admin dashboard here */}
       <Tab.Screen
         name="ADMIN DASHBOARD"
         component={AdminDashboard}
@@ -146,11 +162,21 @@ const AdminTabNavigator = () => {
           ),
         }}
       />
-      {/* Add other tabs */}
+     <Tab.Screen
+       name="Settings"
+       component={Contact}
+       options={{
+         tabBarIcon: ({ focused }) => (
+           <View style={{ alignItems: "center", justifyContent: "center" }}>
+             <FontAwesome name="phone" size={24} color={focused ? "#0b7ffe" : "#111"} />
+             <Text style={{ fontSize: 12, color: "#000" }}>CONTACT</Text>
+           </View>
+          )
+         }}
+       />
     </Tab.Navigator>
   );
 };
-
 const App = () => {
   const [isSplashVisible, setSplashVisible] = useState(true);
 

@@ -9,7 +9,7 @@ const Login = ({navigation}) => {
   const [error, setError] = useState('');
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.79:8080/login', {
+      const response = await axios.post('http://192.168.0.204:8080/login', {
         email_address: email,
         password: password
       });

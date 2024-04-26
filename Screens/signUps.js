@@ -17,7 +17,7 @@ const SignUp = ({ navigation }) => {
       password: password,
       confirm_password: confirmPassword
     };
-    fetch('http://192.168.0.79:8080/signup', {
+    fetch('http://192.168.0.204:8080/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
