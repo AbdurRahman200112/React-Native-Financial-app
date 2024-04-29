@@ -1,12 +1,15 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mysql = require('mysql');
-const server = require('./server');
 const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 8080;
+const server = http.createServer(app);
+const io = socketIo(server);
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -156,6 +159,64 @@ app.delete('/subscriptions/:id', (req, res) => {
     res.send('Subscription deleted successfully.');
   });
 });
+
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('new_message', (data) => {
+    const { email_address, admin_email, message } = data;
+    const query = 'INSERT INTO messages (email_address, admin_email, message) VALUES (?, ?, ?)';
+    db.query(query, [email_address, admin_email, message], (err, result) => {
+      if (err) {
+        console.error('Error saving message:', err);
+        return;
+      }
+      console.log('Message saved:', result);
+      io.emit('new_message', { email_address, admin_email, message });
+    });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
+app.get('/messages', (req, res) => {
+  const sql = 'SELECT * FROM messages';
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching messages:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    res.status(200).json(results);
+  });
+});
+//app.get('/messages/:id', (req, res) => {
+//  const id = req.params.id;
+//  const sql = 'SELECT * FROM messages WHERE id = ?';
+//  db.query(sql, [id], (err, results) => {
+//    if (err) {
+//      console.error('Error fetching messages:', err);
+//      return res.status(500).json({ error: 'Internal server error' });
+//    }
+//    res.status(200).json(results);
+//  });
+//});
+
+app.get('/messages/:email_address', (req, res) => {
+  const email_address = req.params.email_address;
+  const sql = 'SELECT * FROM messages WHERE email_address = ?';
+  db.query(sql, [email_address], (err, results) => {
+    if (err) {
+      console.error('Error fetching messages:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    res.status(200).json(results);
+  });
+});
+
 
 
 app.get('/subscriptions', (req, res) => {

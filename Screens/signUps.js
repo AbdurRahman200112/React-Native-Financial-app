@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TextInput, StyleSheet, TouchableOpacity, Text, SafeAreaView, ScrollView } from 'react-native';
+import { View, Image, TextInput, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import style from './Style/style';
 import Footer from './footer';
 import CustomImage from './customImage';
@@ -11,13 +11,18 @@ const SignUp = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const handleSignUp = () => {
+    if (!emailAddress || !userName || !password || !confirmPassword) {
+      Alert.alert('Error', 'All fields are required');
+      return;
+    }
+
     const userData = {
       email_address: emailAddress,
       user_name: userName,
       password: password,
       confirm_password: confirmPassword
     };
-    fetch('http://192.168.0.204:8080/signup', {
+    fetch('http://192.168.0.78:8080/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,6 +42,7 @@ const SignUp = ({ navigation }) => {
         console.error('Error signing up:', error.message);
       });
   };
+
   return (
    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#ffff' }}>
     <Image source={require('../img/logo2.png')} style={{ height: 45, width: 290, marginBottom: 3 }} />

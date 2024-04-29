@@ -13,15 +13,12 @@ const AdminDashboard = ({ navigation }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const [selectedSubscriptionDetail, setSelectedSubscriptionDetail] = useState(null);
-
-
   useEffect(() => {
     fetchSubscriptionData();
   }, []);
-
   const fetchSubscriptionData = async () => {
     try {
-      const response = await axios.get('http://192.168.0.204:8080/subscriptions');
+      const response = await axios.get('http://192.168.0.78:8080/subscriptions');
       setSubscriptions(response.data);
     } catch (error) {
       console.error('There was a problem fetching subscription data:', error);
@@ -29,7 +26,7 @@ const AdminDashboard = ({ navigation }) => {
   };
   const deleteSubscription = async (id) => {
     try {
-      await axios.delete(`http://192.168.0.204:8080/subscriptions/${id}`);
+      await axios.delete(`http://192.168.0.78:8080/subscriptions/${id}`);
       const updatedSubscriptions = subscriptions.filter(subscription => subscription.id !== id);
       setSubscriptions(updatedSubscriptions);
     } catch (error) {
@@ -38,7 +35,7 @@ const AdminDashboard = ({ navigation }) => {
     }
   const fetchSubscriptionDetail = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.0.204:8080/subscription_form/${id}`);
+      const response = await axios.get(`http://192.168.0.78:8080/subscription_form/${id}`);
       setSelectedSubscriptionDetail(response.data); // Set the fetched details into the state
     } catch (error) {
       console.error('Error fetching subscription details:', error);
@@ -54,7 +51,6 @@ const AdminDashboard = ({ navigation }) => {
   };
   const startIndex = (currentPage - 1) * itemsPerPage;
   const slicedSubscriptions = subscriptions.slice(startIndex, startIndex + itemsPerPage);
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -84,7 +80,7 @@ const AdminDashboard = ({ navigation }) => {
           <DataTable.Header style={styles.headerTable}>
             <DataTable.Title style={styles.title}>Category</DataTable.Title>
             <DataTable.Title style={styles.title}>Business Name</DataTable.Title>
-            <DataTable.Title  style={styles.title}>Actions</DataTable.Title>
+            <DataTable.Title style={styles.title}>Actions</DataTable.Title>
           </DataTable.Header>
           {slicedSubscriptions.map((subscription, index) => (
             <DataTable.Row key={subscription.id} style={index % 2 === 0 ? styles.evenRow : styles.oddRow}>
@@ -114,8 +110,8 @@ const AdminDashboard = ({ navigation }) => {
              <View className="flex-1 justify-center items-center mt-5 mb-20">
                <Text className="text-base ml-2">{selectedSubscriptionDetail.business_size},{'\n'}{selectedSubscriptionDetail.business_name},{'\n'}{selectedSubscriptionDetail.firstname} {selectedSubscriptionDetail.lastname},{'\n'}
                 {selectedSubscriptionDetail.email},{'\n'}{selectedSubscriptionDetail.phone_no},{'\n'}{selectedSubscriptionDetail.updated_date}</Text>
-                  </View>
-             )}
+             </View>
+           )}
       </ScrollView>
       <CustomTabs navigation={navigation}/>
      </View>

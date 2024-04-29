@@ -5,14 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7ed602a-0720-4a90-b921-8bc554dd2a63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Screens/chat.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Screens/customTabs.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screens/chatDetailScreen.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Screens/customHeader.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/Subscription_form_handler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/contactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/contactUs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/customTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/customTabs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/form.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/form.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Screens/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/welcome.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/welcome.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/signUps.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/signUps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/subscriptionFormBackend.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,16 +38,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Nash Tech PC 03/Desktop/AwesomeProject&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/apps/react-native-gifted-chat-master",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Nash Tech PC 03\Desktop\AwesomeProject\Screens" />

@@ -14,7 +14,7 @@ const Contact = ( {navigation} ) =>{
    email_address: email_address,
    message: message,
  };
-  fetch('http://192.168.0.204:8080/contactData', {
+  fetch('http://192.168.0.78:8080/contactData', {
    method: 'POST',
     headers: {
      'Content-Type': 'application/json',

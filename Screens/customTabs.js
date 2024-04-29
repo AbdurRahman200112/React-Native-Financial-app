@@ -18,29 +18,25 @@ const CustomTabs = ({navigation}) => {
   const handleTabPress = (tab) => {
     setActiveTab(tab);
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.tabBar}>
         <Tab
           icon={<Octicons name="home" size={24} color="#0b7ffe" />}
-          label="Home"
           onPress={() => navigation.navigate('ADMIN DASHBOARD')}
         />
         <Tab
-          label="CHAT"
           icon={<Ionicons name="chatbubble-outline" size={24} color="#0b7ffe" />}
           onPress={() => navigation.navigate('CHAT')}
         />
         <Tab
-          label="Chat"
           icon={<Ionicons name="call-outline" size={24} color="#0b7ffe" />}
           onPress={() => handleTabPress('Settings')}
         />
       </View>
     </View>
-  );
-};
+   );
+ };
 
 const styles = StyleSheet.create({
   container: {
@@ -54,8 +50,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     backgroundColor:'white',
+    paddingBottom:15,
     width:'100%',
-    paddingVertical: 8,
+    paddingVertical: 0,
   },
   tab: {
     alignItems: 'center',

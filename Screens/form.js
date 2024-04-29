@@ -49,7 +49,7 @@ const MultiStepForm = ({ navigation }) => {
       email: formData.email,
       phone_no: formData.phone_no
     };
-    fetch('http://192.168.0.204:8080/api', {
+    fetch('http://192.168.0.78:8080/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

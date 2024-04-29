@@ -13,10 +13,12 @@ import MultiStepForm from './Screens/form';
 import Calculator from './Screens/calculator';
 import CustomTabs from './Screens/customTabs';
 import Chat from './Screens/chat';
+import CustomHeader from './Screens/customHeader';
+import ChatDetailScreen from './Screens/chatDetailScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme , useRoute} from '@react-navigation/native';
-import { MaterialIcons, FontAwesome, Octicons, Feather } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome, Octicons, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import style from './Screens/Style/style';
@@ -71,8 +73,7 @@ const UserTabNavigator = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <Octicons name="home" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>HOME</Text>
+              <Octicons name="home" size={26} color={focused ? "#0b7ffe" : "#111"} />
             </View>
           ),
         }}
@@ -83,8 +84,7 @@ const UserTabNavigator = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <Feather name="user" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>LOGIN</Text>
+              <Feather name="user" size={26} color={focused ? "#0b7ffe" : "#111"} />
             </View>
           )
         }}
@@ -116,20 +116,18 @@ const UserTabNavigator = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <MaterialIcons name="miscellaneous-services" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>SERVICES</Text>
+              <Ionicons name="briefcase-outline" size={26} color={focused ? "#0b7ffe" : "#111"} />
             </View>
           )
         }}
       />
       <Tab.Screen
-        name="Settings"
+        name="CONTACT"
         component={Contact}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <FontAwesome name="phone" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>CONTACT</Text>
+              <Ionicons name="call-outline" size={26} color={focused ? "#0b7ffe" : "#111"} />
             </View>
           )
         }}
@@ -137,37 +135,6 @@ const UserTabNavigator = () => {
     </Tab.Navigator>
   );
 };
-const AdminTabNavigator = () => {
-  return (
-    <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen
-        name="SERVICES"
-        component={AvailableServices}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <MaterialIcons name="miscellaneous-services" size={24} color={focused ? "#0b7ffe" : "#111"} />
-              <Text style={{ fontSize: 12, color: "#000" }}>SERVICES</Text>
-            </View>
-          )
-        }}
-      />
-     <Tab.Screen
-       name="Settings"
-       component={Contact}
-       options={{
-         tabBarIcon: ({ focused }) => (
-           <View style={{ alignItems: "center", justifyContent: "center" }}>
-             <FontAwesome name="phone" size={24} color={focused ? "#0b7ffe" : "#111"} />
-             <Text style={{ fontSize: 12, color: "#000" }}>CONTACT</Text>
-           </View>
-          )
-         }}
-       />
-    </Tab.Navigator>
-  );
-};
-
 const App = () => {
   const [isSplashVisible, setSplashVisible] = useState(true);
 
@@ -190,7 +157,7 @@ const App = () => {
         ) : (
         <Stack.Screen
          name="Main"
-         component={MainScreen}
+         component={UserTabNavigator}
          options={({ navigation }) => ({
           headerRight: () => (
             <LoginButton />
@@ -313,13 +280,7 @@ const App = () => {
           name="CALCULATOR"
           component={Calculator}
           options={({ navigation }) => ({
-//         headerRight: () => (
-//          <TouchableOpacity
-//            onPress={() => handleLogout(navigation)}
-//            className="px-5" style={style.headerBtnStyle}>
-//            <Text className="text-white font-bold">Logout</Text>
-//          </TouchableOpacity>
-//         ),
+
             headerTitle: () => (
               <Image
                 source={require('./img/logo2.png')}
@@ -331,17 +292,28 @@ const App = () => {
             },
           })}
         />
+         <Stack.Screen
+           name="ChatDetailScreen"
+           component={ChatDetailScreen}
+           options={({ route, navigation }) => ({
+             headerLeft: () => (
+               <TouchableOpacity onPress={() => navigation.goBack()}>
+                 <FontAwesome name="angle-left" size={24} color="#0b7ffe" style={{ marginLeft: 10 }} />
+               </TouchableOpacity>
+             ),
+             headerTitle: () => (
+               <View style={{ height: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#333' }}>{route.params.email_address}</Text>
+               </View>
+             ),
+             headerStyle: {
+               backgroundColor: '#fff',
+             },
+           })}
+         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-const MainScreen = () => {
-  const route = useRoute();
-  console.log('Current route name:', route.name);
-  const routeName = route.name;
-  const isAdminRoute = routeName === 'ADMIN DASHBOARD';
-  console.log(route);
-  return isAdminRoute ? <AdminTabNavigator /> : <UserTabNavigator />;
 };
 export default App;
