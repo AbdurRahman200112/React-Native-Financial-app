@@ -57,10 +57,59 @@ app.post('/api', (req, res) => {
   });
 });
 
+
+io.on('connection', (socket) => {
+  socket.on('initial_messages', ({ email_address }) => {
+    fetchMessages(email_address)
+      .then((messages) => {
+        socket.emit('initial_messages', messages);
+      })
+      .catch((error) => {
+        console.error('Error fetching initial messages:', error);
+      });
+  });
+
+  socket.on('new_message', ({ email_address, message }) => {
+    saveMessage(email_address, message)
+      .then((savedMessage) => {
+        io.emit('new_message', savedMessage);
+      })
+      .catch((error) => {
+        console.error('Error saving message:', error);
+      });
+  });
+});
+
+const fetchMessages = (email_address) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM messages WHERE email_address = ?';
+    db.query(sql, [email_address], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
+const saveMessage = (email_address, message) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
+    db.query(sql, [email_address, message], (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        const savedMessage = { email_address, message, timestamp: new Date() };
+        resolve(savedMessage);
+      }
+    });
+  });
+};
 app.post('/login', (req, res) => {
   const { email_address, password } = req.body;
 
-  const sql = 'SELECT * FROM user WHERE email_address = ?';
+  const sql = 'SELECT * FROM admin WHERE email = ?';
   db.query(sql, [email_address], (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
@@ -132,7 +181,7 @@ app.post('/signup', (req, res) => {
       return res.status(500).json({ error: 'Error hashing password' });
     }
 
-    const sql = 'INSERT INTO user (email_address, user_name, password) VALUES (?, ?, ?)';
+    const sql = 'INSERT INTO admin (email, username, password) VALUES (?, ?, ?)';
     db.query(sql, [email_address, user_name, hashedPassword], (err, result) => {
       if (err) {
         console.error('Error inserting user data:', err);
@@ -160,26 +209,26 @@ app.delete('/subscriptions/:id', (req, res) => {
   });
 });
 
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  socket.on('new_message', (data) => {
-    const { email_address, admin_email, message } = data;
-    const query = 'INSERT INTO messages (email_address, admin_email, message) VALUES (?, ?, ?)';
-    db.query(query, [email_address, admin_email, message], (err, result) => {
-      if (err) {
-        console.error('Error saving message:', err);
-        return;
-      }
-      console.log('Message saved:', result);
-      io.emit('new_message', { email_address, admin_email, message });
-    });
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
+//let messages = [];
+//io.on('connection', (socket) => {
+//  console.log('A client connected');
+//
+//  socket.emit('initial_messages', messages);
+//  socket.on('new_message', (data) => {
+//    messages.push(data);
+//    io.emit('new_message', data);
+//    const { email_address, message } = data;
+//    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
+//    db.query(sql, [email_address, message], (err, result) => {
+//      if (err) throw err;
+//      console.log('Message inserted into the database');
+//    });
+//  });
+//
+//  socket.on('disconnect', () => {
+//    console.log('A client disconnected');
+//  });
+//});
 
 app.get('/messages', (req, res) => {
   const sql = 'SELECT * FROM messages';
