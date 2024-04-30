@@ -5,20 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7ed602a-0720-4a90-b921-8bc554dd2a63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Screens/chatDetailScreen.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Screens/customHeader.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/Subscription_form_handler.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/chat.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/contactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/contactUs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/customTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/customTabs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/form.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/adminDashboard/chatDetailScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/adminDashboard/chatDetailScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/signUps.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/signUps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/subscriptionFormBackend.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -44,13 +35,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "C:/apps/react-native-gifted-chat-master",
+    "last_opened_file_path": "C:/Users/Nash Tech PC 03/Desktop/AwesomeProject",
     "settings.editor.selected.configurable": "AndroidSdkUpdater"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Nash Tech PC 03\Desktop\AwesomeProject\Screens" />
+      <recent name="C:\Users\Nash Tech PC 03\Desktop\AwesomeProject\Screens\adminDashboard" />
+      <recent name="C:\Users\Nash Tech PC 03\Desktop\AwesomeProject\Screens\adminDashboard\components" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

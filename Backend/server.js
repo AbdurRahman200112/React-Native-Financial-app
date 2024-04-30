@@ -57,55 +57,90 @@ app.post('/api', (req, res) => {
   });
 });
 
+//app.post('/new_message', (req, res) => {
+//  const {
+//    email_address,
+//    message
+//  } = req.body;
+//
+//  const sql = 'INSERT INTO messages (email_address,admin_email, message) VALUES (?, ?)';
+//  db.query(sql, [email_address,admin_email, message], (err, result) => {
+//    if (err) {
+//      console.error('Error inserting data:', err);
+//      return res.status(500).json({ error: 'Error inserting data' });
+//    }
+//    console.log('Data inserted successfully');
+//    return res.status(200).json({ message: 'Data inserted successfully' });
+//  });
+//});
+app.post('/new_message', (req, res) => {
+  const {
+    email_address,
+    admin_email,
+    message
+  } = req.body;
 
-io.on('connection', (socket) => {
-  socket.on('initial_messages', ({ email_address }) => {
-    fetchMessages(email_address)
-      .then((messages) => {
-        socket.emit('initial_messages', messages);
-      })
-      .catch((error) => {
-        console.error('Error fetching initial messages:', error);
-      });
-  });
-
-  socket.on('new_message', ({ email_address, message }) => {
-    saveMessage(email_address, message)
-      .then((savedMessage) => {
-        io.emit('new_message', savedMessage);
-      })
-      .catch((error) => {
-        console.error('Error saving message:', error);
-      });
+  const sql = 'INSERT INTO messages (email_address, admin_email, message) VALUES (?, ?, ?)';
+  db.query(sql, [email_address, admin_email, message], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      return res.status(500).json({ error: 'Error inserting data' });
+    }
+    console.log('Data inserted successfully');
+    return res.status(200).json({ message: 'Data inserted successfully' });
   });
 });
 
-const fetchMessages = (email_address) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM messages WHERE email_address = ?';
-    db.query(sql, [email_address], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
-    });
-  });
-};
 
-const saveMessage = (email_address, message) => {
-  return new Promise((resolve, reject) => {
-    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
-    db.query(sql, [email_address, message], (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        const savedMessage = { email_address, message, timestamp: new Date() };
-        resolve(savedMessage);
-      }
-    });
-  });
-};
+//
+//io.on('connection', (socket) => {
+//  socket.on('initial_messages', ({ email_address }) => {
+//    fetchMessages(email_address)
+//      .then((messages) => {
+//        socket.emit('initial_messages', messages);
+//      })
+//      .catch((error) => {
+//        console.error('Error fetching initial messages:', error);
+//      });
+//  });
+//
+//  socket.on('new_message', ({ email_address, message }) => {
+//    saveMessage(email_address, message)
+//      .then((savedMessage) => {
+//        io.emit('new_message', savedMessage);
+//      })
+//      .catch((error) => {
+//        console.error('Error saving message:', error);
+//      });
+//  });
+//});
+//
+//const fetchMessages = (email_address) => {
+//  return new Promise((resolve, reject) => {
+//    const sql = 'SELECT * FROM messages WHERE email_address = ?';
+//    db.query(sql, [email_address], (err, results) => {
+//      if (err) {
+//        reject(err);
+//      } else {
+//        resolve(results);
+//      }
+//    });
+//  });
+//};
+//
+//const saveMessage = (email_address, message) => {
+//  return new Promise((resolve, reject) => {
+//    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
+//    db.query(sql, [email_address, message], (err, result) => {
+//      if (err) {
+//        reject(err);
+//      } else {
+//        const savedMessage = { email_address, message, timestamp: new Date() };
+//        resolve(savedMessage);
+//      }
+//    });
+//  });
+//};
 app.post('/login', (req, res) => {
   const { email_address, password } = req.body;
 

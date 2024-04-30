@@ -7,19 +7,43 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://192.168.0.78:8080/login', {
-        email_address: email,
-        password: password
-      });
-      console.log(response.data.message);
-      navigation.navigate('ADMIN DASHBOARD');
-    } catch (error) {
-      console.error('Error logging in:', error.message);
-      setError('Invalid email or password');
+  const [adminEmail, setAdminEmail] = useState('');
+//  const handleLogin = async () => {
+//    try {
+//      const response = await axios.post('http://192.168.0.78:8080/login', {
+//        email_address: email,
+//        password: password
+//      });
+////      const { message, adminEmail } = response.data;
+////      setAdminEmail(adminEmail);
+//      console.log(response.data.message);
+//      navigation.navigate('ADMIN DASHBOARD');
+//    } catch (error) {
+//      console.error('Error logging in:', error.message);
+//      setError('Invalid email or password');
+//    }
+//  };
+
+const handleLogin = async () => {
+  try {
+    const response = await axios.post('http://192.168.0.78:8080/login', {
+      email_address: email,
+      password: password
+    });
+    const { message, adminEmail } = response.data;
+    setAdminEmail(adminEmail);
+    console.log(message); // Log success message
+    navigation.navigate('ADMIN DASHBOARD');
+  } catch (error) {
+    console.error('Error logging in:', error.message);
+    if (error.response && error.response.data && error.response.data.error) {
+      setError(error.response.data.error);
+    } else {
+      setError('An error occurred while logging in');
     }
-  };
+  }
+};
+
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#ffff' }}>
       <Image source={require('../img/logo2.png')} style={{ height: 45, width: 290 }} className="mb-3" />

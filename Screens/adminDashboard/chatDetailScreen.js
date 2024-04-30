@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
 import {Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -22,22 +22,16 @@ const ChatDetailScreen = ({ route }) => {
           console.log('Connected to server');
         });
 
-        // Listen for initial messages from the server
         socket.on('initial_messages', (initialMessages) => {
           setMessages(initialMessages);
         });
-
-        // Listen for new messages from the server
         socket.on('new_message', (message) => {
           setMessages([...messages, message]);
         });
-
-        // Clean up the socket connection when the component unmounts
         return () => {
           socket.disconnect();
         };
       }, []);
-
 
   const fetchMessages = async () => {
     try {
@@ -57,44 +51,22 @@ const ChatDetailScreen = ({ route }) => {
       console.error('Error fetching admin email:', error);
     }
   };
-//  const sendMessage = async () => {
-//    try {
-//      await axios.post('http:///192.168.0.78:8080/new_message', {
-//        email_address: route.params.userEmail,
-//        admin_email: adminEmail,
-//        message: newMessage
-//      });
-//      setNewMessage('');
-//      fetchMessages();
-//    } catch (error) {
-//      console.error('Error sending message:', error);
-//    }
-//  };
-//    const sendMessage = async () => {
-//      try {
-//        const adminEmail = "info@mavensadvisor.com";
-//        const userEmail = route.params.email_address;
-//
-//        await axios.post('http://192.168.0.78:8080/new_message', {
-//          email_address: userEmail,
-//          admin_email: adminEmail,
-//          message: newMessage
-//        });
-//        setNewMessage('');
-//        fetchMessages();
-//      } catch (error) {
-//        console.error('Error sending message:', error);
-//      }
-//    };
-    const sendMessage = () => {
-      const { email_address } = route.params;
-      socket.emit('new_message', {
-        email_address,
-        message: newMessage
-      });
-      setNewMessage('');
-    };
+    const sendMessage = async () => {
+      try {
+        const adminEmail = "info@mavensadvisor.com";
+        const userEmail = route.params.email_address;
 
+        await axios.post('http://192.168.0.78:8080/new_message', {
+          email_address: userEmail,
+          admin_email: adminEmail,
+          message: newMessage
+        });
+        setNewMessage('');
+        fetchMessages();
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+    };
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     let hours = date.getHours();
@@ -112,16 +84,16 @@ const ChatDetailScreen = ({ route }) => {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.messagesContainer}>
+      <ScrollView>
         {messages.map((message, index) => (
-          <View key={index} style={[styles.messageContainer, { width: message.message.length > 50 ? '100%' : '50%' }]}>
+          <View key={index} style={[styles.messageContainer, message.admin_email === "info@mavensadvisor.com" ? styles.userMessage : styles.adminMessage]}>
             <View style={{ backgroundColor: '#F3F0EC', padding: 15, borderRadius: 10 }}>
               <Text style={styles.message}>{message.message}</Text>
               <Text style={styles.timestamp}>{formatDate(message.timestamp)}</Text>
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Type your message..."
@@ -130,25 +102,31 @@ const ChatDetailScreen = ({ route }) => {
           style={styles.input}
           multiline
         />
-        <TouchableOpacity  style={{backgroundColor:'#0b7ffe'}} onPress={sendMessage} className="p-3 rounded-3xl">
-            <Feather name="send" size={18} color="#ffff" />
+        <TouchableOpacity style={{ backgroundColor: '#0b7ffe' }} onPress={sendMessage} className="p-3 rounded-3xl">
+          <Feather name="send" size={18} color="#ffff" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     padding: 20,
   },
-  messagesContainer: {
-    flex: 1,
-  },
   messageContainer: {
-    paddingBottom: 15,
+    paddingVertical: 15,
     borderBottomColor: '#E5E5E5',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  adminMessage: {
+    justifyContent: 'flex-start',
+  },
+  userMessage: {
+    justifyContent: 'flex-end',
   },
   message: {
     fontSize: 14,

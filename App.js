@@ -4,17 +4,17 @@ import SplashScreen from './Screens/SplashScreen';
 import HomeScreen from './Screens/homeScreen';
 import SignUp from './Screens/signUps';
 import Login from './Screens/login';
-import AdminDashboard from './Screens/index';
 import LoginButton from './Screens/loginButton';
 import Contact from './Screens/contactUs';
 import CalculatorScreen from './Screens/calculator';
 import AvailableServices from './Screens/OurServices';
 import MultiStepForm from './Screens/form';
 import Calculator from './Screens/calculator';
-import CustomTabs from './Screens/customTabs';
-import Chat from './Screens/chat';
-import CustomHeader from './Screens/customHeader';
-import ChatDetailScreen from './Screens/chatDetailScreen';
+import Chat from './Screens/adminDashboard/chat';
+import AdminDashboard from './Screens/adminDashboard/index';
+import CustomTabs from './Screens/adminDashboard/components/customTabs';
+import ChatDetailScreen from './Screens/adminDashboard/chatDetailScreen';
+import ContactFormData from './Screens/adminDashboard/contactFormData';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme , useRoute} from '@react-navigation/native';
@@ -255,6 +255,29 @@ const App = () => {
           })}
         />
         <Stack.Screen
+          name="CONTACT FORM DATA"
+          component={ContactFormData}
+          options={({ navigation }) => ({
+            headerRight: () => (
+             <TouchableOpacity
+                onPress={() => handleLogout(navigation)}
+                className="px-5" style={style.headerBtnStyle}>
+                <Text className="text-white font-bold">Logout</Text>
+             </TouchableOpacity>
+            ),
+            headerTitle: () => (
+              <Image
+                source={require('./img/logo2.png')}
+                style={{ width: 200, height: 200, resizeMode: 'contain', marginLeft: Platform.OS === 'ios' ? 40 : 0 }}
+              />
+            ),
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+          })}
+        />
+
+        <Stack.Screen
           name="CHAT"
           component={Chat}
           options={({ navigation }) => ({
@@ -280,7 +303,6 @@ const App = () => {
           name="CALCULATOR"
           component={Calculator}
           options={({ navigation }) => ({
-
             headerTitle: () => (
               <Image
                 source={require('./img/logo2.png')}
@@ -311,7 +333,6 @@ const App = () => {
              },
            })}
          />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
