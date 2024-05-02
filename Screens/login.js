@@ -38,7 +38,8 @@ const Login = ({ navigation }) => {
         }
         const { message } = response.data;
         console.log(message);
-        navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD");
+          navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD", { user_email: adminLogin ? email : customerEmail });
+
       } catch (error) {
         console.error("Error logging in:", error.message);
         if (error.response && error.response.data && error.response.data.error) {

@@ -336,11 +336,46 @@ app.get("/messages", (req, res) => {
 //    res.status(200).json(results);
 //  });
 //});
-
+//app.get("/CMessages", (req, res) => {
+//  const sql = "SELECT * FROM messages WHERE email_address = ?";
+//
+//  db.query(sql, (err, results) => {
+//    if (err) {
+//      console.error("Error fetching messages:", err);
+//      return res.status(500).json({ error: "Internal server error" });
+//    }
+//
+//    res.status(200).json(results);
+//  });
+//});
 app.get("/messages/:email_address", (req, res) => {
   const email_address = req.params.email_address;
   const sql = "SELECT * FROM messages WHERE email_address = ?";
   db.query(sql, [email_address], (err, results) => {
+    if (err) {
+      console.error("Error fetching messages:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.get("/Detail/:user_email", (req, res) => {
+  const user_email = req.params.user_email;
+  const sql = "SELECT * FROM messages WHERE email_address = ? AND admin_email = ?";
+  db.query(sql, [user_email, 'info@mavensadvisor.com'], (err, results) => {
+    if (err) {
+      console.error("Error fetching messages:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.get("/CustomerMessages/:user_email", (req, res) => {
+  const user_email = req.params.user_email;
+  const sql = "SELECT * FROM messages WHERE email_address = ?";
+  db.query(sql, [user_email, 'info@mavensadvisor.com'], (err, results) => {
     if (err) {
       console.error("Error fetching messages:", err);
       return res.status(500).json({ error: "Internal server error" });

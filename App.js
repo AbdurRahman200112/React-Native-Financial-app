@@ -14,6 +14,7 @@ import Chat from "./Screens/adminDashboard/chat";
 import AdminDashboard from "./Screens/adminDashboard/index";
 import CustomTabs from "./Screens/adminDashboard/components/customTabs";
 import ChatDetailScreen from "./Screens/adminDashboard/chatDetailScreen";
+import CustomerChatDetail from "./Screens/customerDashboard/chatDetailScreen";
 import ContactFormData from "./Screens/adminDashboard/contactFormData";
 import CustomerDashboard from "./Screens/customerDashboard/index";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -448,6 +449,41 @@ const App = () => {
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
                 >
                   {route.params.email_address}
+                </Text>
+              </View>
+            ),
+            headerStyle: {
+              backgroundColor: "#fff",
+            },
+          })}
+        />
+        <Stack.Screen
+          name="CUSTOMERCHATDETAIL"
+          component={CustomerChatDetail}
+          options={({ route, navigation }) => ({
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <FontAwesome
+                  name="angle-left"
+                  size={24}
+                  color="#0b7ffe"
+                  style={{ marginLeft: 10 }}
+                />
+              </TouchableOpacity>
+            ),
+            headerTitle: () => (
+              <View
+                style={{
+                  height: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "white",
+                }}
+              >
+              <Text
+                style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
+              >
+                 Admin
                 </Text>
               </View>
             ),
