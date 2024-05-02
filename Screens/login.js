@@ -1,88 +1,184 @@
-import React, { useState } from 'react';
-import { View, Image, TextInput, TouchableOpacity,StyleSheet, Text } from 'react-native';
-import style from './Style/style';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Text,
+} from "react-native";
+import style from "./Style/style";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-const Login = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [adminEmail, setAdminEmail] = useState('');
-//  const handleLogin = async () => {
-//    try {
-//      const response = await axios.post('http://192.168.0.78:8080/login', {
-//        email_address: email,
-//        password: password
-//      });
-////      const { message, adminEmail } = response.data;
-////      setAdminEmail(adminEmail);
-//      console.log(response.data.message);
-//      navigation.navigate('ADMIN DASHBOARD');
-//    } catch (error) {
-//      console.error('Error logging in:', error.message);
-//      setError('Invalid email or password');
-//    }
-//  };
+const Login = ({ navigation }) => {
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerPassword, setCustomerPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [adminLogin, setAdminLogin] = useState(false);
 
-const handleLogin = async () => {
-  try {
-    const response = await axios.post('http://192.168.0.78:8080/login', {
-      email_address: email,
-      password: password
-    });
-    const { message, adminEmail } = response.data;
-    setAdminEmail(adminEmail);
-    console.log(message); // Log success message
-    navigation.navigate('ADMIN DASHBOARD');
-  } catch (error) {
-    console.error('Error logging in:', error.message);
-    if (error.response && error.response.data && error.response.data.error) {
-      setError(error.response.data.error);
-    } else {
-      setError('An error occurred while logging in');
-    }
-  }
-};
+    const handleLogin = async () => {
+      try {
+        let response;
+        if (adminLogin) {
+          response = await axios.post("http://192.168.2.78:8080/admin/login", {
+            email_address: email,
+            password: password,
+          });
+        } else {
+          response = await axios.post("http://192.168.2.78:8080/customer/login", {
+            email_address: customerEmail,
+            password: customerPassword,
+          });
+        }
+        const { message } = response.data;
+        console.log(message);
+        navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD");
+      } catch (error) {
+        console.error("Error logging in:", error.message);
+        if (error.response && error.response.data && error.response.data.error) {
+          setError(error.response.data.error);
+        } else {
+          setError("An error occurred while logging in");
+        }
+      }
+    };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#ffff' }}>
-      <Image source={require('../img/logo2.png')} style={{ height: 45, width: 290 }} className="mb-3" />
-      <Text>Welcome to Mavens Advisor</Text>
+    <View
+      className="flex-1 justify-start bg-white items-center">
+      <Image
+        source={require("../img/investment.png")}
+        className="mb-3 h-1/2 w-96"
+      />
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, !adminLogin && styles.activeTab]}
+          className="rounded-3xl"
+          onPress={() => setAdminLogin(false)}
+        >
+          <Text style={[styles.tabText, !adminLogin && styles.activeTabText]}>
+            Customer Login
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, adminLogin && styles.activeTab]}
+          className="rounded-3xl"
+          onPress={() => setAdminLogin(true)}
+        >
+          <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
+            Admin Login
+          </Text>
+        </TouchableOpacity>
+      </View>
       <TextInput
-        style={{ borderWidth: 1, padding: 15, width: '80%', margin: 10, fontSize: 18, borderRadius: 5, borderColor: 'black', color: 'black' }}
+        style={styles.input}
         placeholder="Enter Your Email"
         placeholderTextColor="black"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
+        value={adminLogin ? email : customerEmail}
+        onChangeText={(text) => adminLogin ? setEmail(text) : setCustomerEmail(text)}
       />
-      <TextInput
-        style={{ borderWidth: 1, padding: 15, width: '80%', margin: 10, fontSize: 18, borderRadius: 5, borderColor: 'black', color: 'black' }}
-        placeholder="Enter Your Password"
-        secureTextEntry
-        placeholderTextColor="black"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      {error ? <Text style={{ color: 'red' }}>{error}</Text> : null}
-        <View style={{width:'200%',justifyContent:'end',alignItems:'center'}} className=" w-100">
-        <TouchableOpacity style={style.btnStyle} onPress={handleLogin}>
-          <Text className="text-white text-xl font-md text-center">Login</Text>
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Enter Your Password"
+          secureTextEntry={!showPassword}
+          placeholderTextColor="black"
+          value={adminLogin ? password : customerPassword}
+          onChangeText={(text) => adminLogin ? setPassword(text) : setCustomerPassword(text)}
+        />
+        <TouchableOpacity onPress={toggleShowPassword} style={styles.eyeIcon}>
+          <FontAwesomeIcon
+            icon={showPassword ? faEye : faEyeSlash}
+            size={20}
+            color="#0b7ffe"
+          />
         </TouchableOpacity>
-        <View style={styles.container}>
-        <Text>
-        Don't have an account?{' '}
-        </Text>
-       <TouchableOpacity onPress={() => navigation.navigate('SIGNUP')}>
-          <Text style={{color:'#0b7ffe'}}>Sign Up</Text>
+      </View>
+      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+      <View
+        style={{ width: "200%", justifyContent: "end", alignItems: "center" }}>
+      <TouchableOpacity
+        className="w-4/5"
+        style={style.btnStyle}
+        onPress={handleLogin}
+      >
+        <Text className="text-white text-xl font-md text-center">Login</Text>
       </TouchableOpacity>
-     </View>
+      </View>
+      <View style={styles.container}>
+        <Text>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("SIGNUP")}>
+          <Text style={{ color: "#0b7ffe" }}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-   </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  tabContainer: {
+    flexDirection: "row",
+    marginBottom: 8,
+    width: "80%",
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 14,
+    margin:3,
+    backgroundColor: "#ddd",
+  },
+  tabText: {
+    fontWeight: "bold",
+    fontSize:15
+  },
+  activeTab: {
+    backgroundColor: "#0b7ffe",
+  },
+  activeTabText: {
+    color: "white",
+  },
+  input: {
+    borderBottomWidth: 1,
+    padding: 15,
+    width: "80%",
+    marginVertical: 10,
+    fontSize: 18,
+    borderRadius: 5,
+    borderColor: "black",
+    color: "black",
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    width: "80%",
+    marginVertical: 10,
+    borderRadius: 5,
+    borderColor: "black",
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 15,
+    fontSize: 18,
+    color: "black",
+  },
+  eyeIcon: {
+    padding: 15,
   },
 });
 

@@ -27,7 +27,7 @@ const SlideItem = ({item}) => {
        styles.image,
      ]}
        className="mt-10"
-      />
+     />
       <View style={styles.content}>
         <Text className="text-2xl font-bold" style={{color:'#0b7ffe'}}>{item.title}</Text>
         <Text className="w-60 text-center text-base m-3 font-medium" style={{color:'#0b7ffe'}}>{item.description}</Text>

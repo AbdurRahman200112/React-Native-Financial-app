@@ -1,29 +1,29 @@
-import {Animated, FlatList, StyleSheet, Text, View} from 'react-native';
-import React, {useRef, useState} from 'react';
-import Slides from './slides';
-import SlideItem from './slideItem';
-import Pagination from './pagination';
+import { Animated, FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useRef, useState } from "react";
+import Slides from "./slides";
+import SlideItem from "./slideItem";
+import Pagination from "./pagination";
 
 const Slider = () => {
   const [index, setIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const handleOnScroll = event => {
-   Animated.event(
-    [
-     {
-      nativeEvent: {
-      contentOffset: {
-      x: scrollX,
-     },
-    },
-   },
-  ],
-  {
-   useNativeDriver: false,
-  },
- )(event);
+  const handleOnScroll = (event) => {
+    Animated.event(
+      [
+        {
+          nativeEvent: {
+            contentOffset: {
+              x: scrollX,
+            },
+          },
+        },
+      ],
+      {
+        useNativeDriver: false,
+      }
+    )(event);
   };
-  const handleOnViewableItemsChanged = useRef(({viewableItems}) => {
+  const handleOnViewableItemsChanged = useRef(({ viewableItems }) => {
     setIndex(viewableItems[0].index);
   }).current;
 
@@ -34,7 +34,7 @@ const Slider = () => {
     <View>
       <FlatList
         data={Slides}
-        renderItem={({item}) => <SlideItem item={item} />}
+        renderItem={({ item }) => <SlideItem item={item} />}
         horizontal
         pagingEnabled
         className="mb-7"
@@ -49,4 +49,3 @@ const Slider = () => {
   );
 };
 export default Slider;
-

@@ -1,8 +1,8 @@
-import {StyleSheet, Animated, View, Dimensions} from 'react-native';
-import React from 'react';
+import { StyleSheet, Animated, View, Dimensions } from "react-native";
+import React from "react";
 
-const {width} = Dimensions.get('screen');
-const Pagination = ({data, scrollX, index}) => {
+const { width } = Dimensions.get("screen");
+const Pagination = ({ data, scrollX, index }) => {
   return (
     <View style={styles.container}>
       {data.map((_, idx) => {
@@ -10,25 +10,22 @@ const Pagination = ({data, scrollX, index}) => {
         const dotWidth = scrollX.interpolate({
           inputRange,
           outputRange: [12, 30, 12],
-          extrapolate: 'clamp',
+          extrapolate: "clamp",
         });
         const opacity = scrollX.interpolate({
           inputRange,
           outputRange: [0.2, 1, 0.1],
-          extrapolate: 'clamp',
+          extrapolate: "clamp",
         });
         const backgroundColor = scrollX.interpolate({
           inputRange,
-          outputRange: ['#ccc', '#0b7ffe', '#ccc'],
-          extrapolate: 'clamp',
+          outputRange: ["#ccc", "#0b7ffe", "#ccc"],
+          extrapolate: "clamp",
         });
         return (
           <Animated.View
             key={idx.toString()}
-            style={[
-              styles.dot,
-              {width: dotWidth, backgroundColor},
-            ]}
+            style={[styles.dot, { width: dotWidth, backgroundColor }]}
           />
         );
       })}
@@ -39,18 +36,18 @@ export default Pagination;
 const styles = StyleSheet.create({
   container: {
     bottom: 35,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   dot: {
     width: 12,
     height: 12,
     borderRadius: 6,
     marginHorizontal: 3,
-    backgroundColor:'#0b7ffe',
+    backgroundColor: "#0b7ffe",
   },
   dotActive: {
-    backgroundColor: '#0b7ffe',
+    backgroundColor: "#0b7ffe",
   },
 });
