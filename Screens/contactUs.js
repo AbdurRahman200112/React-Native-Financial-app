@@ -61,7 +61,7 @@ const Contact = ({ navigation }) => {
           </Text>
         </View>
         <View style={style.row}>
-          <Text className="text-lg mt-2 ml-4">
+          <Text className="text-base mt-2 ml-4">
             Do you immediately need an SME (Subject {"\n"}Matter Expert) like
             CFO, CSO, or COO who can provide strategic guidance.
           </Text>

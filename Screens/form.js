@@ -159,7 +159,7 @@ const MultiStepForm = ({ navigation }) => {
             }}
             itemStyle={{ borderWidth: 0 }}
           />
-          <View className="flex flex-row justify-between mt-5">
+          <View className="flex flex-row justify-between mt-5 w-11/12">
             <TouchableOpacity
               className="bg-blue-500 px-5 py-3 rounded-md ml-2"
               onPress={handlePreviousStep}
@@ -214,7 +214,7 @@ const MultiStepForm = ({ navigation }) => {
             }}
             itemStyle={{ borderWidth: 0 }}
           />
-          <View className="flex flex-row justify-between mt-5">
+          <View className="flex flex-row justify-between mt-5 w-11/12">
             <TouchableOpacity
               className="bg-blue-500 px-5 py-3 rounded-md ml-2"
               onPress={handlePreviousStep}
@@ -240,7 +240,7 @@ const MultiStepForm = ({ navigation }) => {
             placeholderTextColor="black"
             onChangeText={(value) => handleInputChange(value, "business_name")}
           />
-          <View className="flex flex-row justify-between ">
+          <View className="flex flex-row justify-between w-11/12">
             <TouchableOpacity
               className="bg-blue-500 px-5 py-3 rounded-md ml-2"
               onPress={handlePreviousStep}
@@ -298,9 +298,9 @@ const MultiStepForm = ({ navigation }) => {
               onChangeText={(value) => handleInputChange(value, "phone_no")}
             />
           </View>
-          <View className="flex flex-row justify-between">
+          <View className="flex flex-row justify-center w-full">
             <TouchableOpacity
-              className="bg-blue-500 px-5 py-3 rounded-md mr-3"
+              className="bg-blue-500 px-5 py-3 rounded-md mr-3 "
               onPress={handlePreviousStep}
             >
               <Text className="text-white text-base font-bold">Back</Text>
@@ -313,6 +313,7 @@ const MultiStepForm = ({ navigation }) => {
               <Text className="text-white font-bold text-base">Submit</Text>
             </TouchableOpacity>
           </View>
+
         </View>
       )}
       <Footer navigation={navigation} />
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   dropdownContainer: {
-    width: "80%",
+    width: "90%",
     height: 40,
     marginBottom: 20,
   },
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 20,
     backgroundColor: "#F5F8FA",
-    width: "80%",
+    width: "90%",
   },
 });
 

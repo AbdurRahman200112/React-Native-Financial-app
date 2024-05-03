@@ -27,9 +27,9 @@ const AvailableServices = ({ navigation }) => {
           </Text>
         </View>
         <View style={style.row}>
-          <Text className="text-lg mt-2 ml-4">
-            Do you immediately need an SME (Subject {"\n"}Matter Expert) like
-            CFO, CSO, or COO who can provide strategic guidance.
+          <Text className="text-base mt-2 ml-4">
+            Do you immediately need an SME (Subject Matter Expert) like
+            CFO, CSO, or COO who can provide {"\n"}strategic guidance.
           </Text>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>

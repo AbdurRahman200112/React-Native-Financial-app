@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
           </Text>
         </View>
         <View style={style.row}>
-          <Text className="text-lg ml-4">
+          <Text className="text-base ml-4">
             Unlock the full potential of your business with Mavens Advisor
             Financial Services. Trusted expertise in accounting and finance for
             the {"\n"}USA and UK markets.
@@ -83,15 +83,17 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
         <View className="mt-10 mb-10">
-          <Text className="text-3xl mt-4 font-sans-serif ml-2 font-bold">
+          <Text className="text-3xl mt-2 mb-2 text-left ml-4 font-sans-serif font-bold">
             Business <Text style={{ color: "#0b7ffe" }}>Consulting</Text>
           </Text>
-          <Text className="text-xl text-left ml-2">
+          <View className="flex-1 justify-center items-center">
+          <Text className="text-base text-justify w-11/12">
             It is a long established fact that a reader will be distracted by
             the readable content of a page when looking at its layout. The point
             of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters,{"\n"}as opposed to using 'Content here,
+            distribution of letters, as opposed to using 'Content here,
           </Text>
+          </View>
           <Slider />
         </View>
         <View
