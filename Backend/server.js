@@ -98,6 +98,20 @@ app.post("/new_message", (req, res) => {
     return res.status(200).json({ message: "Data inserted successfully" });
   });
 });
+app.post("/Customer/new_message", (req, res) => {
+  const { email_address, message } = req.body;
+
+  const sql =
+    "INSERT INTO messages (email_address, message) VALUES (?, ?)";
+  db.query(sql, [email_address, message], (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res.status(500).json({ error: "Error inserting data" });
+    }
+    console.log("Data inserted successfully");
+    return res.status(200).json({ message: "Data inserted successfully" });
+  });
+});
 
 //
 //io.on('connection', (socket) => {
