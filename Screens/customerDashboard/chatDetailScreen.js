@@ -61,11 +61,9 @@ const fetchMessages = async () => {
   };
   const sendMessage = async () => {
     try {
-      const userEmail = route.params.email_address;
-
-      await axios.post("http://192.168.2.78:8080/new_message", {
+      const userEmail = route.params.user_email;
+      await axios.post("http://192.168.2.78:8080/Customer/new_message", {
         email_address: userEmail,
-        admin_email: adminEmail,
         message: newMessage,
       });
       setNewMessage("");
