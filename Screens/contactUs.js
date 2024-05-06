@@ -12,6 +12,8 @@ import {
 import style from "./Style/style";
 import Footer from "./footer";
 import { Entypo, Feather } from "@expo/vector-icons";
+import { LinearGradient } from 'expo-linear-gradient';
+
 const Contact = ({ navigation }) => {
   const [full_name, setFull_name] = React.useState("");
   const [email_address, setEmail_address] = React.useState("");
@@ -51,7 +53,23 @@ const Contact = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <ScrollView>
-        <View style={style.row}>
+            <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.3)',
+                  'rgba(245, 186, 207, 0.1)',
+                  'rgba(243, 168, 195, 0.1)',
+                  'rgba(240, 148, 182, 0.1)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(252, 247, 232, 1)'
+          ]}
+          style={style.gradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+         <View style={style.row}>
           <Text
             className="text-4xl ml-4 font-semibold mt-9"
             style={{ color: "#000" }}
@@ -74,11 +92,11 @@ const Contact = ({ navigation }) => {
         </View>
         <View className="justify-center items-center">
           <View
-            className="bg-white items-center rounded-2xl"
+            className="items-center rounded-2xl"
             style={{ height: 300, width: "90%" }}
           >
             <View className="justify-center items-center flex-1">
-              <Text className="text-2xl  font-roboto font-semibold">
+              <Text className="text-2xl font-roboto font-semibold">
                 Tell Us About Yourself
               </Text>
               <View className="w-80 items-center">
@@ -87,7 +105,7 @@ const Contact = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <View className="container" style={{ backgroundColor: "#FFFFFF" }}>
+            <View className="container">
               <View className="flex flex-row mt-10 items-center">
                 <Entypo name="email" size={33} color="#43a8fb" />
                 <View className="flex flex-col ml-3">
@@ -164,6 +182,7 @@ const Contact = ({ navigation }) => {
 
           <Footer navigation={navigation} />
         </View>
+        </LinearGradient>
       </ScrollView>
     </SafeAreaView>
   );

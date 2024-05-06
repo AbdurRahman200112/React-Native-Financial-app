@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -9,6 +10,7 @@ import {
   Dimensions,
   StyleSheet,
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import style from "./Style/style";
 import Footer from "./footer";
 import Slider from "./slider";
@@ -44,7 +46,24 @@ const HomeScreen = ({ navigation }) => {
     );
   };
   return (
-    <SafeAreaView style={{ backgroundColor: "#ffff" }}>
+  <View style={{flex:1, backgroundColor:'white'}}>
+    <LinearGradient
+        colors={[
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.3)',
+          'rgba(245, 186, 207, 0.1)',
+          'rgba(243, 168, 195, 0.1)',
+          'rgba(240, 148, 182, 0.1)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(252, 247, 232, 1)'
+  ]}
+  style={styles.gradient}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 1 }}
+>
+    <SafeAreaView>
       <ScrollView>
         <View style={style.row}>
           <Text
@@ -114,28 +133,24 @@ const HomeScreen = ({ navigation }) => {
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={style.col}>
-              <Image source={require("../assets/working.png")} />
               <CounterHeading maxValue={85} speed={1} />
               <Text className="text-base font-sm text-black">
                 Total Clients
               </Text>
             </View>
             <View style={style.col}>
-              <Image source={require("../assets/star.png")} />
               <CounterHeading maxValue={95} speed={1} />
               <Text className="text-base font-sm text-black">Employees</Text>
             </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" }} className="mt-12 mb-5">
             <View style={style.col}>
-              <Image source={require("../assets/doc.png")} />
               <CounterHeading maxValue={90} speed={10} />
               <Text className="text-base font-sm text-black">
                 Useful Programs
               </Text>
             </View>
             <View style={style.col}>
-              <Image source={require("../assets/rocket.png")} />
               <CounterHeading maxValue={75} speed={10} />
               <Text className="text-base font-sm text-black">
                 Total Freelancer
@@ -145,6 +160,8 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </ScrollView>
     </SafeAreaView>
+   </LinearGradient>
+   </View>
   );
 };
 export default HomeScreen;

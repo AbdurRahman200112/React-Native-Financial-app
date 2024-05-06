@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import CheckBox from "expo-checkbox";
+import styles from "./Style/style";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CalculatorScreen = ({ navigation }) => {
   const [categoryTotal, setCategoryTotal] = useState({
@@ -127,7 +129,23 @@ const CalculatorScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <ScrollView>
-        <View className="items-center h-full justify-center flex-1">
+            <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.3)',
+                  'rgba(245, 186, 207, 0.1)',
+                  'rgba(243, 168, 195, 0.1)',
+                  'rgba(240, 148, 182, 0.1)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(252, 247, 232, 1)'
+          ]}
+          style={styles.gradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+         <View className="items-center h-full justify-center flex-1">
           <View
             className="bg-white justify-center flex-1 mt-10 flex-1 rounded-xl shadow-lg flex space-x-4 w-11/12 p-5"
             style={{ backgroundColor: "#f5f8fa" }}
@@ -200,6 +218,7 @@ const CalculatorScreen = ({ navigation }) => {
             </View>
           </View>
         </View>
+        </LinearGradient>
       </ScrollView>
     </SafeAreaView>
   );

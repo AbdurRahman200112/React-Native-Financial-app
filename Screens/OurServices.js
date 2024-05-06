@@ -12,11 +12,28 @@ import CarouselComponent from "./slider";
 import CreativeDesign from "./creativeDesign";
 import Footer from "./footer";
 import style from "./Style/style";
+import { LinearGradient } from 'expo-linear-gradient';
 const { width, height } = Dimensions.get("window");
 const AvailableServices = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <ScrollView>
+            <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.3)',
+                  'rgba(245, 186, 207, 0.1)',
+                  'rgba(243, 168, 195, 0.1)',
+                  'rgba(240, 148, 182, 0.1)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(252, 247, 232, 1)'
+          ]}
+          style={style.gradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
         <View style={style.row}>
           <Text
             className="text-4xl ml-4 font-semibold mt-9"
@@ -309,6 +326,7 @@ const AvailableServices = ({ navigation }) => {
         <View>
           <Footer navigation={navigation} />
         </View>
+        </LinearGradient>
       </ScrollView>
     </SafeAreaView>
   );

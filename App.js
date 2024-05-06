@@ -36,6 +36,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import style from "./Screens/Style/style";
 import WelcomeScreen from "./Screens/welcome";
 import { Alert } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 const MyTheme = {
   colors: {
@@ -82,7 +84,7 @@ const screenOptions = {
 const UserTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen
+       <Tab.Screen
         name="HOME"
         component={HomeScreen}
         options={{
@@ -190,41 +192,26 @@ const App = () => {
             options={{ headerShown: false }}
           />
         ) : (
-          <Stack.Screen
-            name="Main"
-            component={UserTabNavigator}
-            options={({ navigation }) => ({
-              headerRight: () => <LoginButton />,
-              headerTitle: () => (
-                <Image
-                  source={require("./img/logo2.png")}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    resizeMode: "contain",
-                    marginLeft: Platform.OS === "ios" ? 40 : 0,
-                  }}
-                />
-              ),
-              headerStyle: {
-                backgroundColor: "#fff",
-              },
-            })}
-          />
-        )}
         <Stack.Screen
-          name="LOGIN"
-          component={Login}
+          name="Main"
+          component={UserTabNavigator}
           options={({ navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity
-                className="ml-4"
-                onPress={() => navigation.navigate("HOME")}
-              >
-                <FontAwesome name="angle-left" size={28} color="#0b7ffe" />
-              </TouchableOpacity>
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
             ),
-            headerRight: () => <LoginButton />,
+            headerRight: () => (
+              <LoginButton />
+            ),
             headerTitle: () => (
               <Image
                 source={require("./img/logo2.png")}
@@ -237,7 +224,56 @@ const App = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+          })}
+        />
+        )}
+        <Stack.Screen
+          name="LOGIN"
+          component={Login}
+          options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerRight: () => (
+              <LoginButton />
+            ),
+            headerLeft: () => (
+              <TouchableOpacity
+                className="ml-4"
+                onPress={() => navigation.navigate("HOME")}
+              >
+                <FontAwesome name="angle-left" size={28} color="#0b7ffe" />
+              </TouchableOpacity>
+            ),
+            headerTitle: () => (
+              <Image
+                source={require("./img/logo2.png")}
+                style={{
+                  width: 200,
+                  height: 200,
+                  resizeMode: "contain",
+                  marginLeft: Platform.OS === "ios" ? 40 : 0,
+                }}
+              />
+            ),
+            headerStyle: {
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />
@@ -291,7 +327,7 @@ const App = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
-                className="px-5"
+                className="px-5 rounded-3xl"
                 style={style.headerBtnStyle}
               >
                 <Text className="text-white font-bold">Logout</Text>
@@ -320,7 +356,7 @@ const App = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
-                className="px-5"
+                className="px-5 rounded-3xl"
                 style={style.headerBtnStyle}
               >
                 <Text className="text-white font-bold">Logout</Text>
@@ -350,7 +386,7 @@ const App = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
-                className="px-5"
+                className="px-5 rounded-3xl"
                 style={style.headerBtnStyle}
               >
                 <Text className="text-white font-bold">Logout</Text>
@@ -380,7 +416,7 @@ const App = () => {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
-                className="px-5"
+                className="px-5 rounded-3xl"
                 style={style.headerBtnStyle}
               >
                 <Text className="text-white font-bold">Logout</Text>
@@ -406,6 +442,20 @@ const App = () => {
           name="CALCULATOR"
           component={Calculator}
           options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+
             headerTitle: () => (
               <Image
                 source={require("./img/logo2.png")}
@@ -418,10 +468,13 @@ const App = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0, // Remove shadow on Android
+              shadowOpacity: 0, // Remove shadow on iOS
+              borderBottomWidth: 0, // Remove bottom border
             },
           })}
         />
+
         <Stack.Screen
           name="ChatDetailScreen"
           component={ChatDetailScreen}

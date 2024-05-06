@@ -12,6 +12,7 @@ import style from "./Style/style";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Login = ({ navigation }) => {
   const [customerEmail, setCustomerEmail] = useState("");
@@ -22,114 +23,130 @@ const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [adminLogin, setAdminLogin] = useState(false);
 
-    const handleLogin = async () => {
-      try {
-        let response;
-        if (adminLogin) {
-          response = await axios.post("http://192.168.2.78:8080/admin/login", {
-            email_address: email,
-            password: password,
-          });
-        } else {
-          response = await axios.post("http://192.168.2.78:8080/customer/login", {
-            email_address: customerEmail,
-            password: customerPassword,
-          });
-        }
-        const { message } = response.data;
-        console.log(message);
-          navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD", { user_email: adminLogin ? email : customerEmail });
-
-      } catch (error) {
-        console.error("Error logging in:", error.message);
-        if (error.response && error.response.data && error.response.data.error) {
-          setError(error.response.data.error);
-        } else {
-          setError("An error occurred while logging in");
-        }
+  const handleLogin = async () => {
+    try {
+      let response;
+      if (adminLogin) {
+        response = await axios.post("http://192.168.2.78:8080/admin/login", {
+          email_address: email,
+          password: password,
+        });
+      } else {
+        response = await axios.post("http://192.168.2.78:8080/customer/login", {
+          email_address: customerEmail,
+          password: customerPassword,
+        });
       }
-    };
+      const { message } = response.data;
+      console.log(message);
+      navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD", { user_email: adminLogin ? email : customerEmail });
+
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError("An error occurred while logging in");
+      }
+    }
+  };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   return (
-    <View
-      className="flex-1 justify-start bg-white items-center">
-      <Image
-        source={require("../img/investment.png")}
-        className="mb-3 h-1/2 w-96"
-      />
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, !adminLogin && styles.activeTab]}
-          className="rounded-3xl"
-          onPress={() => setAdminLogin(false)}
-        >
-          <Text style={[styles.tabText, !adminLogin && styles.activeTabText]}>
-            Customer Login
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tab, adminLogin && styles.activeTab]}
-          className="rounded-3xl"
-          onPress={() => setAdminLogin(true)}
-        >
-          <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
-            Admin Login
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Your Email"
-        placeholderTextColor="black"
-        value={adminLogin ? email : customerEmail}
-        onChangeText={(text) => adminLogin ? setEmail(text) : setCustomerEmail(text)}
-      />
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Enter Your Password"
-          secureTextEntry={!showPassword}
-          placeholderTextColor="black"
-          value={adminLogin ? password : customerPassword}
-          onChangeText={(text) => adminLogin ? setPassword(text) : setCustomerPassword(text)}
-        />
-        <TouchableOpacity onPress={toggleShowPassword} style={styles.eyeIcon}>
-          <FontAwesomeIcon
-            icon={showPassword ? faEye : faEyeSlash}
-            size={20}
-            color="#0b7ffe"
-          />
-        </TouchableOpacity>
-      </View>
-      {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
-      <View
-        style={{ width: "200%", justifyContent: "end", alignItems: "center" }}>
-      <TouchableOpacity
-        className="w-4/5"
-        style={style.btnStyle}
-        onPress={handleLogin}
+    <ScrollView contentContainerStyle={styles.container}>
+      <LinearGradient
+        colors={[
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.3)',
+          'rgba(245, 186, 207, 0.1)',
+          'rgba(243, 168, 195, 0.1)',
+          'rgba(240, 148, 182, 0.1)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(213, 234, 253, 0.8)',
+          'rgba(252, 247, 232, 1)'
+        ]}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
       >
-        <Text className="text-white text-xl font-md text-center">Login</Text>
-      </TouchableOpacity>
-      </View>
-      <View style={styles.container}>
-        <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SIGNUP")}>
-          <Text style={{ color: "#0b7ffe" }}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <Image
+          source={require("../img/investment.png")}
+          className="mb-3 h-1/2 w-96"
+        />
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[styles.tab, !adminLogin && styles.activeTab]}
+            className="rounded-3xl"
+            onPress={() => setAdminLogin(false)}
+          >
+            <Text style={[styles.tabText, !adminLogin && styles.activeTabText]}>
+              Customer Login
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, adminLogin && styles.activeTab]}
+            className="rounded-3xl"
+            onPress={() => setAdminLogin(true)}
+          >
+            <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
+              Admin Login
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Your Email"
+          placeholderTextColor="black"
+          value={adminLogin ? email : customerEmail}
+          onChangeText={(text) => adminLogin ? setEmail(text) : setCustomerEmail(text)}
+        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Enter Your Password"
+            secureTextEntry={!showPassword}
+            placeholderTextColor="black"
+            value={adminLogin ? password : customerPassword}
+            onChangeText={(text) => adminLogin ? setPassword(text) : setCustomerPassword(text)}
+          />
+          <TouchableOpacity onPress={toggleShowPassword} style={styles.eyeIcon}>
+            <FontAwesomeIcon
+              icon={showPassword ? faEye : faEyeSlash}
+              size={20}
+              color="#0b7ffe"
+            />
+          </TouchableOpacity>
+        </View>
+        {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            className="w-4/5"
+            style={style.btnStyle}
+            onPress={handleLogin}
+          >
+            <Text className="text-white text-xl font-md text-center">Login</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpContainer}>
+          <Text>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SIGNUP")}>
+            <Text style={{ color: "#0b7ffe" }}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    marginTop: 10,
+    flexGrow: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   tabContainer: {
     flexDirection: "row",
@@ -140,12 +157,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingVertical: 14,
-    margin:3,
+    margin: 3,
     backgroundColor: "#ddd",
+    borderRadius: 20,
   },
   tabText: {
     fontWeight: "bold",
-    fontSize:15
+    fontSize: 15,
   },
   activeTab: {
     backgroundColor: "#0b7ffe",
@@ -180,6 +198,23 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     padding: 15,
+  },
+  buttonContainer: {
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  signUpContainer: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  gradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
 
