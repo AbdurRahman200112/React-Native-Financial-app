@@ -41,7 +41,7 @@ const AdminDashboard = ({ navigation, route }) => {
 
   const deleteSubscription = async (id) => {
     try {
-      await axios.delete(`http://192.168.0.78:8080/subscriptions/${id}`);
+      await axios.delete(`http://192.168.2.78:8080/subscriptions/${id}`);
       const updatedSubscriptions = subscriptions.filter(
         (subscription) => subscription.id !== id
       );
@@ -172,7 +172,9 @@ const AdminDashboard = ({ navigation, route }) => {
           </View>
         )}
       </ScrollView>
+      <View style={{flex:1}}>
       <CustomTabs navigation={navigation} />
+      </View>
     </View>
   );
 };

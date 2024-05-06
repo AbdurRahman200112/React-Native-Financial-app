@@ -76,11 +76,33 @@ const MultiStepForm = ({ navigation }) => {
         console.error("There was a problem with the form submission:", error);
       });
   };
-
   return (
     <SafeAreaView style={styles.container}>
+    <View style={styles.stepIndicator}>
+      {[1, 2, 3, 4, 5].map((stepNumber, index) => (
+        <React.Fragment key={stepNumber}>
+          <View
+            style={[
+              styles.stepCircle,
+              formData.step >= stepNumber && styles.stepCircleActive,
+            ]}
+          >
+            <Text style={styles.stepText}>{stepNumber}</Text>
+          </View>
+          {index < 4 && (
+            <View
+              style={[
+                styles.stepLine,
+                formData.step > stepNumber && styles.stepLineActive,
+              ]}
+            />
+          )}
+        </React.Fragment>
+      ))}
+    </View>
+
       {formData.step === 1 && (
-        <View style={styles.container}>
+        <View className="w-96 items-center">
           <Text className="text-base mb-2 text-left">
             What Best Describes Your Business?
           </Text>
@@ -129,7 +151,7 @@ const MultiStepForm = ({ navigation }) => {
         </View>
       )}
       {formData.step === 2 && (
-        <View style={styles.container}>
+        <View className="w-96 items-center">
           <Text className="text-base text-black mr-28 mb-2 text-left">
             How Large is Your Business?
           </Text>
@@ -178,7 +200,7 @@ const MultiStepForm = ({ navigation }) => {
       )}
       {/* Step 3 */}
       {formData.step === 3 && (
-        <View style={styles.container}>
+        <View className="w-96 items-center">
           <Text className="text-base mr-28 mb-3 text-left">
             Select Your Business Category
           </Text>
@@ -232,7 +254,7 @@ const MultiStepForm = ({ navigation }) => {
         </View>
       )}
       {formData.step === 4 && (
-        <View style={styles.container}>
+        <View className="w-96 items-center">
           <Text className="text-base mb-2 mr-52">Business Name</Text>
           <TextInput
             style={styles.input}
@@ -263,7 +285,6 @@ const MultiStepForm = ({ navigation }) => {
             width: "50%",
             justifyContent: "center",
             alignItems: "center",
-            flex: 1,
           }}
         >
           <Text className="text-lg text-start">Personal Details</Text>
@@ -313,24 +334,53 @@ const MultiStepForm = ({ navigation }) => {
               <Text className="text-white font-bold text-base">Submit</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       )}
-      <Footer navigation={navigation} />
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    width: "100%",
-  },
+     container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent:"center",
+      backgroundColor: "white",
+      width: "100%",
+     },
+    stepIndicator: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      width:"90%",
+      marginBottom:15
+    },
+    stepCircle: {
+      width: 35,
+      height: 35,
+      borderRadius: 20,
+      backgroundColor: "#ccc",
+      justifyContent: "center",
+      alignItems: "center",
+      marginHorizontal: 5,
+    },
+    stepCircleActive: {
+      backgroundColor: "#0b7ffe",
+    },
+    stepText: {
+      color: "white",
+      fontSize: 16,
+    },
   stepContainer: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  stepLine: {
+    flex: 1,
+    height: 2,
+    backgroundColor: "#ccc",
+  },
+  stepLineActive: {
+    backgroundColor: "#0b7ffe",
   },
   title: {
     fontSize: 18,
@@ -371,5 +421,4 @@ const styles = StyleSheet.create({
     width: "90%",
   },
 });
-
 export default MultiStepForm;

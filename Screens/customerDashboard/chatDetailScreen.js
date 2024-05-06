@@ -48,7 +48,6 @@ const fetchMessages = async () => {
     setError(error.message);
   }
 };
-
   const fetchAdminEmail = async (userEmail) => {
     try {
       const response = await axios.get(
