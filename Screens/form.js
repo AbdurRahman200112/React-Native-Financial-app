@@ -206,7 +206,7 @@ const MultiStepForm = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity className="ml-20 mr-20"></TouchableOpacity>
               <TouchableOpacity
-                className="bg-blue-500 px-3 py-3 rounded-md"
+                className="bg-blue-500 px-5 py-5 rounded-md"
                 onPress={handleNextStep}
               >
                 <Text className="text-white font-bold text-base">
@@ -342,9 +342,9 @@ const MultiStepForm = ({ navigation }) => {
                 onChangeText={(value) => handleInputChange(value, "phone_no")}
               />
             </View>
-            <View className="flex flex-row justify-center w-full">
+            <View className="flex flex-row justify-between w-11/12">
               <TouchableOpacity
-                className="bg-blue-500 px-5 py-3 rounded-md mr-3 "
+                className="bg-blue-500 px-5 py-3 rounded-md ml-2"
                 onPress={handlePreviousStep}
               >
                 <Text className="text-white text-base font-bold">Back</Text>
@@ -354,7 +354,9 @@ const MultiStepForm = ({ navigation }) => {
                 className="bg-blue-500 px-3 py-3 rounded-md"
                 onPress={handleSubmit}
               >
-                <Text className="text-white font-bold text-base">Submit</Text>
+                <Text className="text-white font-bold text-base">
+                  Submit
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -437,12 +439,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-  input: {
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 20,
-    backgroundColor: "#F5F8FA",
-    width: "90%",
-  },
+    input: {
+      padding: 14,
+      borderRadius: 12,
+      marginBottom: 20,
+      width: "90%",
+      borderWidth: 1, // Changed from 'border' to 'borderWidth'
+     borderColor: 'rgba(128, 128, 128, 0.5)', // Border color in rgba format
+    }
+
 });
 export default MultiStepForm;

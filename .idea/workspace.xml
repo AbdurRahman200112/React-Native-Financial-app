@@ -7,14 +7,15 @@
     <list default="true" id="d7ed602a-0720-4a90-b921-8bc554dd2a63" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/OurServices.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/OurServices.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/calculator.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/calculator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/contactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/contactUs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/adminDashboard/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/adminDashboard/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/adminDashboard/chatDetailScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/adminDashboard/chatDetailScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/adminDashboard/components/customTabs.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/adminDashboard/components/customTabs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/adminDashboard/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/adminDashboard/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/customerDashboard/chatDetailScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/customerDashboard/chatDetailScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/customerDashboard/components/customTabs.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/customerDashboard/index.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Screens/form.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/homeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/homeScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/signUps.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/signUps.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Screens/slideItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/slideItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Screens/welcome.js" beforeDir="false" afterPath="$PROJECT_DIR$/Screens/welcome.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

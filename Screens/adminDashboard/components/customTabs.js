@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons, Octicons, Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Tab = ({ label, icon, isActive, onPress }) => (
   <TouchableOpacity style={[styles.tab, isActive && styles.activeTab]} onPress={onPress}>
@@ -17,7 +18,19 @@ const CustomTabs = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.tabBar}>
+            <LinearGradient
+                colors={[
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.3)',
+                  'rgba(213, 234, 253, 0.8)',
+                  'rgba(213, 234, 253, 0.8)',
+
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+        <View style={styles.tabBar}>
         <Tab
           label="Home"
           icon={<Octicons name="home" size={24} color="#0b7ffe" />}
@@ -37,6 +50,7 @@ const CustomTabs = ({ navigation }) => {
           isActive={activeTab === 'CONTACT FORM DATA'}
         />
       </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -49,10 +63,7 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    backgroundColor: 'white',
-    paddingBottom: 15,
+    paddingBottom: 11,
   },
   tab: {
     alignItems: 'center',

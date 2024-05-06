@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import axios from "axios";
 import CustomTabs from "./components/customTabs";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Chat = ({ navigation, route }) => {
   const [messages, setMessages] = useState([]);
@@ -39,8 +40,23 @@ const Chat = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ height: 712, backgroundColor: "white" }}>
+    <LinearGradient
+      colors={[
+        "rgba(213, 234, 253, 0.8)",
+        "rgba(213, 234, 253, 0.8)",
+        "rgba(213, 234, 253, 0.3)",
+        "rgba(245, 186, 207, 0.1)",
+        "rgba(243, 168, 195, 0.1)",
+        "rgba(240, 148, 182, 0.1)",
+        "rgba(213, 234, 253, 0.8)",
+        "rgba(213, 234, 253, 0.8)",
+        "rgba(252, 247, 232, 1)",
+      ]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={{ flex: 1 }}
+    >
+      <View style={{ flex: 1 }}>
         {messages
           .reduce((acc, message, index) => {
             const existingMessageIndex = acc.findIndex(
@@ -80,7 +96,10 @@ const Chat = ({ navigation, route }) => {
                     {formatDate(message.timestamp)}
                   </Text>
                   {message.unread && (
-                    <View className="mt-3" style={styles.unreadIndicator} />
+                    <View
+                      style={styles.unreadIndicator}
+                      className="mt-4"
+                    />
                   )}
                 </View>
               </View>
@@ -88,7 +107,7 @@ const Chat = ({ navigation, route }) => {
           ))}
       </View>
       <CustomTabs navigation={navigation} />
-    </View>
+    </LinearGradient>
   );
 };
 

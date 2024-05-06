@@ -16,6 +16,7 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomTabs from "./components/customTabs";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const AdminDashboard = ({ navigation, route }) => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -80,8 +81,24 @@ const AdminDashboard = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+                <LinearGradient
+                    colors={[
+                      'rgba(213, 234, 253, 0.8)',
+                      'rgba(213, 234, 253, 0.8)',
+                      'rgba(213, 234, 253, 0.3)',
+                      'rgba(245, 186, 207, 0.1)',
+                      'rgba(243, 168, 195, 0.1)',
+                      'rgba(240, 148, 182, 0.1)',
+                      'rgba(213, 234, 253, 0.8)',
+                      'rgba(213, 234, 253, 0.8)',
+                      'rgba(252, 247, 232, 1)'
+              ]}
+              style={{flex:1}}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.statsContainer}>
+          <View style={styles.statsContainer}>
           <TouchableOpacity
             style={styles.statItem}
             onPress={() => navigation.navigate("Users")}
@@ -175,6 +192,7 @@ const AdminDashboard = ({ navigation, route }) => {
       <View style={{flex:1}}>
       <CustomTabs navigation={navigation} />
       </View>
+     </LinearGradient>
     </View>
   );
 };

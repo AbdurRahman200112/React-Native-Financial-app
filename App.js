@@ -36,8 +36,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import style from "./Screens/Style/style";
 import WelcomeScreen from "./Screens/welcome";
 import { Alert } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
-
+import { LinearGradient } from "expo-linear-gradient";
 
 const MyTheme = {
   colors: {
@@ -84,7 +83,7 @@ const screenOptions = {
 const UserTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-       <Tab.Screen
+      <Tab.Screen
         name="HOME"
         component={HomeScreen}
         options={{
@@ -192,44 +191,41 @@ const App = () => {
             options={{ headerShown: false }}
           />
         ) : (
-        <Stack.Screen
-          name="Main"
-          component={UserTabNavigator}
-          options={({ navigation }) => ({
-            headerBackground: () => (
-              <LinearGradient
-                colors={[
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-
-                ]}
-                style={{ flex: 1 }}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              />
-            ),
-            headerRight: () => (
-              <LoginButton />
-            ),
-            headerTitle: () => (
-              <Image
-                source={require("./img/logo2.png")}
-                style={{
-                  width: 200,
-                  height: 200,
-                  resizeMode: "contain",
-                  marginLeft: Platform.OS === "ios" ? 40 : 0,
-                }}
-              />
-            ),
-            headerStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-              borderBottomWidth: 0,
-            },
-          })}
-        />
+          <Stack.Screen
+            name="Main"
+            component={UserTabNavigator}
+            options={({ navigation }) => ({
+              headerBackground: () => (
+                <LinearGradient
+                  colors={[
+                    "rgba(213, 234, 253, 0.8)",
+                    "rgba(213, 234, 253, 0.8)",
+                    "rgba(213, 234, 253, 0.8)",
+                  ]}
+                  style={{ flex: 1 }}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                />
+              ),
+              headerRight: () => <LoginButton />,
+              headerTitle: () => (
+                <Image
+                  source={require("./img/logo2.png")}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    resizeMode: "contain",
+                    marginLeft: Platform.OS === "ios" ? 40 : 0,
+                  }}
+                />
+              ),
+              headerStyle: {
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+            })}
+          />
         )}
         <Stack.Screen
           name="LOGIN"
@@ -238,19 +234,16 @@ const App = () => {
             headerBackground: () => (
               <LinearGradient
                 colors={[
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
                 ]}
                 style={{ flex: 1 }}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               />
             ),
-            headerRight: () => (
-              <LoginButton />
-            ),
+            headerRight: () => <LoginButton />,
             headerLeft: () => (
               <TouchableOpacity
                 className="ml-4"
@@ -320,10 +313,23 @@ const App = () => {
             },
           })}
         />
+
         <Stack.Screen
           name="ADMIN DASHBOARD"
           component={AdminDashboard}
           options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
@@ -345,7 +351,9 @@ const App = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />
@@ -353,6 +361,18 @@ const App = () => {
           name="CUSTOMER DASHBOARD"
           component={CustomerDashboard}
           options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
@@ -374,11 +394,12 @@ const App = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />
-
         <Stack.Screen
           name="CONTACT FORM DATA"
           component={ContactFormData}
@@ -413,6 +434,18 @@ const App = () => {
           name="CHAT"
           component={Chat}
           options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
@@ -434,7 +467,9 @@ const App = () => {
               />
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />
@@ -445,10 +480,9 @@ const App = () => {
             headerBackground: () => (
               <LinearGradient
                 colors={[
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
                 ]}
                 style={{ flex: 1 }}
                 start={{ x: 0, y: 0 }}
@@ -468,9 +502,9 @@ const App = () => {
               />
             ),
             headerStyle: {
-              elevation: 0, // Remove shadow on Android
-              shadowOpacity: 0, // Remove shadow on iOS
-              borderBottomWidth: 0, // Remove bottom border
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />
@@ -478,26 +512,22 @@ const App = () => {
         <Stack.Screen
           name="ChatDetailScreen"
           component={ChatDetailScreen}
-          options={({ route, navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <FontAwesome
-                  name="angle-left"
-                  size={24}
-                  color="#0b7ffe"
-                  style={{ marginLeft: 10 }}
-                />
-              </TouchableOpacity>
+          options={({ navigation, route }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
             ),
+
             headerTitle: () => (
-              <View
-                style={{
-                  height: 100,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "white",
-                }}
-              >
+              <View>
                 <Text
                   style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
                 >
@@ -506,42 +536,42 @@ const App = () => {
               </View>
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0, // Remove shadow on iOS
+              borderBottomWidth: 0, // Remove bottom border
             },
           })}
         />
+
         <Stack.Screen
           name="CUSTOMERCHATDETAIL"
           component={CustomerChatDetail}
-          options={({ route, navigation }) => ({
-            headerLeft: () => (
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <FontAwesome
-                  name="angle-left"
-                  size={24}
-                  color="#0b7ffe"
-                  style={{ marginLeft: 10 }}
-                />
-              </TouchableOpacity>
+          options={({ navigation, route }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
             ),
             headerTitle: () => (
-              <View
-                style={{
-                  height: 100,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "white",
-                }}
-              >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
-              >
-                 Admin
+              <View>
+                <Text
+                  style={{ fontSize: 16, fontWeight: "bold", color: "#333" }}
+                >
+                  Admin
                 </Text>
               </View>
             ),
             headerStyle: {
-              backgroundColor: "#fff",
+              elevation: 0,
+              shadowOpacity: 0, // Remove shadow on iOS
+              borderBottomWidth: 0, // Remove bottom border
             },
           })}
         />

@@ -10,7 +10,9 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 import io from "socket.io-client";
+
 const ChatDetailScreen = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
@@ -18,9 +20,7 @@ const ChatDetailScreen = ({ route }) => {
   const [adminEmail, setAdminEmail] = useState(route.params.adminEmail);
   const socket = io("http://192.168.2.78:8080");
 
-
   useEffect(() => {
-    //        fetchAdminEmail(route.params.userEmail);
     fetchMessages();
     socket.on("connect", () => {
       console.log("Connected to server");
@@ -29,9 +29,11 @@ const ChatDetailScreen = ({ route }) => {
     socket.on("initial_messages", (initialMessages) => {
       setMessages(initialMessages);
     });
+
     socket.on("new_message", (message) => {
       setMessages([...messages, message]);
     });
+
     return () => {
       socket.disconnect();
     };
@@ -49,16 +51,7 @@ const ChatDetailScreen = ({ route }) => {
       setError(error.message);
     }
   };
-  const fetchAdminEmail = async (userEmail) => {
-    try {
-      const response = await axios.get(
-        `http://192.168.2.78:8080/adminEmail/${userEmail}`
-      );
-      setAdminEmail(response.data.adminEmail);
-    } catch (error) {
-      console.error("Error fetching admin email:", error);
-    }
-  };
+
   const sendMessage = async () => {
     try {
       const adminEmail = "info@mavensadvisor.com";
@@ -69,12 +62,14 @@ const ChatDetailScreen = ({ route }) => {
         admin_email: adminEmail,
         message: newMessage,
       });
+
       setNewMessage("");
       fetchMessages();
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
+
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     let hours = date.getHours();
@@ -83,6 +78,7 @@ const ChatDetailScreen = ({ route }) => {
     hours = hours % 12 || 12;
     return `${hours}:${minutes} ${period}`;
   };
+
   if (error) {
     return (
       <View style={styles.container}>
@@ -90,8 +86,24 @@ const ChatDetailScreen = ({ route }) => {
       </View>
     );
   }
+
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[
+        'rgba(213, 234, 253, 0.8)',
+        'rgba(213, 234, 253, 0.8)',
+        'rgba(213, 234, 253, 0.3)',
+        'rgba(245, 186, 207, 0.1)',
+        'rgba(243, 168, 195, 0.1)',
+        'rgba(240, 148, 182, 0.1)',
+        'rgba(213, 234, 253, 0.8)',
+        'rgba(213, 234, 253, 0.8)',
+        'rgba(252, 247, 232, 1)'
+      ]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
       <ScrollView>
         {messages.map((message, index) => (
           <View
@@ -134,7 +146,7 @@ const ChatDetailScreen = ({ route }) => {
           <Feather name="send" size={18} color="#ffff" />
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -180,4 +192,5 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 });
+
 export default ChatDetailScreen;

@@ -7,12 +7,29 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Welcome({ navigation }) {
   return (
     <SafeAreaView className="bg-white h-full">
-      <View className="flex-1 justify-center">
-        <Image
+        <LinearGradient
+          colors={[
+            "rgba(213, 234, 253, 0.8)",
+            "rgba(213, 234, 253, 0.8)",
+            "rgba(213, 234, 253, 0.3)",
+            "rgba(245, 186, 207, 0.1)",
+            "rgba(243, 168, 195, 0.1)",
+            "rgba(240, 148, 182, 0.1)",
+            "rgba(213, 234, 253, 0.8)",
+            "rgba(213, 234, 253, 0.8)",
+            "rgba(252, 247, 232, 1)",
+          ]}
+          style={{flex:1}}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+        <View className="flex-1 justify-center h-full">
+         <Image
           source={require("../img/Revenue-bro.png")}
           style={{ height: 450, width: "100%" }}
         />
@@ -30,12 +47,13 @@ export default function Welcome({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.navigate("SIGNUP")}
             className="mt-5 justify-center items-center p-3 rounded-3xl"
-            style={{ backgroundColor: "#ffff", width: "90%", borderWidth: 1.5 }}
+            style={{width: "90%", borderWidth: 1 }}
           >
             <Text className="text-xl text-black">Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
+           </LinearGradient>
     </SafeAreaView>
   );
 }
