@@ -32,10 +32,10 @@ const CustomTabs = ({ navigation }) => {
         >
         <View style={styles.tabBar}>
         <Tab
-          label="Home"
           icon={<Octicons name="home" size={24} color="#0b7ffe" />}
           onPress={() => navigation.navigate('ADMIN DASHBOARD')}
           isActive={activeTab === 'ADMIN DASHBOARD'}
+          label="Home"
         />
         <Tab
           label="Chat"

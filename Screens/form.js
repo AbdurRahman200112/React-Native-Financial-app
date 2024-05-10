@@ -206,7 +206,7 @@ const MultiStepForm = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity className="ml-20 mr-20"></TouchableOpacity>
               <TouchableOpacity
-                className="bg-blue-500 px-5 py-5 rounded-md"
+                className="bg-blue-500 px-3 py-3 rounded-md"
                 onPress={handleNextStep}
               >
                 <Text className="text-white font-bold text-base">

@@ -122,14 +122,13 @@ const Login = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            className="w-4/5"
-            style={style.btnStyle}
-            onPress={handleLogin}
-          >
-            <Text className="text-white text-xl font-md text-center">Login</Text>
-          </TouchableOpacity>
+      <View
+        style={{ width: "200%", justifyContent: "end", alignItems: "center" }}>
+        <TouchableOpacity style={style.btnStyle} onPress={handleLogin}>
+          <Text className="text-white text-xl font-md text-center">
+            Login
+          </Text>
+        </TouchableOpacity>
         </View>
         <View style={styles.signUpContainer}>
           <Text>Don't have an account? </Text>
@@ -141,7 +140,6 @@ const Login = ({ navigation }) => {
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   buttonContainer: {
-    width: "80%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
