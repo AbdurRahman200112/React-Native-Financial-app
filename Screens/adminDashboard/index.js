@@ -78,48 +78,44 @@ const AdminDashboard = ({ navigation, route }) => {
     startIndex,
     startIndex + itemsPerPage
   );
-
   return (
     <View style={styles.container}>
-                <LinearGradient
-                    colors={[
-                      'rgba(213, 234, 253, 0.8)',
-                      'rgba(213, 234, 253, 0.8)',
-                      'rgba(213, 234, 253, 0.3)',
-                      'rgba(245, 186, 207, 0.1)',
-                      'rgba(243, 168, 195, 0.1)',
-                      'rgba(240, 148, 182, 0.1)',
-                      'rgba(213, 234, 253, 0.8)',
-                      'rgba(213, 234, 253, 0.8)',
-                      'rgba(252, 247, 232, 1)'
-              ]}
-              style={{flex:1}}
+       <LinearGradient
+          colors={[
+            'rgba(213, 234, 253, 0.8)',
+            'rgba(213, 234, 253, 0.8)',
+            'rgba(213, 234, 253, 0.3)',
+            'rgba(245, 186, 207, 0.1)',
+            'rgba(243, 168, 195, 0.1)',
+            'rgba(240, 148, 182, 0.1)',
+            'rgba(213, 234, 253, 0.8)',
+            'rgba(213, 234, 253, 0.8)',
+            'rgba(252, 247, 232, 1)'
+          ]}
+          style={{flex:1}}
               start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
+              end={{ x: 1, y: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.statsContainer}>
           <TouchableOpacity
             style={styles.statItem}
-            onPress={() => navigation.navigate("Users")}
-          >
-            <FontAwesomeIcon size={37} icon={faUser} style={styles.icon} />
+            onPress={() => navigation.navigate("Users")}>
+           <FontAwesomeIcon size={37} icon={faUser} style={styles.icon} />
             <Text style={styles.statText}>0</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.statItem}
-            onPress={() => navigation.navigate("Reports")}
-          >
-            <FontAwesomeIcon
+            onPress={() => navigation.navigate("Reports")}>
+          <FontAwesomeIcon
               size={37}
               icon={faChartPie}
               style={styles.icon}
-            />
+          />
             <Text style={styles.statText}>0</Text>
           </TouchableOpacity>
         </View>
         <DataTable>
-          <DataTable.Header>
+          <DataTable.Header className="bg-white">
             <DataTable.Title style={styles.headerCell}>
               Category
             </DataTable.Title>
@@ -158,13 +154,13 @@ const AdminDashboard = ({ navigation, route }) => {
             </DataTable.Row>
           ))}
         </DataTable>
-        <View style={styles.pagination}>
+        <View style={styles.pagination} className="mb-10">
           <TouchableOpacity
             onPress={handlePrevPage}
             disabled={currentPage === 1}
             style={styles.arrowButton}
           >
-            <FontAwesomeIcon icon={faArrowLeft} size={20} />
+            <FontAwesomeIcon icon={faArrowLeft} size={15} />
           </TouchableOpacity>
           <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
           <TouchableOpacity
@@ -172,7 +168,7 @@ const AdminDashboard = ({ navigation, route }) => {
             disabled={currentPage === totalPages}
             style={styles.arrowButton}
           >
-            <FontAwesomeIcon icon={faArrowRight} size={20} />
+            <FontAwesomeIcon icon={faArrowRight} size={15} />
           </TouchableOpacity>
         </View>
         {selectedSubscriptionDetail && (
@@ -189,7 +185,7 @@ const AdminDashboard = ({ navigation, route }) => {
           </View>
         )}
       </ScrollView>
-      <View style={{flex:1}}>
+      <View style={{flex:1}} className="mt-10">
       <CustomTabs navigation={navigation} />
       </View>
      </LinearGradient>
@@ -249,10 +245,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
+    marginBottom:10
   },
   arrowButton: {
     backgroundColor: "white",
-    padding: 10,
+    padding: 5,
     borderRadius: 10,
     marginHorizontal: 5,
   },
@@ -268,6 +265,7 @@ const styles = StyleSheet.create({
   actionText: {
     color: "white",
     textAlign: "center",
+    fontSize:12.5
   },
   subscriptionDetails: {
     flex: 1,

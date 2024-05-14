@@ -40,15 +40,15 @@ const Contact = ({ navigation }) => {
       })
       .then((data) => {
         console.log(
-          "Thankyou For Submitting a form. Our Team Contact you soon!"
+          "Thank you For Submitting a form. Our Team Contact you soon!"
         );
         setSuccessMessage(
-          "Thank you For Submitting a form. Our Team will contact you soon!"
-        );
-      })
-      .catch((error) => {
+       "Thank you For Submitting a form. Our Team will contact you soon!"
+     );
+    })
+    .catch((error) => {
         console.error("Error signing up:", error.message);
-      });
+    });
   };
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -67,13 +67,11 @@ const Contact = ({ navigation }) => {
           ]}
           style={style.gradient}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
+          end={{ x: 1, y: 1 }}>
          <View style={style.row}>
           <Text
             className="text-4xl ml-4 font-semibold mt-9"
-            style={{ color: "#000" }}
-          >
+            style={{ color: "#000" }}>
             Having more than <Text style={{ color: "#0d6efd" }}>25 years </Text>
             of Experience
           </Text>
@@ -159,12 +157,10 @@ const Contact = ({ navigation }) => {
             <TouchableOpacity
               className="mb-10 border-2 p-4 rounded-xl"
               style={{ borderColor: "#0b7ffe" }}
-              onPress={handleContactForm}
-            >
+              onPress={handleContactForm}>
               <Text
                 style={{ color: "#0b7ffe" }}
-                className="text-black-400 text-center font-bold text-base"
-              >
+                className="text-center font-bold text-base">
                 SEND US MESSAGES
               </Text>
             </TouchableOpacity>
@@ -173,8 +169,7 @@ const Contact = ({ navigation }) => {
             {SuccessMessage ? (
               <Text
                 className="container bg-sky-100 items-center mb-2 p-3 justify-center rounded-xl"
-                style={{ color: "#000" }}
-              >
+                style={{ color: "#000" }}>
                 {SuccessMessage}
               </Text>
             ) : null}

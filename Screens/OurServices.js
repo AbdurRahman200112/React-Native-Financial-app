@@ -32,13 +32,11 @@ const AvailableServices = ({ navigation }) => {
           ]}
           style={style.gradient}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
+          end={{ x: 1, y: 1 }}>
         <View style={style.row}>
           <Text
             className="text-4xl ml-4 font-semibold mt-9"
-            style={{ color: "#000" }}
-          >
+            style={{ color: "#000" }}>
             Having more than <Text style={{ color: "#0d6efd" }}>25 years </Text>
             of Experience
           </Text>
@@ -65,8 +63,7 @@ const AvailableServices = ({ navigation }) => {
             alignSelf: "center",
             marginTop: 30,
           }}
-          className="bg-slate-100"
-        >
+          className="bg-slate-100">
           <Text className="text-xs" style={{ color: "#0b7ffe" }}>
             What We Can Do For You
           </Text>
@@ -77,8 +74,7 @@ const AvailableServices = ({ navigation }) => {
             fontWeight: "bold",
             textAlign: "center",
             marginTop: 10,
-          }}
-        >
+          }}>
           Have A Look At The Services {"\n"}We Offer.
         </Text>
         <View
@@ -86,9 +82,8 @@ const AvailableServices = ({ navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 10,
-          }}
-        >
-          <TouchableOpacity onPress={() => navigation.navigate("CALCULATOR")}>
+          }}>
+          <TouchableOpacity onPress={() => navigation.navigate("SUBSCRIPTION FORM")}>
             <View
               style={{
                 height: 335,
@@ -97,8 +92,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginBottom: 10,
               }}
-              className="bg-slate-100"
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Cloud Bookkeeping</Text>
               <Text className="text-base font-md">
                 Streamline business success with cloud-based bookkeeping,
@@ -109,8 +103,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/art-1.png")}
                   style={{ width: 200, height: 200 }}
@@ -118,7 +111,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -127,8 +120,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginBottom: 10,
               }}
-              className="bg-slate-100"
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Accounting Service</Text>
               <Text className="text-base font-md">
                 Experienced team, cost-effective services, advanced tools,
@@ -139,8 +131,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/illustrator_art.png")}
                   style={{ width: 200, height: 200 }}
@@ -148,7 +139,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -157,8 +148,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginBottom: 10,
               }}
-              className="bg-slate-100"
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Tax Service</Text>
               <Text className="text-base font-md">
                 Mavens Advisor offers competitive, specialized tax accounting
@@ -169,8 +159,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/men-art.png")}
                   style={{ width: 200, height: 200 }}
@@ -178,7 +167,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -187,8 +176,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginBottom: 10,
               }}
-              className="bg-slate-100"
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Virtual CFO Service</Text>
               <Text className="text-base font-md">
                 Expert advice on financial matters, including budgeting,
@@ -199,8 +187,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/art_3.png")}
                   style={{ width: 200, height: 200 }}
@@ -208,7 +195,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -217,8 +204,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginBottom: 10,
               }}
-              className="bg-slate-100"
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Audit Service</Text>
               <Text className="text-base font-md">
                 Efficient handling of payroll processes, ensuring compliance,
@@ -229,8 +215,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/art_4.png")}
                   style={{ width: 200, height: 200 }}
@@ -241,8 +226,7 @@ const AvailableServices = ({ navigation }) => {
           <TouchableOpacity>
             <View
               style={{ height: 335, width: 320, borderRadius: 20, padding: 20 }}
-              className="bg-slate-100 "
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Valuation Service</Text>
               <Text className="text-base font-md">
                 Efficient handling of payroll processes, ensuring compliance,
@@ -253,8 +237,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/art_5.png")}
                   style={{ width: 200, height: 200 }}
@@ -262,7 +245,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -271,8 +254,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginTop: 10,
               }}
-              className="bg-slate-100 "
-            >
+              className="bg-slate-100">
               <Text className="text-lg font-semibold">Operations Partner</Text>
               <Text className="text-base font-md">
                 Professionals adept in best practices enable affordable access,
@@ -283,8 +265,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/operation-partner.png")}
                   style={{ width: 200, height: 200 }}
@@ -292,7 +273,7 @@ const AvailableServices = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
             <View
               style={{
                 height: 335,
@@ -301,8 +282,7 @@ const AvailableServices = ({ navigation }) => {
                 padding: 20,
                 marginTop: 10,
               }}
-              className="bg-slate-100 mb-10"
-            >
+              className="bg-slate-100 mb-10">
               <Text className="text-lg font-semibold">Compilance Partner</Text>
               <Text className="text-base font-md">
                 Professionals adept in best practices enable affordable access,
@@ -313,8 +293,7 @@ const AvailableServices = ({ navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 10,
-                }}
-              >
+                }}>
                 <Image
                   source={require("../img/compilance-partner.png")}
                   style={{ width: 200, height: 200 }}

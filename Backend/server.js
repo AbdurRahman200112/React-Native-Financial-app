@@ -29,73 +29,80 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post("/api", (req, res) => {
-  const {
-    business_description,
-    business_size,
-    business_category,
-    business_name,
-    firstName,
-    lastName,
-    email,
-    phone_no,
-  } = req.body;
-  const sql = `INSERT INTO subscription_form
-    (business_description, business_size, business_category, business_name,
-    firstname, lastname, email, phone_no)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  db.query(
-    sql,
-    [
-      business_description,
-      business_size,
-      business_category,
-      business_name,
-      firstName,
-      lastName,
-      email,
-      phone_no,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data:", err);
-        return res.status(500).json({ error: "Error inserting data" });
-      }
-      console.log("Data inserted successfully");
-      return res.status(200).json({ message: "Data inserted successfully" });
+app.post('/api', (req, res) => {
+  const formData = req.body;
+
+  db.query('INSERT INTO subscription_form SET ?', formData, (error, results, fields) => {
+    if (error) {
+      console.error('Error inserting form data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
     }
-  );
+    console.log('Form data inserted successfully');
+    res.status(200).json({ message: 'Form data saved successfully' });
+  });
 });
 
-//app.post('/new_message', (req, res) => {
-//  const {
-//    email_address,
-//    message
-//  } = req.body;
-//
-//  const sql = 'INSERT INTO messages (email_address,admin_email, message) VALUES (?, ?)';
-//  db.query(sql, [email_address,admin_email, message], (err, result) => {
-//    if (err) {
-//      console.error('Error inserting data:', err);
-//      return res.status(500).json({ error: 'Error inserting data' });
-//    }
-//    console.log('Data inserted successfully');
-//    return res.status(200).json({ message: 'Data inserted successfully' });
-//  });
-//});
-app.post("/new_message", (req, res) => {
-  const { email_address, admin_email, message } = req.body;
 
-  const sql =
-    "INSERT INTO messages (email_address, admin_email, message) VALUES (?, ?, ?)";
+app.post('/LockedPrices/message', (req, res) => {
+  const {
+    email_address,
+    message
+  } = req.body;
+
+  const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
+  db.query(sql, [email_address, message], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      return res.status(500).json({ error: 'Error inserting data' });
+    }
+    console.log('Data inserted successfully');
+    return res.status(200).json({ message: 'Data inserted successfully' });
+  });
+});
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
+// API endpoint to fetch messages by email address
+app.get('/messages/:email_address', (req, res) => {
+  const email_address = req.params.email_address;
+  const sql = 'SELECT * FROM messages WHERE email_address = ?';
+
+  db.query(sql, [email_address], (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL database:', err);
+      res.status(500).send('Server error');
+      return;
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.post('/new_message', (req, res) => {
+  const { email_address, admin_email, message } = req.body;
+  const sql = 'INSERT INTO messages (email_address, admin_email, message) VALUES (?, ?, ?)';
+
   db.query(sql, [email_address, admin_email, message], (err, result) => {
     if (err) {
-      console.error("Error inserting data:", err);
-      return res.status(500).json({ error: "Error inserting data" });
+      console.error('Error inserting data into MySQL database:', err);
+      res.status(500).send('Server error');
+      return;
     }
-    console.log("Data inserted successfully");
-    return res.status(200).json({ message: "Data inserted successfully" });
+    const newMessage = {
+      email_address,
+      admin_email,
+      message,
+      timestamp: new Date()
+    };
+    io.emit('newMessage', newMessage);
+    res.status(200).send('Message inserted successfully');
   });
 });
 app.post("/Customer/new_message", (req, res) => {
@@ -113,55 +120,6 @@ app.post("/Customer/new_message", (req, res) => {
   });
 });
 
-//
-//io.on('connection', (socket) => {
-//  socket.on('initial_messages', ({ email_address }) => {
-//    fetchMessages(email_address)
-//      .then((messages) => {
-//        socket.emit('initial_messages', messages);
-//      })
-//      .catch((error) => {
-//        console.error('Error fetching initial messages:', error);
-//      });
-//  });
-//
-//  socket.on('new_message', ({ email_address, message }) => {
-//    saveMessage(email_address, message)
-//      .then((savedMessage) => {
-//        io.emit('new_message', savedMessage);
-//      })
-//      .catch((error) => {
-//        console.error('Error saving message:', error);
-//      });
-//  });
-//});
-//
-//const fetchMessages = (email_address) => {
-//  return new Promise((resolve, reject) => {
-//    const sql = 'SELECT * FROM messages WHERE email_address = ?';
-//    db.query(sql, [email_address], (err, results) => {
-//      if (err) {
-//        reject(err);
-//      } else {
-//        resolve(results);
-//      }
-//    });
-//  });
-//};
-//
-//const saveMessage = (email_address, message) => {
-//  return new Promise((resolve, reject) => {
-//    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
-//    db.query(sql, [email_address, message], (err, result) => {
-//      if (err) {
-//        reject(err);
-//      } else {
-//        const savedMessage = { email_address, message, timestamp: new Date() };
-//        resolve(savedMessage);
-//      }
-//    });
-//  });
-//};
 app.post("/admin/login", (req, res) => {
   const { email_address, password } = req.body;
 
@@ -222,21 +180,7 @@ app.post("/customer/login", (req, res) => {
   });
 });
 
-app.post("/contactData", (req, res) => {
-  const { full_name, email_address, message } = req.body;
 
-  const query =
-    "INSERT INTO contact_form (full_name, email_address, message) VALUES (?, ?, ?)";
-  db.query(query, [full_name, email_address, message], (err, result) => {
-    if (err) {
-      console.error("Error inserting contact data:", err);
-      res.status(500).json({ error: "Failed to submit contact form" });
-      return;
-    }
-    console.log("Contact form submitted successfully");
-    res.status(200).json({ message: "Contact form submitted successfully" });
-  });
-});
 
 app.get("/subscription_form/:id", (req, res) => {
   const { id } = req.params;
@@ -254,6 +198,17 @@ app.get("/subscription_form/:id", (req, res) => {
     }
     const subscriptionDetails = results[0];
     res.json(subscriptionDetails);
+  });
+});
+app.get('/contactForm', (req, res) => {
+  const sql = 'SELECT * FROM contact_form';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL database:', err);
+      res.status(500).send('Server error');
+      return;
+    }
+    res.status(200).json(results);
   });
 });
 
@@ -305,28 +260,6 @@ app.delete("/subscriptions/:id", (req, res) => {
     res.send("Subscription deleted successfully.");
   });
 });
-
-//let messages = [];
-//io.on('connection', (socket) => {
-//  console.log('A client connected');
-//
-//  socket.emit('initial_messages', messages);
-//  socket.on('new_message', (data) => {
-//    messages.push(data);
-//    io.emit('new_message', data);
-//    const { email_address, message } = data;
-//    const sql = 'INSERT INTO messages (email_address, message) VALUES (?, ?)';
-//    db.query(sql, [email_address, message], (err, result) => {
-//      if (err) throw err;
-//      console.log('Message inserted into the database');
-//    });
-//  });
-//
-//  socket.on('disconnect', () => {
-//    console.log('A client disconnected');
-//  });
-//});
-
 app.get("/messages", (req, res) => {
   const sql = "SELECT * FROM messages";
 
@@ -339,44 +272,9 @@ app.get("/messages", (req, res) => {
     res.status(200).json(results);
   });
 });
-//app.get('/messages/:id', (req, res) => {
-//  const id = req.params.id;
-//  const sql = 'SELECT * FROM messages WHERE id = ?';
-//  db.query(sql, [id], (err, results) => {
-//    if (err) {
-//      console.error('Error fetching messages:', err);
-//      return res.status(500).json({ error: 'Internal server error' });
-//    }
-//    res.status(200).json(results);
-//  });
-//});
-//app.get("/CMessages", (req, res) => {
-//  const sql = "SELECT * FROM messages WHERE email_address = ?";
-//
-//  db.query(sql, (err, results) => {
-//    if (err) {
-//      console.error("Error fetching messages:", err);
-//      return res.status(500).json({ error: "Internal server error" });
-//    }
-//
-//    res.status(200).json(results);
-//  });
-//});
-app.get("/messages/:email_address", (req, res) => {
-  const email_address = req.params.email_address;
-  const sql = "SELECT * FROM messages WHERE email_address = ?";
-  db.query(sql, [email_address], (err, results) => {
-    if (err) {
-      console.error("Error fetching messages:", err);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-    res.status(200).json(results);
-  });
-});
-
 app.get("/Detail/:user_email", (req, res) => {
   const user_email = req.params.user_email;
-  const sql = "SELECT * FROM messages WHERE email_address = ? AND admin_email = ?";
+  const sql = "SELECT * FROM messages WHERE email_address = ?";
   db.query(sql, [user_email, 'info@mavensadvisor.com'], (err, results) => {
     if (err) {
       console.error("Error fetching messages:", err);

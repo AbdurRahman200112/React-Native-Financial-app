@@ -13,6 +13,7 @@ import Calculator from "./Screens/calculator";
 import Chat from "./Screens/adminDashboard/chat";
 import AdminDashboard from "./Screens/adminDashboard/index";
 import CustomTabs from "./Screens/adminDashboard/components/customTabs";
+import LockedPriceScreen from './Screens/lockedPriceScreen';
 import ChatDetailScreen from "./Screens/adminDashboard/chatDetailScreen";
 import CustomerChatDetail from "./Screens/customerDashboard/chatDetailScreen";
 import ContactFormData from "./Screens/adminDashboard/contactFormData";
@@ -129,8 +130,8 @@ const UserTabNavigator = () => {
                 borderRadius: Platform.OS == "ios" ? 25 : 30,
               }}
             >
-              <MaterialIcons name="add" size={28} color="white" />
-            </View>
+             <MaterialIcons name="add" size={28} color="white" />
+          </View>
           ),
         }}
       />
@@ -313,7 +314,6 @@ const App = () => {
             },
           })}
         />
-
         <Stack.Screen
           name="ADMIN DASHBOARD"
           component={AdminDashboard}
@@ -324,20 +324,20 @@ const App = () => {
                   "rgba(213, 234, 253, 0.8)",
                   "rgba(213, 234, 253, 0.8)",
                   "rgba(213, 234, 253, 0.8)",
-                ]}
-                style={{ flex: 1 }}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              />
-            ),
+             ]}
+             style={{ flex: 1 }}
+             start={{ x: 0, y: 0 }}
+             end={{ x: 1, y: 0 }}
+           />
+          ),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => handleLogout(navigation)}
                 className="px-5 rounded-3xl"
                 style={style.headerBtnStyle}
               >
-                <Text className="text-white font-bold">Logout</Text>
-              </TouchableOpacity>
+             <Text className="text-white font-bold">Logout</Text>
+             </TouchableOpacity>
             ),
             headerTitle: () => (
               <Image
@@ -403,33 +403,46 @@ const App = () => {
         <Stack.Screen
           name="CONTACT FORM DATA"
           component={ContactFormData}
-          options={({ navigation }) => ({
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => handleLogout(navigation)}
-                className="px-5 rounded-3xl"
-                style={style.headerBtnStyle}
-              >
-                <Text className="text-white font-bold">Logout</Text>
-              </TouchableOpacity>
-            ),
-            headerTitle: () => (
-              <Image
-                source={require("./img/logo2.png")}
-                style={{
-                  width: 200,
-                  height: 200,
-                  resizeMode: "contain",
-                  marginLeft: Platform.OS === "ios" ? 40 : 0,
-                }}
-              />
-            ),
-            headerStyle: {
-              backgroundColor: "#fff",
-            },
-          })}
+            options={({ navigation }) => ({
+             headerBackground: () => (
+               <LinearGradient
+                 colors={[
+                   "rgba(213, 234, 253, 0.8)",
+                   "rgba(213, 234, 253, 0.8)",
+                   "rgba(213, 234, 253, 0.8)",
+                 ]}
+                 style={{ flex: 1 }}
+                 start={{ x: 0, y: 0 }}
+                 end={{ x: 1, y: 0 }}
+               />
+             ),
+             headerRight: () => (
+               <TouchableOpacity
+                 onPress={() => handleLogout(navigation)}
+                 className="px-5 rounded-3xl"
+                 style={style.headerBtnStyle}
+               >
+               <Text className="text-white font-bold">Logout</Text>
+             </TouchableOpacity>
+             ),
+             headerTitle: () => (
+               <Image
+                 source={require("./img/logo2.png")}
+                 style={{
+                   width: 200,
+                   height: 200,
+                   resizeMode: "contain",
+                   marginLeft: Platform.OS === "ios" ? 40 : 0,
+                 }}
+               />
+             ),
+             headerStyle: {
+               elevation: 0,
+               shadowOpacity: 0,
+               borderBottomWidth: 0,
+             },
+           })}
         />
-
         <Stack.Screen
           name="CHAT"
           component={Chat}
@@ -508,7 +521,64 @@ const App = () => {
             },
           })}
         />
+        <Stack.Screen
+          name="LockedPriceScreen"
+          component={LockedPriceScreen}
+          options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
 
+            headerTitle: () => (
+              <Image
+                source={require("./img/logo2.png")}
+                style={{
+                  width: 200,
+                  height: 200,
+                  resizeMode: "contain",
+                  marginLeft: Platform.OS === "ios" ? 40 : 0,
+                }}
+              />
+            ),
+            headerStyle: {
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+          })}
+        />
+        <Stack.Screen
+          name="SUBSCRIPTION FORM"
+          component={MultiStepForm}
+          options={({ navigation }) => ({
+            headerBackground: () => (
+              <LinearGradient
+                colors={[
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                  "rgba(213, 234, 253, 0.8)",
+                ]}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerStyle: {
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+          })}
+        />
         <Stack.Screen
           name="ChatDetailScreen"
           component={ChatDetailScreen}
@@ -537,8 +607,8 @@ const App = () => {
             ),
             headerStyle: {
               elevation: 0,
-              shadowOpacity: 0, // Remove shadow on iOS
-              borderBottomWidth: 0, // Remove bottom border
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
             },
           })}
         />

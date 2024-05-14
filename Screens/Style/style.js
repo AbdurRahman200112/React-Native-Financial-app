@@ -23,8 +23,8 @@ const style = StyleSheet.create({
   },
   btnStyle:{
    backgroundColor: '#0b7ffe',
-   margin: 10,
-   padding:10,
+   margin: 8,
+   padding: 9,
    borderRadius: 10,
    width: '40%',
   },

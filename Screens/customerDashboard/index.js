@@ -23,18 +23,6 @@ const Chat = ({ navigation, route }) => {
     fetchMessages();
   }, []);
 
-  //  const fetchMessages = async () => {
-  //    try {
-  //      const response = await axios.get("http://192.168.2.78:8080/messages");
-  //      const updatedMessages = response.data.map((message) => ({
-  //        ...message,
-  //        unread: true,
-  //      }));
-  //      setMessages(updatedMessages);
-  //    } catch (error) {
-  //      console.error("Error fetching messages:", error);
-  //    }
-  //  };
   const fetchMessages = async () => {
     try {
       const user_email = route.params.user_email;

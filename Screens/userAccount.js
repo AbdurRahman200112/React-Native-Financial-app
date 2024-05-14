@@ -22,8 +22,7 @@ const UserAccount = () => {
               fontWeight: "bold",
               marginRight: 20,
               marginTop: 3,
-            }}
-          >
+            }}>
             Login
           </Text>
         </View>
@@ -43,8 +42,7 @@ const UserAccount = () => {
               fontWeight: "bold",
               marginRight: 20,
               marginTop: 3,
-            }}
-          >
+            }}>
             SignUp
           </Text>
         </View>

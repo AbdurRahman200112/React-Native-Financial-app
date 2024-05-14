@@ -11,6 +11,7 @@ import DropdownPicker from "react-native-dropdown-picker";
 import Footer from "./footer";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import CountryPicker from 'react-native-country-picker-modal';
 
 const MultiStepForm = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -45,32 +46,22 @@ const MultiStepForm = ({ navigation }) => {
   const handlePreviousStep = () => {
     setFormData({ ...formData, step: formData.step - 1 });
   };
+
   const handleSubmit = () => {
     const formDataToSend = {
-      business_description: formData.business_description,
-      business_size: formData.business_size,
-      business_category: formData.business_category,
+      business_description: valueStep1, // Use valueStep1 for dropdown value
+      business_size: valueStep2, // Use valueStep2 for dropdown value
+      business_category: valueStep3, // Use valueStep3 for dropdown value
       business_name: formData.business_name,
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       phone_no: formData.phone_no,
     };
-    fetch("http://192.168.2.78:8080/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formDataToSend),
-    })
+
+    axios.post("http://192.168.2.78:8080/api", formDataToSend)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Form submitted successfully:", data);
+        console.log("Form submitted successfully:", response.data);
         navigation.navigate("CALCULATOR");
       })
       .catch((error) => {
@@ -131,20 +122,20 @@ const MultiStepForm = ({ navigation }) => {
                   label: "Consulting Real Estate",
                   value: "consulting-real-estate",
                 },
-                { label: "Consulting", value: "consulting" },
-                { label: "Food & Beverages", value: "food-beverages" },
-                { label: "Health", value: "health" },
+                { label: "Consulting", value: "Consulting" },
+                { label: "Food & Beverages", value: "Food & Beverages" },
+                { label: "Health", value: "Health" },
                 {
                   label: "Manufacturing / Wholesale",
-                  value: "manufacturing-wholesale",
+                  value: "Manufacturing / Wholesale",
                 },
-                { label: "Non Profit", value: "non-profit" },
-                { label: "Retail", value: "retail" },
+                { label: "Non Profit", value: "Non Profit" },
+                { label: "Retail", value: "Retail" },
                 {
                   label: "Transportation / Logistics",
-                  value: "transportation-logistics",
+                  value: "Transportation / Logistics",
                 },
-                { label: "Other Services", value: "other-services" },
+                { label: "Other Services", value: "Other Services" },
               ]}
               onChangeItem={(items) => {
                 setValueStep1(items.label);
@@ -176,14 +167,14 @@ const MultiStepForm = ({ navigation }) => {
               value={valueStep2}
               placeholder="Select an Option"
               items={[
-                { label: "Startup (1 - 9 Employees)", value: "startup" },
-                { label: "Small (10 - 50 Employees)", value: "small" },
-                { label: "Mid-Size (51 - 250 Employees)", value: "finance" },
+                { label: "Startup (1 - 9 Employees)", value: "Startup (1 - 9 Employees)" },
+                { label: "Small (10 - 50 Employees)", value: "Small (10 - 50 Employees)" },
+                { label: "Mid-Size (51 - 250 Employees)", value: "Mid-Size (51 - 250 Employees)" },
                 {
                   label: "Middle Market (250 - 1000 Employees)",
-                  value: "middle-market",
+                  value: "Middle Market (250 - 1000 Employees)",
                 },
-                { label: "Enterprise (1000+ Employees)", value: "enterprise" },
+                { label: "Enterprise (1000+ Employees)", value: "Enterprise (1000+ Employees)" },
               ]}
               setOpen={setOpenStep2}
               setValue={setValueStep2}
@@ -228,18 +219,18 @@ const MultiStepForm = ({ navigation }) => {
               items={[
                 {
                   label: "Accounting & Bookkeeping Service",
-                  value: "accounting-bookkeeping",
+                  value: "Accounting & Bookkeeping Service",
                 },
                 {
                   label: "Financial Planning & Analysis",
-                  value: "financial-planning",
+                  value: "Financial Planning & Analysis",
                 },
                 {
                   label: "Business System & Processes",
-                  value: "business-system",
+                  value: "Business System & Processes",
                 },
-                { label: "Audit & Assurance", value: "audit-assurance" },
-                { label: "Tax", value: "tax" },
+                { label: "Audit & Assurance", value: "Audit & Assurance" },
+                { label: "Tax", value: "Tax" },
               ]}
               setOpen={setOpenStep3}
               setValue={setValueStep3}
@@ -444,8 +435,8 @@ const styles = StyleSheet.create({
       borderRadius: 12,
       marginBottom: 20,
       width: "90%",
-      borderWidth: 1, // Changed from 'border' to 'borderWidth'
-     borderColor: 'rgba(128, 128, 128, 0.5)', // Border color in rgba format
+      borderWidth: 1,
+     borderColor: 'rgba(128, 128, 128, 0.5)',
     }
 
 });

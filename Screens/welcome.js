@@ -26,13 +26,11 @@ export default function Welcome({ navigation }) {
           ]}
           style={{flex:1}}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
+          end={{ x: 1, y: 1 }}>
         <View className="flex-1 justify-center h-full">
          <Image
           source={require("../img/Revenue-bro.png")}
-          style={{ height: 450, width: "100%" }}
-        />
+          style={{ height: 400, width: "100%" }}/>
         <Text className="text-center text-4xl font-bold mt-5">
           Welcome to Mavens Advisor
         </Text>
@@ -40,20 +38,18 @@ export default function Welcome({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.navigate("LOGIN")}
             className="justify-center items-center p-4 rounded-3xl"
-            style={{ backgroundColor: "#0B7FFE", width: "90%" }}
-          >
+            style={{ backgroundColor: "#0B7FFE", width: "90%" }}>
             <Text className="text-xl text-white ">Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("SIGNUP")}
             className="mt-5 justify-center items-center p-3 rounded-3xl"
-            style={{width: "90%", borderWidth: 1 }}
-          >
+            style={{width: "90%", borderWidth: 1 }}>
             <Text className="text-xl text-black">Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
-           </LinearGradient>
-    </SafeAreaView>
+     </LinearGradient>
+   </SafeAreaView>
   );
 }

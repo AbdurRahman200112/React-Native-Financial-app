@@ -50,11 +50,9 @@ const Login = ({ navigation }) => {
       }
     }
   };
-
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <LinearGradient
@@ -75,9 +73,9 @@ const Login = ({ navigation }) => {
       >
         <Image
           source={require("../img/investment.png")}
-          className="mb-3 h-1/2 w-96"
+          className="mb-3 h-1/3 w-10/12"
         />
-        <View style={styles.tabContainer}>
+        <View style={styles.tabContainer} className="mt-3">
           <TouchableOpacity
             style={[styles.tab, !adminLogin && styles.activeTab]}
             className="rounded-3xl"
@@ -125,7 +123,7 @@ const Login = ({ navigation }) => {
       <View
         style={{ width: "200%", justifyContent: "end", alignItems: "center" }}>
         <TouchableOpacity style={style.btnStyle} onPress={handleLogin}>
-          <Text className="text-white text-xl font-md text-center">
+          <Text className="text-white text-base font-md text-center">
             Login
           </Text>
         </TouchableOpacity>
@@ -215,5 +213,4 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-
 export default Login;

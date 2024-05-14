@@ -31,12 +31,12 @@ const ChatDetailScreen = ({ route }) => {
     });
 
     socket.on("new_message", (message) => {
-      setMessages([...messages, message]);
-    });
+       setMessages([...messages, message]); // Update the messages state with the new message
+     });
 
-    return () => {
-      socket.disconnect();
-    };
+     return () => {
+       socket.disconnect();
+     };
   }, []);
 
   const fetchMessages = async () => {
