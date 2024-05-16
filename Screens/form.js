@@ -38,10 +38,10 @@ const MultiStepForm = ({ navigation }) => {
   const handleInputChange = (value, field) => {
     setFormData({ ...formData, [field]: value });
   };
-
-  const handleNextStep = () => {
-    setFormData({ ...formData, step: formData.step + 1 });
-  };
+//
+//  const handleNextStep = () => {
+//    setFormData({ ...formData, step: formData.step + 1 });
+//  };
 
   const handlePreviousStep = () => {
     setFormData({ ...formData, step: formData.step - 1 });
@@ -67,6 +67,41 @@ const MultiStepForm = ({ navigation }) => {
       .catch((error) => {
         console.error("There was a problem with the form submission:", error);
       });
+  };
+  const handleNextStep = () => {
+    if (formData.step === 1 && !valueStep1) {
+      alert('Please select an Options');
+      return;
+    }
+    if (formData.step === 2 && !valueStep2) {
+      alert('Please select an Options');
+      return;
+    }
+    if (formData.step === 3 && !valueStep3) {
+      alert('Please select an Options');
+      return;
+    }
+  if (formData.step === 4 && !formData.business_name.trim()) {
+    alert('Please enter a business name');
+    return;
+  }
+  if (formData.step === 5 && !formData.firstName.trim()) {
+    alert('Please enter your first name');
+    return;
+  }
+  if (formData.step === 5 && !formData.lastName.trim()) {
+    alert('Please enter your last name');
+    return;
+  }
+  if (formData.step === 5 && !formData.email.trim()) {
+    alert('Please enter your email');
+    return;
+  }
+  if (formData.step === 5 && !formData.phone_no.trim()) {
+    alert('Please enter your phone number');
+    return;
+  }
+    setFormData({ ...formData, step: formData.step + 1 });
   };
   return (
     <LinearGradient
@@ -191,15 +226,13 @@ const MultiStepForm = ({ navigation }) => {
             <View className="flex flex-row justify-between mt-5 w-11/12">
               <TouchableOpacity
                 className="bg-blue-500 px-5 py-3 rounded-md ml-2"
-                onPress={handlePreviousStep}
-              >
+                onPress={handlePreviousStep}>
                 <Text className="text-white text-base font-bold">Back</Text>
               </TouchableOpacity>
               <TouchableOpacity className="ml-20 mr-20"></TouchableOpacity>
               <TouchableOpacity
                 className="bg-blue-500 px-3 py-3 rounded-md"
-                onPress={handleNextStep}
-              >
+                onPress={handleNextStep}>
                 <Text className="text-white font-bold text-base">
                   Next Step
                 </Text>
