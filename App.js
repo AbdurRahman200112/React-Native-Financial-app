@@ -211,10 +211,10 @@ const App = () => {
               headerRight: () => <LoginButton />,
               headerTitle: () => (
                 <Image
-                  source={require("./img/logo2.png")}
+                  source={require("./img/Virsme.png")}
                   style={{
-                    width: 200,
-                    height: 200,
+                    width: 190,
+                    height: 60,
                     resizeMode: "contain",
                     marginLeft: Platform.OS === "ios" ? 40 : 0,
                   }}
@@ -255,10 +255,8 @@ const App = () => {
             ),
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
-                  width: 200,
-                  height: 200,
                   resizeMode: "contain",
                   marginLeft: Platform.OS === "ios" ? 40 : 0,
                 }}
@@ -288,7 +286,7 @@ const App = () => {
             headerRight: () => <LoginButton />,
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -341,7 +339,7 @@ const App = () => {
             ),
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -384,7 +382,7 @@ const App = () => {
             ),
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -427,7 +425,7 @@ const App = () => {
              ),
              headerTitle: () => (
                <Image
-                 source={require("./img/logo2.png")}
+                 source={require("./img/Virsme.png")}
                  style={{
                    width: 200,
                    height: 200,
@@ -470,7 +468,7 @@ const App = () => {
             ),
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -505,7 +503,7 @@ const App = () => {
 
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -540,7 +538,7 @@ const App = () => {
 
             headerTitle: () => (
               <Image
-                source={require("./img/logo2.png")}
+                source={require("./img/Virsme.png")}
                 style={{
                   width: 200,
                   height: 200,
@@ -640,8 +638,8 @@ const App = () => {
             ),
             headerStyle: {
               elevation: 0,
-              shadowOpacity: 0, // Remove shadow on iOS
-              borderBottomWidth: 0, // Remove bottom border
+              shadowOpacity: 0,
+              borderBottomWidth: 0
             },
           })}
         />

@@ -70,9 +70,8 @@ const HomeScreen = ({ navigation }) => {
             className="text-4xl ml-4 font-semibold mt-9"
             style={{ color: "#000" }}
           >
-            Empower Your {"\n"}
-            <Text style={{ color: "#0d6efd" }}>Business</Text> with Expert
-            Financial Solution
+            Empower Growth {"\n"}
+            <Text style={{ color: "#0d6efd" }}>Virsme's</Text> Virtual CFO Services!
           </Text>
         </View>
         <View style={style.row}>

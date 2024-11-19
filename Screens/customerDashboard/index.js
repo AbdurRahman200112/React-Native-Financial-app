@@ -27,7 +27,7 @@ const Chat = ({ navigation, route }) => {
     try {
       const user_email = route.params.user_email;
       const response = await axios.get(
-        `http://192.168.2.78:8080/Detail/${user_email}`
+        `http://192.168.1.79:8080/Detail/${user_email}`
       );
       setMessages(response.data);
     } catch (error) {

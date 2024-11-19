@@ -17,7 +17,7 @@ const CustomerChatDetail = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
-  const socket = io("http://192.168.2.78:8080");
+  const socket = io("http://192.168.1.79:8080");
 
   useEffect(() => {
     //        fetchAdminEmail(route.params.userEmail);
@@ -41,7 +41,7 @@ const CustomerChatDetail = ({ route }) => {
     try {
       const user_email = route.params.user_email;
       const response = await axios.get(
-        `http://192.168.2.78:8080/CustomerMessages/${user_email}`
+        `http://192.168.1.79:8080/CustomerMessages/${user_email}`
       );
       setMessages(response.data);
     } catch (error) {
@@ -52,7 +52,7 @@ const CustomerChatDetail = ({ route }) => {
   const fetchAdminEmail = async (userEmail) => {
     try {
       const response = await axios.get(
-        `http://192.168.2.78:8080/adminEmail/${userEmail}`
+        `http://192.168.1.79:8080/adminEmail/${userEmail}`
       );
       setAdminEmail(response.data.adminEmail);
     } catch (error) {
@@ -62,7 +62,7 @@ const CustomerChatDetail = ({ route }) => {
   const sendMessage = async () => {
     try {
       const userEmail = route.params.user_email;
-      await axios.post("http://192.168.2.78:8080/Customer/new_message", {
+      await axios.post("http://192.168.1.79:8080/Customer/new_message", {
         email_address: userEmail,
         message: newMessage,
       });

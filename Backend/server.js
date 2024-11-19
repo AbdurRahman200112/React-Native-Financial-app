@@ -70,7 +70,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// API endpoint to fetch messages by email address
 app.get('/messages/:email_address', (req, res) => {
   const email_address = req.params.email_address;
   const sql = 'SELECT * FROM messages WHERE email_address = ?';

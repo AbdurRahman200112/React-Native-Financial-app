@@ -4,7 +4,7 @@ import style from "./Style/style";
 function SplashScreen({ navigation }) {
   return (
     <View style={style.container}>
-      <Image source={require("../img/logo.png")} style={style.img} />
+      <Image source={require("../img/Virsme.png")} style={style.img} />
     </View>
   );
 }

@@ -27,12 +27,12 @@ const Login = ({ navigation }) => {
     try {
       let response;
       if (adminLogin) {
-        response = await axios.post("http://192.168.2.78:8080/admin/login", {
+        response = await axios.post("http://192.168.1.79:8080/admin/login", {
           email_address: email,
           password: password,
         });
       } else {
-        response = await axios.post("http://192.168.2.78:8080/customer/login", {
+        response = await axios.post("http://192.168.1.79:8080/customer/login", {
           email_address: customerEmail,
           password: customerPassword,
         });

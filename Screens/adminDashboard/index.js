@@ -32,7 +32,7 @@ const AdminDashboard = ({ navigation, route }) => {
   const fetchSubscriptionData = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.2.78:8080/subscriptions"
+        "http://192.168.1.79:8080/subscriptions"
       );
       setSubscriptions(response.data);
     } catch (error) {
@@ -42,7 +42,7 @@ const AdminDashboard = ({ navigation, route }) => {
 
   const deleteSubscription = async (id) => {
     try {
-      await axios.delete(`http://192.168.2.78:8080/subscriptions/${id}`);
+      await axios.delete(`http://192.168.1.79:8080/subscriptions/${id}`);
       const updatedSubscriptions = subscriptions.filter(
         (subscription) => subscription.id !== id
       );
@@ -55,7 +55,7 @@ const AdminDashboard = ({ navigation, route }) => {
   const fetchSubscriptionDetail = async (id) => {
     try {
       const response = await axios.get(
-        `http://192.168.0.78:8080/subscription_form/${id}`
+        `http://192.168.1.79:8080/subscription_form/${id}`
       );
       setSelectedSubscriptionDetail(response.data);
     } catch (error) {

@@ -18,7 +18,7 @@ const ChatDetailScreen = ({ route }) => {
   const [error, setError] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [adminEmail, setAdminEmail] = useState(route.params.adminEmail);
-  const socket = io("http://192.168.2.78:8080");
+  const socket = io("http://192.168.1.79:8080");
 
   useEffect(() => {
     fetchMessages();
@@ -43,7 +43,7 @@ const ChatDetailScreen = ({ route }) => {
     try {
       const email_address = route.params.email_address;
       const response = await axios.get(
-        `http://192.168.2.78:8080/messages/${email_address}`
+        `http://192.168.1.79:8080/messages/${email_address}`
       );
       setMessages(response.data);
     } catch (error) {
@@ -57,7 +57,7 @@ const ChatDetailScreen = ({ route }) => {
       const adminEmail = "info@mavensadvisor.com";
       const userEmail = route.params.email_address;
 
-      await axios.post("http://192.168.2.78:8080/new_message", {
+      await axios.post("http://192.168.1.79:8080/new_message", {
         email_address: userEmail,
         admin_email: adminEmail,
         message: newMessage,

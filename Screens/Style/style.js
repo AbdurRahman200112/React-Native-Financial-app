@@ -43,8 +43,8 @@ const style = StyleSheet.create({
    width: '40%',
   },
   img: {
-   height: 135,
-   width: 135,
+   height: 60,
+   width: 210,
    margin: 10,
   },
   navigationContainer:{

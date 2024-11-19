@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   View,
   Image,
+  ScrollView,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -11,6 +12,7 @@ import {
 import style from "./Style/style";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 
 const SignUp = ({ navigation }) => {
   const [emailAddress, setEmailAddress] = React.useState("");
@@ -66,10 +68,9 @@ const SignUp = ({ navigation }) => {
         alignItems: "center",
         flex: 1,
         backgroundColor: "#ffff",
-      }}
-    >
+      }} className="w-full h-full">
       <Image
-        source={require("../img/logo.png")}
+        source={require("../img/Virtual.png")}
         className="h-28 w-28"
       />
       <TextInput
@@ -133,8 +134,8 @@ const SignUp = ({ navigation }) => {
             <Text style={{ color: "#0b7ffe" }}>Login</Text>
           </TouchableOpacity>
         </View>
+        </View>
       </View>
-    </View>
   );
 };
 
