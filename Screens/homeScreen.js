@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import style from "./Style/style";
-import Footer from "./footer";
 import Slider from "./slider";
 const { width, height } = Dimensions.get("window");
 const HomeScreen = ({ navigation }) => {
@@ -47,22 +46,7 @@ const HomeScreen = ({ navigation }) => {
   };
   return (
   <View style={{flex:1, backgroundColor:'white'}}>
-    <LinearGradient
-        colors={[
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(213, 234, 253, 0.3)',
-          'rgba(245, 186, 207, 0.1)',
-          'rgba(243, 168, 195, 0.1)',
-          'rgba(240, 148, 182, 0.1)',
-          'rgba(213, 234, 253, 0.6)',
-          'rgba(213, 234, 253, 0.6)',
-          'rgba(252, 247, 232, 1)'
-  ]}
-  style={styles.gradient}
-  start={{ x: 0, y: 0 }}
-  end={{ x: 1, y: 1 }}
->
+
     <SafeAreaView>
       <ScrollView>
         <View style={style.row}>
@@ -159,7 +143,6 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </ScrollView>
     </SafeAreaView>
-   </LinearGradient>
    </View>
   );
 };

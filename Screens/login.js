@@ -23,59 +23,51 @@ const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [adminLogin, setAdminLogin] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      let response;
-      if (adminLogin) {
-        response = await axios.post("http://192.168.1.79:8080/admin/login", {
-          email_address: email,
-          password: password,
-        });
-      } else {
-        response = await axios.post("http://192.168.1.79:8080/customer/login", {
-          email_address: customerEmail,
-          password: customerPassword,
-        });
-      }
-      const { message } = response.data;
-      console.log(message);
-      navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "CUSTOMER DASHBOARD", { user_email: adminLogin ? email : customerEmail });
-
-    } catch (error) {
-      console.error("Error logging in:", error.message);
-      if (error.response && error.response.data && error.response.data.error) {
-        setError(error.response.data.error);
-      } else {
-        setError("An error occurred while logging in");
-      }
+const handleLogin = async () => {
+  try {
+    let response;
+    if (adminLogin) {
+      response = await axios.post("http://192.168.1.215:8080/admin/login", {
+        email_address: email,
+        password: password,
+      });
+    } else {
+      response = await axios.post("http://192.168.1.215:8080/customer/login", {
+        email_address: customerEmail,
+        password: customerPassword,
+      });
     }
-  };
+    const { message } = response.data;
+    console.log(message);
+
+    // Ensure the navigation target matches the registered screen name
+    navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "Home", {
+      user_email: adminLogin ? email : customerEmail
+    });
+
+  } catch (error) {
+    console.error("Error logging in:", error.message);
+    if (error.response && error.response.data && error.response.data.error) {
+      setError(error.response.data.error);
+    } else {
+      setError("An error occurred while logging in");
+    }
+  }
+};
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <LinearGradient
-        colors={[
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(213, 234, 253, 0.3)',
-          'rgba(245, 186, 207, 0.1)',
-          'rgba(243, 168, 195, 0.1)',
-          'rgba(240, 148, 182, 0.1)',
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(213, 234, 253, 0.8)',
-          'rgba(252, 247, 232, 1)'
-        ]}
-        style={styles.gradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
+    <View style={{height: '50%', display:'1',justifyContent:'center' ,alignItems: 'center', backgroundColor: '#473f97', width: '100%'}}>
         <Image
-          source={require("../img/investment.png")}
-          className="mb-3 h-1/3 w-10/12"
+          source={require("../img/img-4.png")}
+          className="mt-10 mb-10"
+          style={style.image}
         />
-        <View style={styles.tabContainer} className="mt-3">
+        <Text className="text-white text-xl">Sign in</Text>
+        </View>
+        <View style={styles.tabContainer} className="mt-14">
           <TouchableOpacity
             style={[styles.tab, !adminLogin && styles.activeTab]}
             className="rounded-3xl"
@@ -115,7 +107,7 @@ const Login = ({ navigation }) => {
             <FontAwesomeIcon
               icon={showPassword ? faEye : faEyeSlash}
               size={20}
-              color="#0b7ffe"
+              color="#473f97"
             />
           </TouchableOpacity>
         </View>
@@ -129,12 +121,10 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
         </View>
         <View style={styles.signUpContainer}>
-          <Text>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SIGNUP")}>
-            <Text style={{ color: "#0b7ffe" }}>Sign Up</Text>
+            <Text style={{ color: "#473f97" }}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
-      </LinearGradient>
     </ScrollView>
   );
 };
@@ -149,6 +139,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     width: "80%",
   },
+    image: {
+      width: 400,
+      height: 450, // Adjust size as per your design
+      resizeMode: "contain",
+    },
   tab: {
     flex: 1,
     alignItems: "center",
@@ -162,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   activeTab: {
-    backgroundColor: "#0b7ffe",
+    backgroundColor: "#473f97",
   },
   activeTabText: {
     color: "white",
@@ -204,13 +199,6 @@ const styles = StyleSheet.create({
   signUpContainer: {
     flexDirection: "row",
     marginTop: 10,
-  },
-  gradient: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
   },
 });
 export default Login;
