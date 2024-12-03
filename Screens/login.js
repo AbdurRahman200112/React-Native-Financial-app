@@ -13,6 +13,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
   const [customerEmail, setCustomerEmail] = useState("");
@@ -41,7 +42,7 @@ const handleLogin = async () => {
     console.log(message);
 
     // Ensure the navigation target matches the registered screen name
-    navigation.navigate(adminLogin ? "ADMIN DASHBOARD" : "Home", {
+    navigation.navigate(adminLogin ? "Admin Dashboard" : "Home", {
       user_email: adminLogin ? email : customerEmail
     });
 
@@ -54,6 +55,7 @@ const handleLogin = async () => {
     }
   }
 };
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -67,26 +69,33 @@ const handleLogin = async () => {
         />
         <Text className="text-white text-xl">Sign in</Text>
         </View>
-        <View style={styles.tabContainer} className="mt-14">
-          <TouchableOpacity
-            style={[styles.tab, !adminLogin && styles.activeTab]}
-            className="rounded-3xl"
-            onPress={() => setAdminLogin(false)}
-          >
-            <Text style={[styles.tabText, !adminLogin && styles.activeTabText]}>
-              Customer Login
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tab, adminLogin && styles.activeTab]}
-            className="rounded-3xl"
-            onPress={() => setAdminLogin(true)}
-          >
-            <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
-              Admin Login
-            </Text>
-          </TouchableOpacity>
-        </View>
+   <View style={styles.tabContainer} className="mt-14">
+     <TouchableOpacity
+       style={[styles.tab, !adminLogin && styles.activeTab]}
+       className="rounded-3xl"
+       onPress={() => {
+         setAdminLogin(false); // Set login type to customer
+         setError(""); // Clear any existing errors
+       }}
+     >
+       <Text style={[styles.tabText, !adminLogin && styles.activeTabText]}>
+         Customer Login
+       </Text>
+     </TouchableOpacity>
+     <TouchableOpacity
+       style={[styles.tab, adminLogin && styles.activeTab]}
+       className="rounded-3xl"
+       onPress={() => {
+         setAdminLogin(true); // Set login type to admin
+         setError(""); // Clear any existing errors
+       }}
+     >
+       <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
+         Admin Login
+       </Text>
+     </TouchableOpacity>
+   </View>
+
         <TextInput
           style={styles.input}
           placeholder="Enter Your Email"

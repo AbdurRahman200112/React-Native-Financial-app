@@ -10,6 +10,8 @@ import MultiStepForm from "./Screens/form";
 import AvailableServices from "./Screens/OurServices";
 import CustomerDashboard from "./Screens/customerDashboard/index";
 import AdminDashboard from "./Screens/adminDashboard/index";
+import CreateTeacherForm from "./Screens/adminDashboard/AddTeacher";
+import AddCourse from "./Screens/adminDashboard/AddCourses";
 import Chat from "./Screens/adminDashboard/chat";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
@@ -79,7 +81,7 @@ const DrawerNavigator = () => {
         name="Login"
         component={Login}
         options={{
-          headerShown: false, // Hide the header for the Login screen
+          headerShown: false,
         }}
       />
       <Drawer.Screen name="Home" component={HomeScreen} />
@@ -94,6 +96,8 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Customer Dashboard" component={CustomerDashboard} />
       <Drawer.Screen name="Admin Dashboard" component={AdminDashboard} />
       <Drawer.Screen name="Chat" component={Chat} />
+      <Drawer.Screen name="Add Teacher" component={CreateTeacherForm}/>
+      <Drawer.Screen name="Add Courses" component={AddCourse}/>
     </Drawer.Navigator>
   );
 };

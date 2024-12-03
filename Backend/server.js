@@ -29,6 +29,77 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(cors());
 
+app.post('/teachers', (req, res) => {
+  const { name, email, password, department } = req.body;
+
+  // Insert into users table
+  const userQuery = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, "teacher")';
+  db.query(userQuery, [name, email, password], (err, userResult) => {
+    if (err) {
+      console.error('Error inserting into users table:', err.message);
+      return res.status(500).json({ error: 'Failed to create user' });
+    }
+
+    // Insert into teachers table
+    const teacherQuery = 'INSERT INTO teachers (user_id, department) VALUES (?, ?)';
+    db.query(teacherQuery, [userResult.insertId, department], (err, teacherResult) => {
+      if (err) {
+        console.error('Error inserting into teachers table:', err.message);
+        return res.status(500).json({ error: 'Failed to create teacher' });
+      }
+
+      res.status(201).json({ message: 'Teacher account created successfully' });
+    });
+  });
+});
+
+app.get("/ShowTeachers", (req, res) => {
+  const query = "SELECT id, name FROM users WHERE role='teacher'"; // Fetching teachers with their id and name
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching teachers:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json({ teachers: results });
+  });
+});
+app.post("/courses/add", (req, res) => {
+  const { course_code, course_name, teacher_id } = req.body;
+
+  // Input validation
+  if (!course_code || !course_name || !teacher_id) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  const query = `INSERT INTO courses (course_code, course_name, teacher_id) VALUES (?, ?, ?)`;
+
+  db.query(query, [course_code, course_name, teacher_id], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: "Error adding course", error: err });
+    }
+    return res.status(201).json({ message: "Course added successfully", course: results });
+  });
+});
+// Endpoint to assign a teacher
+app.post("/assign-teacher", (req, res) => {
+  const { teacherId } = req.body;
+
+  // Perform necessary operations (e.g., saving to a database)
+  const query = "SELECT * FROM teachers WHERE id = ?";
+  db.query(query, [teacherId], (err, results) => {
+    if (err) {
+      console.error("Error fetching teacher:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Teacher not found" });
+    }
+
+    res.json({ message: `Teacher ${results[0].name} assigned successfully` });
+  });
+});
+
 
 app.post('/api', (req, res) => {
   const formData = req.body;
