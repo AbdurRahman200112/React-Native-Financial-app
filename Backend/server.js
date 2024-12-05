@@ -53,6 +53,42 @@ app.post('/teachers', (req, res) => {
   });
 });
 
+app.post('/students', (req, res) => {
+  const { name, email, password, enrollment_no, department } = req.body;
+
+  // Validate input
+  if (!name || !email || !password || !enrollment_no || !department) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  // Insert into `users` table
+  const userQuery = 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, "student")';
+  db.query(userQuery, [name, email, password], (err, userResult) => {
+    if (err) {
+      console.error('Error inserting into users table:', err.message);
+      return res.status(500).json({ error: 'Failed to create user' });
+    }
+
+    const userId = userResult.insertId; // Get the auto-generated `user_id`
+
+    // Insert into `students` table
+    const studentQuery = 'INSERT INTO students (user_id, enrollment_no, department) VALUES (?, ?, ?)';
+    db.query(studentQuery, [userId, enrollment_no, department], (err, studentResult) => {
+      if (err) {
+        console.error('Error inserting into students table:', err.message);
+        return res.status(500).json({ error: 'Failed to create student' });
+      }
+
+      res.status(201).json({
+        message: 'Student account created successfully',
+        user_id: userId,
+        student_id: studentResult.insertId, // Optional: Return the student table's ID
+      });
+    });
+  });
+});
+
+
 app.get("/ShowTeachers", (req, res) => {
   const query = "SELECT id, name FROM users WHERE role='teacher'"; // Fetching teachers with their id and name
   db.query(query, (err, results) => {
@@ -63,17 +99,110 @@ app.get("/ShowTeachers", (req, res) => {
     res.json({ teachers: results });
   });
 });
+
+app.get('/ShowStudents', (req, res) => {
+  const query = "SELECT id, name FROM users WHERE role = 'student'";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching students:", err);
+      return res.status(500).json({ error: "Failed to fetch students." });
+    }
+    res.status(200).json({ students: results });
+  });
+});
+
+
+
+app.get("/ShowCourses", (req, res) => {
+  db.query("SELECT id, course_name FROM courses", (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error fetching courses");
+    }
+    res.json({ courses: results });
+  });
+});
+app.post('/StudentRegister', async (req, res) => {
+  const { student_id, course_id } = req.body;
+
+  try {
+    const [studentExists] = await db.query('SELECT id FROM students WHERE id = ?', [student_id]);
+    const [courseExists] = await db.query('SELECT id FROM courses WHERE id = ?', [course_id]);
+
+    if (!studentExists.length || !courseExists.length) {
+      return res.status(400).json({ error: "Invalid student or course ID." });
+    }
+
+    await db.query('INSERT INTO student_courses (student_id, course_id) VALUES (?, ?)', [student_id, course_id]);
+    res.json({ message: "Student registered successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+//app.post('/StudentRegister', async (req, res) => {
+//  const { student_id, course_id } = req.body;
+//
+//  // Validate input
+//  if (!student_id || !course_id) {
+//    return res.status(400).json({ error: 'Student ID and Course ID are required' });
+//  }
+//
+//  try {
+//    // Check if student exists
+//const studentExistsQuery = "SELECT id FROM users WHERE id = ? AND role = 'student'";
+//const courseExistsQuery = "SELECT id FROM courses WHERE id = ?";
+//
+//
+//    const studentResults = await new Promise((resolve, reject) => {
+//      db.query(studentExistsQuery, [student_id], (err, results) => {
+//        if (err) return reject(err);
+//        resolve(results);
+//      });
+//    });
+//
+//    if (studentResults.length === 0) {
+//      return res.status(400).json({ error: 'Student does not exist' });
+//    }
+//
+//    const courseResults = await new Promise((resolve, reject) => {
+//      db.query(courseExistsQuery, [course_id], (err, results) => {
+//        if (err) return reject(err);
+//        resolve(results);
+//      });
+//    });
+//
+//    if (courseResults.length === 0) {
+//      return res.status(400).json({ error: 'Course does not exist' });
+//    }
+//
+//    // Insert into student_courses
+//    const insertQuery = "INSERT INTO student_courses (student_id, course_id) VALUES (?, ?)";
+//    db.query(insertQuery, [student_id, course_id], (err, result) => {
+//      if (err) {
+//        console.error("Database error registering student to course:", err);
+//        return res.status(500).json({ error: 'Database error registering student to course' });
+//      }
+//      res.status(201).json({ message: 'Student registered successfully' });
+//    });
+//  } catch (err) {
+//    console.error("Error processing request:", err);
+//    res.status(500).json({ error: 'Server error' });
+//  }
+//});
+
 app.post("/courses/add", (req, res) => {
-  const { course_code, course_name, teacher_id } = req.body;
+  const { course_code, course_name, teacher_id, credit } = req.body;
 
   // Input validation
-  if (!course_code || !course_name || !teacher_id) {
+  if (!course_code || !course_name || !teacher_id || !credit) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const query = `INSERT INTO courses (course_code, course_name, teacher_id) VALUES (?, ?, ?)`;
+  const query = `INSERT INTO courses (course_code, course_name, teacher_id, credit) VALUES (?, ?, ?, ?)`;
 
-  db.query(query, [course_code, course_name, teacher_id], (err, results) => {
+  db.query(query, [course_code, course_name, teacher_id, credit], (err, results) => {
     if (err) {
       return res.status(500).json({ message: "Error adding course", error: err });
     }

@@ -12,6 +12,8 @@ import CustomerDashboard from "./Screens/customerDashboard/index";
 import AdminDashboard from "./Screens/adminDashboard/index";
 import CreateTeacherForm from "./Screens/adminDashboard/AddTeacher";
 import AddCourse from "./Screens/adminDashboard/AddCourses";
+import AddStudent from "./Screens/adminDashboard/AddStudent";
+import AddCoursesStudent from "./Screens/adminDashboard/AddCoursesStudent";
 import Chat from "./Screens/adminDashboard/chat";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
@@ -65,15 +67,7 @@ const DrawerNavigator = () => {
         },
 
         headerTitle: () => (
-          <Image
-            source={require("./img/Virsme.png")}
-            style={{
-              width: 180,
-              height: 50,
-              resizeMode: "contain",
-              marginLeft: Platform.OS === "ios" ? 40 : 0,
-            }}
-          />
+         <Text className="text-xl font-bold" >Admin</Text>
         ),
       }}
     >
@@ -97,7 +91,10 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Admin Dashboard" component={AdminDashboard} />
       <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="Add Teacher" component={CreateTeacherForm}/>
+      <Drawer.Screen name="Add Student" component={AddStudent}/>
       <Drawer.Screen name="Add Courses" component={AddCourse}/>
+     <Drawer.Screen name="Add Courses to Student" component={AddCoursesStudent}/>
+
     </Drawer.Navigator>
   );
 };

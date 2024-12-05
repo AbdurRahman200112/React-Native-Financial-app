@@ -140,7 +140,7 @@ const CreateTeacherForm = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 16, backgroundColor: '#fff' },
+  container: { flex: 1, justifyContent: 'center', padding: 16, backgroundColor: '#ffff' },
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 },
   label: { fontSize: 17, marginBottom: 6 },
   input: {

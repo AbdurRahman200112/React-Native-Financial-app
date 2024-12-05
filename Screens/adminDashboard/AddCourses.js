@@ -10,6 +10,7 @@ const AddCourse = () => {
   const [error, setError] = useState("");
   const [courseCode, setCourseCode] = useState("");
   const [courseName, setCourseName] = useState("");
+  const [credit, setCredit] = useState("");
 
   // Fetch teachers from the server
   useEffect(() => {
@@ -43,6 +44,7 @@ const AddCourse = () => {
       course_code: courseCode,
       course_name: courseName,
       teacher_id: selectedTeacherId,
+      credit: credit
     };
 
     axios
@@ -99,6 +101,13 @@ const AddCourse = () => {
         placeholder="Teacher ID"
         value={selectedTeacherId.toString()}
         editable={false} // Automatically updated when teacher is selected
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Credit"
+        value={credit}
+        onChangeText={setCredit}
+
       />
 
       {/* Submit Button */}
@@ -194,9 +203,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#473f97",
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 20,
     alignItems: "center",
   },
   buttonText: {
