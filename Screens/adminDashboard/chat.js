@@ -1,135 +1,109 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import axios from "axios";
-import CustomTabs from "./components/customTabs";
-import { LinearGradient } from "expo-linear-gradient";
 
-const Chat = ({ navigation, route }) => {
-  const [messages, setMessages] = useState([]);
+export default function Chat() {
+  const [calendar, setCalendar] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchMessages();
+    // Fetch academic calendar data
+    axios
+      .get("http://192.168.1.78:8080/api/academic-calendar") // Replace with your backend IP
+      .then((response) => {
+        setCalendar(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching calendar data:", error);
+        setLoading(false);
+      });
   }, []);
 
-  const fetchMessages = async () => {
-    try {
-      const response = await axios.get("http://192.168.1.79:8080/messages");
-      const updatedMessages = response.data.map((message) => ({
-        ...message,
-        unread: true,
-      }));
-      setMessages(updatedMessages);
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
-
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toDateString();
-  };
-
-  const markAsRead = (email) => {
-    const updatedMessages = messages.map((message) => {
-      if (message.email_address === email) {
-        return { ...message, unread: false };
-      }
-      return message;
-    });
-    setMessages(updatedMessages);
-  };
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#3b5998" />
+        <Text style={styles.loadingText}>Loading Academic Calendar...</Text>
+      </View>
+    );
+  }
 
   return (
-    <LinearGradient
-      colors={[
-        "rgba(213, 234, 253, 0.8)",
-        "rgba(213, 234, 253, 0.8)",
-        "rgba(213, 234, 253, 0.3)",
-        "rgba(245, 186, 207, 0.1)",
-        "rgba(243, 168, 195, 0.1)",
-        "rgba(240, 148, 182, 0.1)",
-        "rgba(213, 234, 253, 0.8)",
-        "rgba(213, 234, 253, 0.8)",
-        "rgba(252, 247, 232, 1)",
-      ]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={{ flex: 1 }}
-    >
-      <View style={{ flex: 1 }}>
-        {messages
-          .reduce((acc, message, index) => {
-            const existingMessageIndex = acc.findIndex(
-              (m) => m.email_address === message.email_address
-            );
-            if (existingMessageIndex !== -1) {
-              acc[existingMessageIndex] = message;
-            } else {
-              acc.push(message);
-            }
-            return acc;
-          }, [])
-          .map((message, index) => (
-            <TouchableOpacity
-              key={message.email_address}
-              onPress={() => {
-                navigation.navigate("ChatDetailScreen", {
-                  email_address: message.email_address,
-                });
-                markAsRead(message.email_address);
-              }}
-            >
-              <View
-                style={[
-                  styles.messageContainer,
-                  index !== messages.length - 1 && styles.borderBottom,
-                ]}
-              >
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                    {message.email_address}
-                  </Text>
-                  <Text>{message.message.split("\n")[0]}</Text>
-                </View>
-                <View>
-                  <Text style={{ fontSize: 12 }}>
-                    {formatDate(message.timestamp)}
-                  </Text>
-                  {message.unread && (
-                    <View
-                      style={styles.unreadIndicator}
-                      className="mt-4"
-                    />
-                  )}
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Academic Calendar: FA24</Text>
+
+      <View style={styles.tableHeader}>
+        <Text style={styles.tableHeaderText}>Serial No.</Text>
+        <Text style={styles.tableHeaderText}>Activity</Text>
+        <Text style={styles.tableHeaderText}>Date</Text>
       </View>
-      <CustomTabs navigation={navigation} />
-    </LinearGradient>
+
+      {calendar.map((item, index) => (
+        <View key={index} style={[styles.tableRow, index % 2 === 0 ? styles.evenRow : styles.oddRow]}>
+          <Text style={styles.cell}>{item.serial_no}</Text>
+          <Text style={styles.cell}>{item.activity}</Text>
+          <Text style={styles.cell}>{item.date_range}</Text>
+        </View>
+      ))}
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  messageContainer: {
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#f8f8f8",
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 15,
+    color: "#3b5998",
+  },
+  tableHeader: {
     flexDirection: "row",
-    padding: 18,
-    paddingBottom: 15,
-  },
-  borderBottom: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
-  },
-  unreadIndicator: {
-    width: 10,
-    height: 10,
-    backgroundColor: "#0b7ffe",
+    backgroundColor: "#3b5998",
+    paddingVertical: 10,
     borderRadius: 5,
-    position: "absolute",
-    top: 8,
-    right: 8,
+  },
+  tableHeaderText: {
+    flex: 1,
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  tableRow: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+  },
+  evenRow: {
+    backgroundColor: "#ffffff",
+  },
+  oddRow: {
+    backgroundColor: "#f2f2f2",
+  },
+  cell: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 12,
+    color: "#333",
+    paddingHorizontal: 5,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f8f8f8",
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#555",
   },
 });
-
-export default Chat;

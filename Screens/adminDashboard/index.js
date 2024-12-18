@@ -1,282 +1,162 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Dimensions,
 } from "react-native";
-import { DataTable } from "react-native-paper";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faUser,
-  faChartPie,
-  faArrowLeft,
-  faArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
-import CustomTabs from "./components/customTabs";
-import { LinearGradient } from 'expo-linear-gradient';
 
-const AdminDashboard = ({ navigation, route }) => {
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const [selectedSubscriptionDetail, setSelectedSubscriptionDetail] =
-    useState(null);
+export default function AdminDashboard() {
+  const [challanData, setChallanData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const screenWidth = Dimensions.get("window").width;
 
   useEffect(() => {
-    fetchSubscriptionData();
+    axios
+      .get("http://192.168.1.78:8080/api/fee-challan") // Replace with your backend IP
+      .then((response) => {
+        setChallanData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching challan data:", error);
+        setLoading(false);
+      });
   }, []);
 
-  const fetchSubscriptionData = async () => {
-    try {
-      const response = await axios.get(
-        "http://192.168.1.79:8080/subscriptions"
-      );
-      setSubscriptions(response.data);
-    } catch (error) {
-      console.error("There was a problem fetching subscription data:", error);
-    }
+  // Format dates to 'Day, Month Date, Year'
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "N/A";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
   };
 
-  const deleteSubscription = async (id) => {
-    try {
-      await axios.delete(`http://192.168.1.79:8080/subscriptions/${id}`);
-      const updatedSubscriptions = subscriptions.filter(
-        (subscription) => subscription.id !== id
-      );
-      setSubscriptions(updatedSubscriptions);
-    } catch (error) {
-      console.error("There was a problem deleting the subscription:", error);
-    }
-  };
-
-  const fetchSubscriptionDetail = async (id) => {
-    try {
-      const response = await axios.get(
-        `http://192.168.1.79:8080/subscription_form/${id}`
-      );
-      setSelectedSubscriptionDetail(response.data);
-    } catch (error) {
-      console.error("Error fetching subscription details:", error);
-    }
-  };
-
-  const totalPages = Math.ceil(subscriptions.length / itemsPerPage);
-
-  const handleNextPage = () => {
-    setCurrentPage(currentPage === totalPages ? currentPage : currentPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1);
-  };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const slicedSubscriptions = subscriptions.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
-  return (
-    <View style={styles.container}>
-       <LinearGradient
-          colors={[
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.3)',
-            'rgba(245, 186, 207, 0.1)',
-            'rgba(243, 168, 195, 0.1)',
-            'rgba(240, 148, 182, 0.1)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(252, 247, 232, 1)'
-          ]}
-          style={{flex:1}}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={styles.statsContainer}>
-          <TouchableOpacity
-            style={styles.statItem}
-            onPress={() => navigation.navigate("Users")}>
-           <FontAwesomeIcon size={37} icon={faUser} style={styles.icon} />
-            <Text style={styles.statText}>0</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.statItem}
-            onPress={() => navigation.navigate("Reports")}>
-          <FontAwesomeIcon
-              size={37}
-              icon={faChartPie}
-              style={styles.icon}
-          />
-            <Text style={styles.statText}>0</Text>
-          </TouchableOpacity>
-        </View>
-        <DataTable>
-          <DataTable.Header className="bg-white">
-            <DataTable.Title style={styles.headerCell}>
-              Category
-            </DataTable.Title>
-            <DataTable.Title style={styles.headerCell}>
-              Business Name
-            </DataTable.Title>
-            <DataTable.Title style={styles.headerCell}>
-              Actions
-            </DataTable.Title>
-          </DataTable.Header>
-          {slicedSubscriptions.map((subscription, index) => (
-            <DataTable.Row
-              key={subscription.id}
-              style={index % 2 === 0 ? styles.evenRow : styles.oddRow}
-            >
-              <DataTable.Cell style={styles.dataCell}>
-                {subscription.business_category}
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dataCell}>
-                {subscription.business_name}
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.dataCell}>
-                <TouchableOpacity
-                  onPress={() => fetchSubscriptionDetail(subscription.id)}
-                  style={styles.actionButton}
-                >
-                  <Text style={styles.actionText}>Details</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => deleteSubscription(subscription.id)}
-                  style={[styles.actionButton, styles.deleteButton]}
-                >
-                  <Text style={styles.actionText}>Delete</Text>
-                </TouchableOpacity>
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
-        </DataTable>
-        <View style={styles.pagination} className="mb-10">
-          <TouchableOpacity
-            onPress={handlePrevPage}
-            disabled={currentPage === 1}
-            style={styles.arrowButton}
-          >
-            <FontAwesomeIcon icon={faArrowLeft} size={15} />
-          </TouchableOpacity>
-          <Text>{`Page ${currentPage} of ${totalPages}`}</Text>
-          <TouchableOpacity
-            onPress={handleNextPage}
-            disabled={currentPage === totalPages}
-            style={styles.arrowButton}
-          >
-            <FontAwesomeIcon icon={faArrowRight} size={15} />
-          </TouchableOpacity>
-        </View>
-        {selectedSubscriptionDetail && (
-          <View style={styles.subscriptionDetails}>
-            <Text style={styles.detailText}>
-              {selectedSubscriptionDetail.business_size},{"\n"}
-              {selectedSubscriptionDetail.business_name},{"\n"}
-              {selectedSubscriptionDetail.firstname}{" "}
-              {selectedSubscriptionDetail.lastname},{"\n"}
-              {selectedSubscriptionDetail.email},{"\n"}
-              {selectedSubscriptionDetail.phone_no},{"\n"}
-              {selectedSubscriptionDetail.updated_date}
-            </Text>
-          </View>
-        )}
-      </ScrollView>
-      <View style={{flex:1}} className="mt-10">
-      <CustomTabs navigation={navigation} />
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#3b5998" />
+        <Text style={styles.loadingText}>Loading Fee Challan...</Text>
       </View>
-     </LinearGradient>
-    </View>
+    );
+  }
+
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Fee Challan for Term (FA24)</Text>
+
+      {/* Table Header */}
+      <View style={styles.tableHeader}>
+        <Text style={styles.headerText}>#</Text>
+        <Text style={styles.headerText}>Installment</Text>
+        <Text style={styles.headerText}>Amount</Text>
+        <Text style={styles.headerText}>Due Date</Text>
+        <Text style={styles.headerText}>Paid Date</Text>
+      </View>
+
+      {/* Table Rows */}
+      {challanData.map((item, index) => (
+        <View
+          key={index}
+          style={[
+            styles.tableRow,
+            index % 2 === 0 ? styles.evenRow : styles.oddRow,
+          ]}
+        >
+          <Text style={styles.cell}>{item.installment_number}</Text>
+          <Text style={styles.cell}>{item.installment_description}</Text>
+          <Text style={styles.amountCell}>PKR {item.amount}</Text>
+          <Text style={styles.dateCell}>{formatDate(item.due_date)}</Text>
+          <Text
+            style={[
+              styles.dateCell,
+              { color: item.paid_date ? "#28a745" : "#dc3545" },
+            ]}
+          >
+            {formatDate(item.paid_date)}
+          </Text>
+        </View>
+      ))}
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  statsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 20,
-  },
-  statItem: {
-    width: "45%",
-    height: 120,
-    justifyContent: "center",
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 10,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  icon: {
-    color: "#0b7ffe",
-    marginRight: 10,
-  },
-  statText: {
-    marginTop: 6,
-    fontSize: 35,
-    fontWeight: "bold",
-    color: "#0b7ffe",
-  },
-  headerCell: {
-    flex: 2,
+    backgroundColor: "#f4f6f9",
     padding: 10,
+  },
+  header: {
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
+    color: "#3b5998",
+    marginBottom: 15,
   },
-  dataCell: {
-    flex: 1.5,
+  tableHeader: {
+    flexDirection: "row",
+    backgroundColor: "#3b5998",
     paddingVertical: 10,
-    paddingHorizontal: 6,
-    textAlign: "center",
+    borderRadius: 5,
+    elevation: 3,
   },
-  oddRow: {
-    backgroundColor: "#EDF3FF",
+  headerText: {
+    flex: 1,
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 12,
+  },
+  tableRow: {
+    flexDirection: "row",
+    paddingVertical: 12,
+    paddingHorizontal: 5,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    elevation: 1,
   },
   evenRow: {
-    backgroundColor: "#ffff",
+    backgroundColor: "#ffffff",
   },
-  pagination: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-    marginBottom:10
+  oddRow: {
+    backgroundColor: "#f8f9fa",
   },
-  arrowButton: {
-    backgroundColor: "white",
-    padding: 5,
-    borderRadius: 10,
-    marginHorizontal: 5,
-  },
-  actionButton: {
-    backgroundColor: "#0b7ffe",
-    padding: 7,
-    borderRadius: 10,
-    marginRight: 5,
-  },
-  deleteButton: {
-    backgroundColor: "#FF5E5E",
-  },
-  actionText: {
-    color: "white",
+  cell: {
+    flex: 1,
     textAlign: "center",
-    fontSize:12.5
+    fontSize: 12,
+    color: "#333",
   },
-  subscriptionDetails: {
+  amountCell: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#3b5998",
+  },
+  dateCell: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 12,
+    color: "#6c757d",
+  },
+  loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 20,
   },
-  detailText: {
+  loadingText: {
+    marginTop: 10,
     fontSize: 16,
-    textAlign: "center",
+    color: "#555",
   },
 });
-
-export default AdminDashboard;

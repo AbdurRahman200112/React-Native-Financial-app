@@ -111,6 +111,145 @@ app.get('/ShowStudents', (req, res) => {
   });
 });
 
+app.post("/api/RegisterStudent", async (req, res) => {
+  const {
+    name,
+    term,
+    cgpa,
+    credit_earned,
+    credit_remaining,
+    outstanding_dues,
+    degree_progress,
+    email,
+    password,
+  } = req.body;
+
+  // Check required fields
+  if (!name || !term || !email || !password) {
+    return res.status(400).json({ error: "Missing required fields!" });
+  }
+
+  try {
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10); // Salt rounds = 10
+
+    // Insert student record
+    const query = `
+      INSERT INTO student (name, term, cgpa, credit_earned, credit_remaining, outstanding_dues, degree_progress, email, password)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(
+      query,
+      [
+        name,
+        term,
+        cgpa || 0.0,
+        credit_earned || 0,
+        credit_remaining || 0,
+        outstanding_dues || 0.0,
+        degree_progress || 0.0,
+        email,
+        hashedPassword,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).json({ error: "Database error. Please try again!" });
+        } else {
+          res.status(200).json({ message: "Student record inserted successfully!" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Error hashing password!" });
+  }
+});
+
+app.post("/api/student/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and Password are required" });
+  }
+
+  const query = "SELECT * FROM student WHERE email = ?";
+  db.query(query, [email], async (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length > 0) {
+      const student = results[0];
+      const isPasswordValid = await bcrypt.compare(password, student.password);
+      if (isPasswordValid) {
+        return res.status(200).json({ message: "Student login successful!", student });
+      } else {
+        return res.status(401).json({ error: "Invalid student credentials" });
+      }
+    } else {
+      return res.status(404).json({ error: "Student not found" });
+    }
+  });
+});
+
+app.get("/api/student/data", (req, res) => {
+  const studentId = req.params.id;
+  const query = `
+    SELECT cgpa, credit_earned, credit_remaining, outstanding_dues, degree_progress
+    FROM student
+    WHERE student_id = 4`;
+
+  db.query(query, [studentId], (err, result) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ message: "Student not found" });
+    }
+  });
+});
+app.get("/api/advisors", (req, res) => {
+  const query = "SELECT advisor_id, advisor_name FROM advisors";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
+
+// Endpoint to insert project group
+app.post("/api/registerGroup", (req, res) => {
+  const { group_title, group_members, advisor_id } = req.body;
+
+  if (!group_title || !group_members || !advisor_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const query = `
+    INSERT INTO project_groups (group_title, group_members, advisor_id)
+    VALUES (?, ?, ?)`;
+
+  db.query(query, [group_title, group_members, advisor_id], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json({ message: "Project group registered successfully!" });
+  });
+});
+
+
+app.get("/api/transcript/data", (req, res) => {
+  const student_id = req.params.student_id;
+  const query = `
+    SELECT term, course_code, course_name, credit_hours, grade, gpa
+    FROM transcript
+    WHERE student_id = 4
+    ORDER BY term`;
+
+  db.query(query, [student_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
 
 
 app.get("/ShowCourses", (req, res) => {
@@ -494,7 +633,55 @@ app.get("/CustomerMessages/:user_email", (req, res) => {
     res.status(200).json(results);
   });
 });
+app.get("/api/student/attendance", (req, res) => {
+  const student_id = req.params.id;
+  const query = `
+    SELECT course_code, course_name, total_lectures, total_absents, lecture_date, status
+    FROM Attendance
+    WHERE student_id = 4;
+  `;
+  db.query(query, [student_id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
 
+app.get("/api/program-courses", (req, res) => {
+  const query = "SELECT * FROM ProgramCourses ORDER BY semester ASC";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
+
+app.get("/api/academic-calendar", (req, res) => {
+  const query = "SELECT * FROM AcademicCalendar ORDER BY serial_no ASC";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
+app.get("/api/fee-challan", (req, res) => {
+  const query = "SELECT * FROM FeeChallan ORDER BY installment_number ASC";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
+app.get("/api/timetable", (req, res) => {
+  const query = "SELECT * FROM Timetable ORDER BY FIELD(day, 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN')";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
+app.get("/api/academic-deadlines", (req, res) => {
+  const query = "SELECT * FROM academic_deadlines ORDER BY serial_no";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
 app.get("/subscriptions", (req, res) => {
   const sql = "SELECT * FROM subscription_form";
 

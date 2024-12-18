@@ -1,157 +1,168 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
-  Image,
+  Text,
+  StyleSheet,
   SafeAreaView,
   ScrollView,
-  Text,
-  TouchableOpacity,
+  Alert,
   Dimensions,
-  StyleSheet,
 } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
-import style from "./Style/style";
-import Slider from "./slider";
-const { width, height } = Dimensions.get("window");
-const HomeScreen = ({ navigation }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-  const CounterHeading = ({ maxValue, speed }) => {
-    const [counter, setCounter] = useState(0);
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCounter((prevCounter) => {
-          if (prevCounter < maxValue) {
-            return prevCounter + 1;
-          } else {
-            clearInterval(interval);
-            return prevCounter;
-          }
-        });
-      }, speed);
-      return () => clearInterval(interval);
-    }, []);
-    return (
-      <Text className="text-4xl font-black text-black m-1">
-        {counter}
-        <Text style={{ fontWeight: "normal", color: "#0b7ffe" }}>+</Text>
-      </Text>
-    );
-  };
-  return (
-  <View style={{flex:1, backgroundColor:'white'}}>
+import axios from "axios";
+import { ProgressChart } from "react-native-chart-kit";
 
-    <SafeAreaView>
+export default function HomeScreen() {
+  const [studentData, setStudentData] = useState({
+    cgpa: 3.28,
+    credit_earned: 97,
+    outstanding_dues: 0,
+    credit_remaining: 35,
+    degree_progress: 75, // Degree completion in %
+  });
+
+  useEffect(() => {
+    // Uncomment this to fetch from your backend
+    // axios
+    //   .get("http://192.168.1.78:8080/api/student/data")
+    //   .then((response) => setStudentData(response.data))
+    //   .catch((error) => {
+    //     console.error(error);
+    //     Alert.alert("Error", "Failed to fetch student data.");
+    //   });
+  }, []);
+
+  return (
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={style.row}>
-          <Text
-            className="text-4xl ml-4 font-semibold mt-9"
-            style={{ color: "#000" }}
-          >
-            Empower Growth {"\n"}
-            <Text style={{ color: "#0d6efd" }}>Virsme's</Text> Virtual CFO Services!
-          </Text>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.name}>Hafsa Ahmad</Text>
+          <Text style={styles.term}>Term: SP21</Text>
+          <View style={styles.avatar} />
         </View>
-        <View style={style.row}>
-          <Text className="text-base ml-4">
-            Unlock the full potential of your business with Mavens Advisor
-            Financial Services. Trusted expertise in accounting and finance for
-            the {"\n"}USA and UK markets.
-          </Text>
+
+        {/* Cards */}
+        <View style={styles.cardContainer}>
+          <View style={[styles.card, styles.greenCard]}>
+            <Text style={styles.cardTitle}>{studentData.cgpa}</Text>
+            <Text style={styles.cardSubtitle}>CGPA</Text>
+          </View>
+          <View style={[styles.card, styles.blueCard]}>
+            <Text style={styles.cardTitle}>{studentData.credit_earned}</Text>
+            <Text style={styles.cardSubtitle}>Credit hours earned</Text>
+          </View>
+          <View style={[styles.card, styles.redCard]}>
+            <Text style={styles.cardTitle}>PKR {studentData.outstanding_dues}</Text>
+            <Text style={styles.cardSubtitle}>OUTSTANDING DUES</Text>
+          </View>
+          <View style={[styles.card, styles.yellowCard]}>
+            <Text style={styles.cardTitle}>{studentData.credit_remaining}</Text>
+            <Text style={styles.cardSubtitle}>Credit hours remaining</Text>
+          </View>
         </View>
-        <View className="flex flex-row m-2">
-          <TouchableOpacity
-            onPressIn={handleMouseEnter}
-            onPressOut={handleMouseLeave}
-            style={[style.secBtnStyle2, isHovered && style.secBtnStyle2Hover]}
-            onPress={() => navigation.navigate("SUBSCRIPTION FORM")}
-          >
-            <Text className="text-center text-lg" style={{ color: "#0D6EFD" }}>
-              Get Subscription Now
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ alignItems: "center" }}>
-          <Image
-            source={require("../img/bg-4.png")}
-            style={{ width: "95%" }}
-            className="rounded-xl"
+
+        {/* Degree Completion */}
+        <Text style={styles.sectionTitle}>Degree Completion Progress</Text>
+        <View style={styles.progressContainer}>
+          <ProgressChart
+            data={{
+              labels: ["Progress"],
+              data: [studentData.degree_progress / 100],
+            }}
+            width={Dimensions.get("window").width - 50}
+            height={200}
+            strokeWidth={12}
+            radius={50}
+            chartConfig={{
+              backgroundColor: "#fff",
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              color: (opacity = 1) => `rgba(255, 193, 7, ${opacity})`, // Yellow
+              strokeWidth: 2,
+            }}
+            hideLegend={true}
           />
-        </View>
-        <View className="mt-10 mb-10">
-          <Text className="text-3xl mt-2 mb-2 text-left ml-4 font-sans-serif font-bold">
-            Business <Text style={{ color: "#0b7ffe" }}>Consulting</Text>
+          <Text style={styles.progressText}>
+            {studentData.degree_progress}%
           </Text>
-          <View className="flex-1 justify-center items-center">
-          <Text className="text-base text-justify w-11/12">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here,
-          </Text>
-          </View>
-          <Slider />
-        </View>
-        <View
-          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
-        >
-          <Image
-            source={require("../img/image19.jpg")}
-            style={{ height: 550 }}
-          />
-        </View>
-        <View style={{ alignItems: "center" }} className="mb-20">
-          <Text className="text-3xl mt-12 font-sans-serif ml-2 font-bold">
-            Continue Your{" "}
-            <Text style={{ color: "#0b7ffe", textAlign: "center" }}>
-              Business
-            </Text>
-            {"\n"}With Us
-          </Text>
-          <View style={{ flexDirection: "row" }}>
-            <View style={style.col}>
-              <CounterHeading maxValue={85} speed={1} />
-              <Text className="text-base font-sm text-black">
-                Total Clients
-              </Text>
-            </View>
-            <View style={style.col}>
-              <CounterHeading maxValue={95} speed={1} />
-              <Text className="text-base font-sm text-black">Employees</Text>
-            </View>
-          </View>
-          <View style={{ flexDirection: "row" }} className="mt-12 mb-5">
-            <View style={style.col}>
-              <CounterHeading maxValue={90} speed={10} />
-              <Text className="text-base font-sm text-black">
-                Useful Programs
-              </Text>
-            </View>
-            <View style={style.col}>
-              <CounterHeading maxValue={75} speed={10} />
-              <Text className="text-base font-sm text-black">
-                Total Freelancer
-              </Text>
-            </View>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
-   </View>
   );
-};
-export default HomeScreen;
+}
+
 const styles = StyleSheet.create({
   container: {
-    width: "80%",
-    justifyContent: "center",
-    alignItems: "center",
     flex: 1,
+    backgroundColor: "#f5f5f5",
+    padding: 10,
+  },
+  header: {
+    backgroundColor: "#473f97",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  name: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  term: {
+    fontSize: 14,
+    color: "#e0e0e0",
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#D3D3D3",
+    borderRadius: 20,
+  },
+  cardContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  card: {
+    width: "48%",
+    padding: 25,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: "center",
+    elevation: 3,
+  },
+  greenCard: { backgroundColor: "#03acac" },
+  blueCard: { backgroundColor: "#358fe2" },
+  redCard: { backgroundColor: "#ff5c57" },
+  yellowCard: { backgroundColor: "#f39c12" },
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  cardSubtitle: {
+    fontSize: 12,
+    color: "#fff",
+    textTransform: "uppercase",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 10,
+    color: "#333",
+  },
+  progressContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  progressText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    position: "absolute",
+    color: "#333",
   },
 });

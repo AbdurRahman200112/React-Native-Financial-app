@@ -1,313 +1,149 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
-  Image,
   Text,
-  ScrollView,
-  Dimensions,
+  StyleSheet,
   SafeAreaView,
-  TouchableOpacity,
+  ScrollView,
+  Alert,
 } from "react-native";
-import CarouselComponent from "./slider";
-import CreativeDesign from "./creativeDesign";
-import Footer from "./footer";
-import style from "./Style/style";
-import { LinearGradient } from 'expo-linear-gradient';
-const { width, height } = Dimensions.get("window");
-const AvailableServices = ({ navigation }) => {
+import axios from "axios";
+
+export default function AvailableServices() {
+  const [transcript, setTranscript] = useState([]);
+  const student_id = 1; // Set student ID here
+
+  useEffect(() => {
+    // Fetch transcript data
+    axios
+      .get(`http://192.168.1.78:8080/api/transcript/data`) // Replace IP with your server IP
+      .then((response) => setTranscript(response.data))
+      .catch((error) => {
+        console.error(error);
+        Alert.alert("Error", "Failed to fetch transcript data");
+      });
+  }, []);
+
+  const renderTermSections = () => {
+    const terms = {};
+    transcript.forEach((item) => {
+      if (!terms[item.term]) terms[item.term] = [];
+      terms[item.term].push(item);
+    });
+
+    return Object.keys(terms).map((term) => (
+      <View key={term} style={styles.termContainer}>
+        <Text style={styles.termHeader}>{term}</Text>
+        <View style={styles.courseRowHeader}>
+          <Text style={[styles.columnHeader, { width: "25%" }]}>
+            Course Code
+          </Text>
+          <Text style={[styles.columnHeader, { width: "35%" }]}>
+            Course Name
+          </Text>
+          <Text style={[styles.columnHeader, { width: "20%" }]}>
+            Credit Hrs
+          </Text>
+          <Text style={[styles.columnHeader, { width: "20%" }]}>Grade</Text>
+        </View>
+        {terms[term].map((course, index) => (
+          <View key={index} style={styles.courseRow}>
+            <Text style={[styles.courseText, { width: "25%" }]}>
+              {course.course_code}
+            </Text>
+            <Text style={[styles.courseText, { width: "35%" }]}>
+              {course.course_name}
+            </Text>
+            <Text style={[styles.courseText, { width: "20%" }]}>
+              {course.credit_hours}
+            </Text>
+            <Text style={[styles.courseText, { width: "20%" }]}>
+              {course.grade}
+            </Text>
+          </View>
+        ))}
+        <View style={styles.gpaContainer}>
+          <Text style={styles.gpaText}>GPA</Text>
+          <Text style={styles.gpaValue}>{terms[term][0].gpa}</Text>
+        </View>
+      </View>
+    ));
+  };
+
   return (
-    <SafeAreaView style={{ backgroundColor: "white" }}>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
-            <LinearGradient
-                colors={[
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.3)',
-                  'rgba(245, 186, 207, 0.1)',
-                  'rgba(243, 168, 195, 0.1)',
-                  'rgba(240, 148, 182, 0.1)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(213, 234, 253, 0.8)',
-                  'rgba(252, 247, 232, 1)'
-          ]}
-          style={style.gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}>
-        <View style={style.row}>
-          <Text
-            className="text-4xl ml-4 font-semibold mt-9"
-            style={{ color: "#000" }}>
-            Having more than <Text style={{ color: "#0d6efd" }}>25 years </Text>
-            of Experience
-          </Text>
-        </View>
-        <View style={style.row}>
-          <Text className="text-base mt-2 ml-4">
-            Do you immediately need an SME (Subject Matter Expert) like
-            CFO, CSO, or COO who can provide {"\n"}strategic guidance.
-          </Text>
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image
-            source={require("../img/services.png")}
-            style={{ width: "90%", height: 282 }}
-          />
-        </View>
-        <View
-          style={{
-            height: 32,
-            width: 144,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            alignSelf: "center",
-            marginTop: 30,
-          }}
-          className="bg-slate-100">
-          <Text className="text-xs" style={{ color: "#0b7ffe" }}>
-            What We Can Do For You
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: "bold",
-            textAlign: "center",
-            marginTop: 10,
-          }}>
-          Have A Look At The Services {"\n"}We Offer.
-        </Text>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 10,
-          }}>
-          <TouchableOpacity onPress={() => navigation.navigate("SUBSCRIPTION FORM")}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginBottom: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Cloud Bookkeeping</Text>
-              <Text className="text-base font-md">
-                Streamline business success with cloud-based bookkeeping,
-                offering insights, efficiency, and accessibility.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/art-1.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginBottom: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Accounting Service</Text>
-              <Text className="text-base font-md">
-                Experienced team, cost-effective services, advanced tools,
-                tailored solutions for efficient accounting.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/illustrator_art.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginBottom: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Tax Service</Text>
-              <Text className="text-base font-md">
-                Mavens Advisor offers competitive, specialized tax accounting
-                for streamlined compliance and reporting.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/men-art.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginBottom: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Virtual CFO Service</Text>
-              <Text className="text-base font-md">
-                Expert advice on financial matters, including budgeting,
-                forecasting, and investment strategies.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/art_3.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginBottom: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Audit Service</Text>
-              <Text className="text-base font-md">
-                Efficient handling of payroll processes, ensuring compliance,
-                accuracy, and timeliness.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/art_4.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View
-              style={{ height: 335, width: 320, borderRadius: 20, padding: 20 }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Valuation Service</Text>
-              <Text className="text-base font-md">
-                Efficient handling of payroll processes, ensuring compliance,
-                accuracy, and timeliness.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/art_5.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginTop: 10,
-              }}
-              className="bg-slate-100">
-              <Text className="text-lg font-semibold">Operations Partner</Text>
-              <Text className="text-base font-md">
-                Professionals adept in best practices enable affordable access,
-                ensuring SME growth.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/operation-partner.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('SUBSCRIPTION FORM')}>
-            <View
-              style={{
-                height: 335,
-                width: 320,
-                borderRadius: 20,
-                padding: 20,
-                marginTop: 10,
-              }}
-              className="bg-slate-100 mb-10">
-              <Text className="text-lg font-semibold">Compilance Partner</Text>
-              <Text className="text-base font-md">
-                Professionals adept in best practices enable affordable access,
-                ensuring SME growth.
-              </Text>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                }}>
-                <Image
-                  source={require("../img/compilance-partner.png")}
-                  style={{ width: 200, height: 200 }}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <Footer navigation={navigation} />
-        </View>
-        </LinearGradient>
+        <Text style={styles.header}>My Transcript</Text>
+        {renderTermSections()}
       </ScrollView>
     </SafeAreaView>
   );
-};
-export default AvailableServices;
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    padding: 10,
+  },
+  header: {
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  termContainer: {
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 10,
+    elevation: 3,
+  },
+  termHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#473f97",
+    marginBottom: 5,
+  },
+  courseRowHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    paddingBottom: 5,
+  },
+  columnHeader: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#473f97",
+  },
+  courseRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  courseText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  gpaContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  gpaText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginRight: 5,
+  },
+  gpaValue: {
+    fontSize: 16,
+    backgroundColor: "#473f97",
+    color: "#fff",
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+});

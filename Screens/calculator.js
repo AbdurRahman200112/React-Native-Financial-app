@@ -1,234 +1,155 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import CheckBox from "expo-checkbox";
-import styles from "./Style/style";
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import axios from "axios";
 
-const CalculatorScreen = ({ navigation }) => {
-  const [categoryTotal, setCategoryTotal] = useState({
-    "No of Monthly Transaction": 0,
-    "No of Monthly Invoices": 0,
-    "No of Monthly Payroll": 0,
-    "Monthly Cashflow": 0,
-    "Monthly Budgeting": 0,
-    "QuickBook Xero/Setup": 0,
-  });
-  const [checkboxes, setCheckboxes] = useState({
-    "No of Monthly Transaction": false,
-    "No of Monthly Invoices": false,
-    "No of Monthly Payroll": false,
-    "Monthly Cashflow": false,
-    "Monthly Budgeting": false,
-    "QuickBook Xero/Setup": false,
-  });
-  const [totalPrices, setTotalPrices] = useState({ standard: 0, discount: 0 });
-  const [individualPrices, setIndividualPrices] = useState({
-    "No of Monthly Transaction": { standard: 0, discount: 0 },
-    "No of Monthly Invoices": { standard: 0, discount: 0 },
-    "No of Monthly Payroll": { standard: 0, discount: 0 },
-    "Monthly Cashflow": { standard: 0, discount: 0 },
-    "Monthly Budgeting": { standard: 0, discount: 0 },
-    "QuickBook Xero/Setup": { standard: 0, discount: 0 },
-  });
+export default function AttendanceScreen() {
+  const [attendance, setAttendance] = useState([]);
 
   useEffect(() => {
-    calculateTotalPrices();
-  }, [categoryTotal, checkboxes]);
+    axios
+      .get("http://192.168.1.78:8080/api/student/attendance") // Replace with your backend IP
+      .then((response) => setAttendance(response.data))
+      .catch((error) => console.error("Error fetching attendance:", error));
+  }, []);
 
-  const handleCheckboxChange = (category) => {
-    setCheckboxes({
-      ...checkboxes,
-      [category]: !checkboxes[category],
-    });
-  };
+  // Group attendance by course
+  const groupedAttendance = attendance.reduce((acc, record) => {
+    acc[record.course_code] = acc[record.course_code] || {
+      course_name: record.course_name,
+      total_lectures: record.total_lectures,
+      total_absents: record.total_absents,
+      records: [],
+    };
+    acc[record.course_code].records.push(record);
+    return acc;
+  }, {});
 
-  const handleInputChange = (value, category) => {
-    setCategoryTotal({
-      ...categoryTotal,
-      [category]: parseFloat(value),
-    });
-  };
-
-  const calculateCategoryTotal = (category) => {
-    const prices = { standard: 0, discount: 0 };
-    switch (category) {
-      case "Monthly Cashflow":
-      case "Monthly Budgeting":
-        if (checkboxes[category]) {
-          prices.standard = (((categoryTotal["No of Monthly Transaction"] +
-            categoryTotal["No of Monthly Invoices"] +
-            categoryTotal["No of Monthly Payroll"]) * 5) / 60) * 15;
-          prices.discount = (((categoryTotal["No of Monthly Transaction"] +
-            categoryTotal["No of Monthly Invoices"] +
-            categoryTotal["No of Monthly Payroll"]) * 5) / 60) * 10;
-        }
-        break;
-      case "QuickBook Xero/Setup":
-        if (checkboxes[category]) {
-          prices.standard = prices.discount = 300;
-        }
-        break;
-      case "No of Monthly Transaction":
-        if (checkboxes[category]) {
-          prices.standard = ((categoryTotal["No of Monthly Transaction"] * 5) / 60) * 15;
-          prices.discount = ((categoryTotal["No of Monthly Transaction"] * 1) / 60) * 10;
-        }
-        break;
-      case "No of Monthly Invoices":
-        if (checkboxes[category]) {
-          prices.standard = ((categoryTotal["No of Monthly Invoices"] * 15) / 60) * 15;
-          prices.discount = ((categoryTotal["No of Monthly Invoices"] * 5) / 60) * 10;
-        }
-        break;
-      case "No of Monthly Payroll":
-        if (checkboxes[category]) {
-          prices.standard = ((categoryTotal["No of Monthly Payroll"] * 15) / 60) * 15;
-          prices.discount = ((categoryTotal["No of Monthly Payroll"] * 5) / 60) * 10;
-        }
-        break;
-      default:
-        break;
-    }
-    setIndividualPrices(prevPrices => ({
-      ...prevPrices,
-      [category]: prices,
-    }));
-    return prices;
-  };
-
-  const calculateTotalPrices = () => {
-    let totalStandard = 0;
-    let totalDiscount = 0;
-    Object.keys(categoryTotal).forEach((category) => {
-      const categoryPrices = calculateCategoryTotal(category);
-      totalStandard += categoryPrices.standard;
-      totalDiscount += categoryPrices.discount;
-    });
-    setTotalPrices({ standard: totalStandard, discount: totalDiscount });
-  };
-
-const handleLockPrice = () => {
-  const selectedCategories = Object.keys(checkboxes).filter(
-    (category) => checkboxes[category]
-  );
-  const lockedPrices = selectedCategories.map((category) => ({
-    category,
-    priceStandard: individualPrices[category].standard,
-    priceDiscount: individualPrices[category].discount,
-  }));
-  const totalStandard = lockedPrices.reduce((total, { priceStandard }) => total + priceStandard, 0);
-  const totalDiscount = lockedPrices.reduce((total, { priceDiscount }) => total + priceDiscount, 0);
-  const lockedPricesText = lockedPrices
-    .map(({ category, priceStandard, priceDiscount }) => `${category}: $${priceDiscount.toFixed(2)}`)
-    .join('\n');
-
-  navigation.navigate("LockedPriceScreen", {
-    lockedPricesText: `${lockedPricesText}\nTotal: $${totalDiscount.toFixed(2)}`,
-  });
-};
   return (
-    <SafeAreaView style={{ backgroundColor: "white" }}>
-      <ScrollView>
-        <LinearGradient
-          colors={[
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.3)',
-            'rgba(245, 186, 207, 0.1)',
-            'rgba(243, 168, 195, 0.1)',
-            'rgba(240, 148, 182, 0.1)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(213, 234, 253, 0.8)',
-            'rgba(252, 247, 232, 1)'
-          ]}
-          style={styles.gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View className="items-center h-full justify-center flex-1">
-            <View
-              className="bg-white justify-center flex-1 mt-10 flex-1 rounded-xl shadow-lg flex space-x-4 w-11/12 p-5"
-              style={{ backgroundColor: "#f5f8fa" }}
-            >
-              <Text style={{ fontSize: 20, marginBottom: 10 }}>
-                Bookkeeping Calculator
-              </Text>
-              {Object.keys(categoryTotal).map((category) => (
-                <View key={category}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <CheckBox
-                      value={checkboxes[category]}
-                      onValueChange={() => handleCheckboxChange(category)}
-                      className="mt-2"
-                      style={{ tintColor: "#0b7ffe" }}
-                    />
-                    <Text className="ml-2 mt-1 text-base">{category}</Text>
-                  </View>
-                  {category !== "Monthly Cashflow" &&
-                    category !== "Monthly Budgeting" &&
-                    category !== "QuickBook Xero/Setup" &&
-                    checkboxes[category] && (
-                      <TextInput
-                        onChangeText={(value) =>
-                          handleInputChange(value, category)
-                        }
-                        keyboardType="numeric"
-                        style={{ borderWidth: 1, padding: 5, marginBottom: 10 }}
-                        className="rounded-lg mt-2"
-                      />
-                    )}
-                </View>
-              ))}
-              <Text></Text>
-            </View>
-            <View
-              className="bg-white justify-center flex-1 mt-3 mb-10 flex-1 rounded-xl shadow-lg flex space-x-1 w-11/12 p-5"
-              style={{ backgroundColor: "#f5f8fa" }}>
-              {Object.keys(individualPrices).map((category) => (
-                <Text className="text-base p-2" key={category}>
-                  {category}: {"\n"}
-                  {category === "QuickBook Xero/Setup" ? (
-                    <Text>${individualPrices[category].standard.toFixed(2)}</Text>
-                  ) : (
-                    <Text>
-                      <Text className="mr-5" style={{ textDecorationLine: "line-through" }}>
-                        ${individualPrices[category].standard.toFixed(2)}
-                      </Text>{" "}
-                      <Text>${individualPrices[category].discount.toFixed(2)}</Text>
-                    </Text>
-                  )}
-                </Text>
-              ))}
-              <Text className="text-base p-2">
-                Total Billing:{"\n"} <Text style={{ textDecorationLine: 'line-through' }}>${totalPrices.standard.toFixed(2)}</Text> ${totalPrices.discount.toFixed(2)}
-              </Text>
-              <View className="flex-row mt-2">
-                <TouchableOpacity
-                  style={{ backgroundColor: "#0b7ffe" }}
-                  className="p-3 rounded-md"
-                  onPress={handleLockPrice}>
-                  <Text className="text-white text-md">Lock the price Now</Text>
-                </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      {Object.entries(groupedAttendance).map(([code, course]) => (
+        <View key={code} style={styles.courseContainer}>
+          {/* Course Header */}
+          <View style={styles.courseHeader}>
+            <Text style={styles.courseTitle}>{`[${code}] ${course.course_name}`}</Text>
+            <View style={styles.statsContainer}>
+              <View style={styles.statsBox}>
+                <Text style={styles.statsTextGreen}>Total Lectures = {course.total_lectures}</Text>
+              </View>
+              <View style={styles.statsBox}>
+                <Text style={styles.statsTextRed}>Total Absents = {course.total_absents}</Text>
               </View>
             </View>
           </View>
-        </LinearGradient>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
 
-export default CalculatorScreen;
+          {/* Table Header */}
+          <View style={styles.tableHeader}>
+            <Text style={styles.tableHeaderText}>#</Text>
+            <Text style={styles.tableHeaderText}>Lecture Date</Text>
+            <Text style={styles.tableHeaderText}>Status</Text>
+          </View>
+
+          {/* Table Rows */}
+          <View style={styles.table}>
+            {course.records.map((record, index) => (
+              <View key={index} style={styles.tableRow}>
+                <Text style={styles.cell}>{index + 1}</Text>
+                <Text style={styles.cell}>
+                  {record.lecture_date
+                    ? new Date(record.lecture_date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })
+                    : "N/A"}
+                </Text>
+                <Text
+                  style={[styles.cell, record.status === "Absent" ? styles.absentText : styles.presentText]}
+                >
+                  {record.status}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    backgroundColor: "#f8f8f8",
+  },
+  courseContainer: {
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    overflow: "hidden",
+    elevation: 3,
+    backgroundColor: "#fff",
+  },
+  courseHeader: {
+    backgroundColor: "#3b5998",
+    padding: 10,
+  },
+  courseTitle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  statsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  statsBox: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 5,
+  },
+  statsTextGreen: {
+    color: "#28a745",
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+  statsTextRed: {
+    color: "#dc3545",
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+  tableHeader: {
+    flexDirection: "row",
+    backgroundColor: "#e0e0e0",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  tableHeaderText: {
+    flex: 1,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#333",
+    fontSize: 12,
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderColor: "#eee",
+  },
+  cell: {
+    flex: 1,
+    padding: 8,
+    fontSize: 12,
+    textAlign: "center",
+  },
+  absentText: {
+    color: "#dc3545",
+    fontWeight: "bold",
+  },
+  presentText: {
+    color: "#28a745",
+    fontWeight: "bold",
+  },
+});

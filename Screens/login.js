@@ -24,34 +24,61 @@ const Login = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [adminLogin, setAdminLogin] = useState(false);
 
+//const handleLogin = async () => {
+//  try {
+//    let response;
+//    if (adminLogin) {
+//      response = await axios.post("http://192.168.1.78:8080/api/student/login", {
+//        email: email,
+//        password: password,
+//      });
+//    } else {
+//      response = await axios.post("http://192.168.1.78:8080/api/student/login", {
+//        email_address: customerEmail,
+//        password: customerPassword,
+//      });
+//    }
+//    const { message } = response.data;
+//    console.log(message);
+//
+//    // Ensure the navigation target matches the registered screen name
+//    navigation.navigate(adminLogin ? "Admin Dashboard" : "Home", {
+//      user_email: adminLogin ? email : customerEmail
+//    });
+//
+//  } catch (error) {
+//    console.error("Error logging in:", error.message);
+//    if (error.response && error.response.data && error.response.data.error) {
+//      setError(error.response.data.error);
+//    } else {
+//      setError("An error occurred while logging in");
+//    }
+//  }
+//};
 const handleLogin = async () => {
   try {
-    let response;
-    if (adminLogin) {
-      response = await axios.post("http://192.168.1.215:8080/admin/login", {
-        email_address: email,
-        password: password,
-      });
-    } else {
-      response = await axios.post("http://192.168.1.215:8080/customer/login", {
-        email_address: customerEmail,
-        password: customerPassword,
-      });
-    }
+    // Prepare the login payload based on whether it's admin or student login
+    const loginPayload = {
+      email: adminLogin ? email : customerEmail, // Both admin and student use the 'email' column
+      password: adminLogin ? password : customerPassword,
+    };
+
+    // Make a POST request to the login endpoint
+    const response = await axios.post("http://192.168.1.78:8080/api/student/login", loginPayload);
+
     const { message } = response.data;
-    console.log(message);
+    console.log("Login Successful:", message);
 
-    // Ensure the navigation target matches the registered screen name
-    navigation.navigate(adminLogin ? "Admin Dashboard" : "Home", {
-      user_email: adminLogin ? email : customerEmail
+    // Navigate to the appropriate screen with the user email
+    navigation.navigate(adminLogin ? "Admin Dashboard" : "General Information", {
+      user_email: loginPayload.email, // Pass the email used for login
     });
-
   } catch (error) {
     console.error("Error logging in:", error.message);
     if (error.response && error.response.data && error.response.data.error) {
-      setError(error.response.data.error);
+      setError(error.response.data.error); // Display server-side error
     } else {
-      setError("An error occurred while logging in");
+      setError("An error occurred while logging in."); // Fallback error
     }
   }
 };
@@ -91,7 +118,7 @@ const handleLogin = async () => {
                }}
              >
                <Text style={[styles.tabText, adminLogin && styles.activeTabText]}>
-                 Admin Login
+                 Teacher Login
                </Text>
              </TouchableOpacity>
            </View>
@@ -134,6 +161,8 @@ const handleLogin = async () => {
             <Text style={{ color: "#473f97" }}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity  onPress={() => navigation.navigate("Sign Up")}
+><Text>Click ME</Text></TouchableOpacity>
     </ScrollView>
   );
 };

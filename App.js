@@ -7,6 +7,7 @@ import Login from "./Screens/login";
 import Contact from "./Screens/contactUs";
 import Calculator from "./Screens/calculator";
 import MultiStepForm from "./Screens/form";
+import AcademicDeadlines from "./Screens/AcadmicDeadline";
 import AvailableServices from "./Screens/OurServices";
 import CustomerDashboard from "./Screens/customerDashboard/index";
 import AdminDashboard from "./Screens/adminDashboard/index";
@@ -76,24 +77,37 @@ const DrawerNavigator = () => {
         component={Login}
         options={{
           headerShown: false,
+          drawerItemStyle: { display: "none" }, // Hide from drawer
+
         }}
       />
-      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="General Information" component={HomeScreen} />
       <Drawer.Screen name="Sign Up" component={SignUp}
          options={{
           headerShown: false,
+         drawerItemStyle: { display: "none" }, // Hide from drawer
       }}/>
-      <Drawer.Screen name="Services" component={AvailableServices} />
-      <Drawer.Screen name="Contact Us" component={Contact} />
-      <Drawer.Screen name="Calculator" component={Calculator} />
-      <Drawer.Screen name="Multi-Step Form" component={MultiStepForm} />
-      <Drawer.Screen name="Customer Dashboard" component={CustomerDashboard} />
-      <Drawer.Screen name="Admin Dashboard" component={AdminDashboard} />
-      <Drawer.Screen name="Chat" component={Chat} />
-      <Drawer.Screen name="Add Teacher" component={CreateTeacherForm}/>
-      <Drawer.Screen name="Add Student" component={AddStudent}/>
-      <Drawer.Screen name="Add Courses" component={AddCourse}/>
-     <Drawer.Screen name="Add Courses to Student" component={AddCoursesStudent}/>
+      <Drawer.Screen name="My Courses" component={AvailableServices} />
+      <Drawer.Screen name="My Time Table" component={CustomerDashboard} />
+      <Drawer.Screen name="My Attendance" component={Calculator} />
+      <Drawer.Screen name="Academic Deadline" component={AcademicDeadlines} />
+      <Drawer.Screen name="My Transcripts" component={AvailableServices} />
+      <Drawer.Screen name="FYP Registration" component={Contact} />
+      <Drawer.Screen name="My Program Courses" component={MultiStepForm} />
+      <Drawer.Screen name="Fee Challan" component={AdminDashboard} />
+      <Drawer.Screen name="Acadmic Calender" component={Chat} />
+      <Drawer.Screen name="Add Teacher" component={CreateTeacherForm}  options={{
+        drawerItemStyle: { display: "none" }, // Hide from drawer
+      }}/>
+      <Drawer.Screen name="Add Student" component={AddStudent} options={{
+        drawerItemStyle: { display: "none" }, // Hide from drawer
+      }}/>
+      <Drawer.Screen name="Add Courses" component={AddCourse} options={{
+        drawerItemStyle: { display: "none" }, // Hide from drawer
+      }}/>
+     <Drawer.Screen name="Add Courses to Student" component={AddCoursesStudent} options={{
+        drawerItemStyle: { display: "none" }, // Hide from drawer
+     }}/>
 
     </Drawer.Navigator>
   );
