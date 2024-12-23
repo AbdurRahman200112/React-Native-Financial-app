@@ -21,6 +21,9 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import style from "./Screens/Style/style";
+import ProjectGroups from './Screens/RegisteredGroups';
+import CourseTeacherSelector from './Screens/CourseRegistration';
+import MyCourses from './Screens/MyCourses';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -87,7 +90,7 @@ const DrawerNavigator = () => {
           headerShown: false,
          drawerItemStyle: { display: "none" }, // Hide from drawer
       }}/>
-      <Drawer.Screen name="My Courses" component={AvailableServices} />
+      <Drawer.Screen name="My Courses" component={MyCourses} />
       <Drawer.Screen name="My Time Table" component={CustomerDashboard} />
       <Drawer.Screen name="My Attendance" component={Calculator} />
       <Drawer.Screen name="Academic Deadline" component={AcademicDeadlines} />
@@ -96,6 +99,9 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="My Program Courses" component={MultiStepForm} />
       <Drawer.Screen name="Fee Challan" component={AdminDashboard} />
       <Drawer.Screen name="Acadmic Calender" component={Chat} />
+      <Drawer.Screen name="Registered Groups" component={ProjectGroups} />
+      <Drawer.Screen name="Registered Course" component={CourseTeacherSelector} />
+
       <Drawer.Screen name="Add Teacher" component={CreateTeacherForm}  options={{
         drawerItemStyle: { display: "none" }, // Hide from drawer
       }}/>

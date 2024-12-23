@@ -219,23 +219,101 @@ app.get("/api/advisors", (req, res) => {
 });
 
 // Endpoint to insert project group
-app.post("/api/registerGroup", (req, res) => {
-  const { group_title, group_members, advisor_id } = req.body;
-
-  if (!group_title || !group_members || !advisor_id) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
+app.get("/api/projectGroups", (req, res) => {
   const query = `
-    INSERT INTO project_groups (group_title, group_members, advisor_id)
-    VALUES (?, ?, ?)`;
+    SELECT
+      pg.group_title,
+      pg.group_members,
+      a.advisor_name
+    FROM
+      project_groups pg
+    JOIN
+      advisors a
+    ON
+      pg.advisor_id = a.advisor_id;
+`;
 
-  db.query(query, [group_title, group_members, advisor_id], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json({ message: "Project group registered successfully!" });
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log("Query Results:", results);
+    res.status(200).json(results);
   });
 });
 
+app.get("/api/getCourses", (req, res) => {
+  const query = "SELECT id, course_name FROM courses";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(results);
+  });
+});
+
+
+app.post("/api/getTeacherByCourse", (req, res) => {
+  const { courseId } = req.body;
+  if (!courseId) {
+    return res.status(400).json({ error: "Course ID is required" });
+  }
+
+  const query = `
+    SELECT t.teacher_name, c.course_name
+    FROM courses c
+    JOIN teachers t ON c.teacher_id = t.id
+    WHERE c.id = ?;
+  `;
+
+  db.query(query, [courseId], (err, results) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(results[0]);
+  });
+});
+
+
+app.post("/api/addTeacherSelection", (req, res) => {
+  const { courseId, courseName, teacherName } = req.body;
+
+  if (!courseId || !courseName || !teacherName) {
+    return res.status(400).json({
+      error: "Course ID, Course Name, and Teacher Name are required",
+    });
+  }
+
+  const query = `
+    INSERT INTO selected_teachers (course_id, course_name, teacher_name)
+    VALUES (?, ?, ?);
+  `;
+
+  db.query(query, [courseId, courseName, teacherName], (err, result) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json({ message: "Teacher selection added successfully!" });
+  });
+});
+
+
+
+app.get("/api/projectGroups", (req, res) => {
+  const query = `
+    SELECT pg.group_title, pg.group_members, a.advisor_name
+    FROM project_groups pg
+    JOIN advisors a ON pg.advisor_id = a.advisor_id`;
+
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(200).json(results);
+  });
+});
 
 app.get("/api/transcript/data", (req, res) => {
   const student_id = req.params.student_id;
@@ -250,6 +328,23 @@ app.get("/api/transcript/data", (req, res) => {
     res.status(200).json(results);
   });
 });
+
+app.get("/api/getSelectedTeachers", (req, res) => {
+  const query = `
+    SELECT st.course_id, st.course_name, st.teacher_name, c.course_code
+    FROM selected_teachers st
+    JOIN courses c ON st.course_id = c.id;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Database Error:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(200).json(results);
+  });
+});
+
 
 
 app.get("/ShowCourses", (req, res) => {
